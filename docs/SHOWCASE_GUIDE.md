@@ -8,7 +8,7 @@
 ## 1. GitHub Repository Optimization
 
 ### Recommended Repository Metadata
-* **Repository Name**: `aegis-iot-multiagent`
+* **Repository Name**: `iot-smart-home-ai-ops`
 * **Description**:
   > **3rd Prize Winner - SEAL Hackathon 2026** | Autonomous Multi-Agent IoT Diagnostic, Planning & Closed-Loop Feedback System powered by Google Gemini 2.5, LangGraph StateGraph, Qdrant Vector DB, TimescaleDB & RabbitMQ. Certified Harness Score Level 4.
 * **Topics / Tags**:

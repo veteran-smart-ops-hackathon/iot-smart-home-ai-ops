@@ -217,7 +217,7 @@ The platform natively ingests and manages 6 device classes mapped to internation
 
 ## 7. 7 Modular FastAPI Routers Ecosystem
 
-The backend (`dashboard/`) is organized into 7 decoupled routers:
+The backend (`backend/`) is organized into 7 decoupled routers:
 
 | Router File | Prefix / Tag | Key Endpoints | Responsibilities |
 | :--- | :--- | :--- | :--- |
@@ -262,34 +262,29 @@ Audited and verified via the **AI Agent Harness Quality Gate (`paladini/harness-
 
 ## 10. Quickstart Guide
 
-### Option 1: Launch with Docker Compose (Recommended)
+### Option 1: 1-Command Zero-Config Launch with Docker (Recommended)
 
-1. **Clone repository & prepare environment**:
+1. **Clone repository & Start entire stack with 1 command**:
    ```bash
-   git clone https://github.com/your-username/aegis-iot-multiagent.git
-   cd aegis-iot-multiagent
-   cp .env.example .env
-   # Configure Google Gemini API key in .env
-   ```
-
-2. **Start infrastructure and application stack**:
-   ```bash
+   git clone https://github.com/veteran-smart-ops-hackathon/iot-smart-home-ai-ops.git
+   cd iot-smart-home-ai-ops
    docker compose up -d --build
    ```
+   *(Optional: If you want to use custom Gemini AI Studio API keys or SMTP alerts, copy `.env.example` to `.env` and fill your keys before or after running).*
 
-3. **Open the Web Dashboard**:
-   Navigate to **[http://localhost:8000](http://localhost:8000)** in your browser.
+2. **Access Web Portals**:
+   - **Unified Web Operations Dashboard**: **[http://localhost:8000](http://localhost:8000)** (React 19 SPA + Multi-Agent Center)
+   - **RabbitMQ AMQP Management UI**: **[http://localhost:15672](http://localhost:15672)** (User: `guest`, Pass: `guest`)
+   - **Qdrant Vector Engine UI / API**: **[http://localhost:6333/dashboard](http://localhost:6333/dashboard)**
+   - **TimescaleDB Telemetry TSDB**: Port `5432` (`iot_ground_truth` hypertable)
 
-4. **Simulate IoT telemetry stream & trigger anomaly scenarios**:
+3. **Simulate IoT Telemetry Stream & Anomaly Scenarios**:
    ```bash
-   # Stream normal telemetry across all 6 simulated devices:
-   python scripts/mock_mqtt_stream.py --loop
+   # Run E2E telemetry stream simulation:
+   python scripts/publish_mock_mqtt.py
 
-   # Trigger thermal runaway overheat scenario:
-   python scripts/mock_mqtt_stream.py --anomaly overheat --loop
-
-   # Trigger power surge overload scenario:
-   python scripts/mock_mqtt_stream.py --anomaly power_surge --loop
+   # Or run E2E scenario tests directly:
+   python scripts/test_e2e_live.py
    ```
 
 ---
@@ -315,7 +310,7 @@ Audited and verified via the **AI Agent Harness Quality Gate (`paladini/harness-
 
 4. **Run Web Application Server**:
    ```bash
-   uvicorn dashboard.app:app --host 0.0.0.0 --port 8000 --reload
+   uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
    ```
 
 5. **Run Automated Test Suite**:
@@ -361,7 +356,7 @@ Audited and verified via the **AI Agent Harness Quality Gate (`paladini/harness-
 ├── knowledge_base/             # Standard Operating Procedures (SOPs) & IEEE Reference Library
 │   ├── sops/                   # Categorized device-specific standard markdown SOPs
 │   └── papers/                 # Original IEEE / Elsevier / MDPI scientific papers
-├── dashboard/                  # FastAPI Web Backend with 7 Modular Routers
+├── backend/                   # FastAPI Web Backend with 7 Modular Routers
 │   ├── app.py                  # Main FastAPI Application entrypoint & static mounts
 │   ├── dependencies.py         # Dependency injection providers for agents & stores
 │   └── routers/                # Decoupled REST & WebSocket Routers

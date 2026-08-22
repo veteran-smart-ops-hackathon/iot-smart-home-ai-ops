@@ -8,10 +8,10 @@
 
 ## 1. Modular Routers Architecture
 
-The backend API is organized into 7 decoupled FastAPI routers under `dashboard/routers/`:
+The backend API is organized into 7 decoupled FastAPI routers under `backend/routers/`:
 
 ```
-dashboard/routers/
+backend/routers/
 ├── agent_router.py          # Multi-Agent StateGraph & HITL Approval
 ├── mqtt_router.py           # WebSocket Bridge & Device Controls
 ├── rag_router.py            # PDF Indexing & Conversational RAG
