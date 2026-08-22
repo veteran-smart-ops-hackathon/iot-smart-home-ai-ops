@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis-IoT | Trung Tâm An Toàn & Điều Hành IoT Gia Đình Trầm Ấm</title>
+    
+    <!-- Theme Initialization Script (Prevent FOUC) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans, Newsreader, JetBrains Mono, Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons Regular & Bold via CDN -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Chart.js for High-Frequency Telemetry Line Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- Tailwind CSS CDN with Warm Home Theme Extensions -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Newsreader', 'serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        warm: {
+                            50: '#FDFBF7',
+                            100: '#F7F4EE',
+                            200: '#EAE3D2',
+                            300: '#D5CCBC',
+                            400: '#B0A795',
+                            500: '#8A816F',
+                            600: '#696150',
+                            700: '#4E483B',
+                            800: '#342F26',
+                            900: '#1C1917',
+                            950: '#151210',
+                        },
+                        amber: {
+                            550: '#D97706',
+                            650: '#B45309',
+                        },
+                        terracotta: {
+                            500: '#C2410C',
+                            600: '#9A3412',
+                        },
+                        moss: {
+                            500: '#15803D',
+                            600: '#166534',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-[#FDFBF7] text-stone-900 dark:bg-[#151210] dark:text-stone-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200 selection:bg-amber-500/20 selection:text-amber-700 dark:selection:text-amber-300 tech-grid-bg">
+
+    <!-- ====================================================================
+         TOP FLOATING NAVIGATION BAR (4 DEDICATED STUDIOS)
+         =============================================================    <!-- Top Navigation Bar -->
+    <header class="sticky top-3 z-50 px-4 sm:px-6 max-w-7xl mx-auto w-full mb-3">
+        <div class="warm-nav-pill rounded-2xl px-3.5 sm:px-4 py-2 flex items-center justify-between gap-3 shadow-[0_4px_24px_-2px_rgba(28,25,23,0.06),0_1px_2px_rgba(28,25,23,0.04)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6)]">
+            
+            <!-- Brand & Identity (Full Block Clickable) -->
+            <a href="/" class="flex items-center gap-2.5 sm:gap-3 shrink-0 group cursor-pointer" title="Về Trang Chủ Aegis-IoT Dashboard">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 text-white flex items-center justify-center shadow-[0_2px_8px_rgba(217,119,6,0.3)] ring-1 ring-amber-400/30 dark:ring-amber-400/20 shrink-0 group-hover:scale-105 transition-transform">
+                    <i class="ph ph-house-line text-lg font-bold"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-bold text-sm sm:text-base tracking-tight text-stone-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">AEGIS<span class="text-amber-600 dark:text-amber-400 font-extrabold">·HOME</span></span>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400 font-mono text-[9.5px] font-semibold tracking-wider">
+                            <span class="relative flex h-1.5 w-1.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                            </span>
+                            L4 AUTONOMOUS
+                        </span>
+                    </div>
+                    <p class="text-[10.5px] text-stone-500 dark:text-stone-400 font-mono hidden xl:block leading-tight">Trung Tâm Giám Sát IoT Gia Đình & Chẩn Đoán Đa Tác Tử</p>
+                </div>
+            </a>
+
+            <!-- 5 Dedicated Studios & User Pages Tabs - Segmented Island Control -->
+            <nav class="flex items-center bg-stone-200/50 dark:bg-stone-900/60 p-1 rounded-xl border border-stone-200/80 dark:border-stone-800/80 shadow-inner">
+                
+                <!-- Page 1: Dashboard (Current Active) -->
+                <a href="/" class="nav-tab-active relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-bold transition-all duration-200 select-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.5)] ring-1 ring-stone-900/5 dark:ring-white/10" title="Dashboard Giám Sát MQTT Realtime">
+                    <i class="ph ph-gauge text-base text-amber-600 dark:text-amber-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">DASHBOARD</span>
+                </a>
+
+                <!-- Page 2: Multi-Agent Reasoning Stream -->
+                <a href="/agentic" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Xem luồng suy luận LangGraph Multi-Agent thời gian thực">
+                    <i class="ph ph-tree-structure text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">MULTI-AGENT</span>
+                </a>
+
+                <!-- Page 3: RAG & PDF Studio -->
+                <a href="/rag" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Cơ sở tri thức Qdrant & Tra cứu SOP PDF">
+                    <i class="ph ph-books text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">RAG & SOP</span>
+                </a>
+
+                <!-- Page 4: Scientific Formulas & Evidence -->
+                <a href="/evidence" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Xem đặc tả công thức toán, bằng chứng trích dẫn và BibTeX">
+                    <i class="ph ph-atom text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">BẰNG CHỨNG TOÁN</span>
+                </a>
+
+                <!-- Page 5: Cảnh Báo Email & Đăng Ký Người Nhận -->
+                <a href="/alerts" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Đăng ký & Quản lý danh sách email nhận cảnh báo sự cố">
+                    <i class="ph ph-bell-ringing text-base text-amber-500 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">CẢNH BÁO EMAIL</span>
+                </a>
+            </nav>
+
+            <!-- Utility Controls & Actions -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <!-- Verified Action Plans History Button -->
+                <button id="btn-open-verified-plans" onclick="openVerifiedPlansModal()" class="btn-action h-9 px-2.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/15 border border-purple-500/25 text-purple-800 dark:text-purple-300 text-xs font-mono font-semibold transition-all flex items-center gap-1.5 shadow-sm active:scale-95" title="Tra cứu lịch sử kế hoạch đã duyệt & Qdrant Feedback Memory">
+                    <i class="ph ph-database text-sm text-purple-600 dark:text-purple-400 shrink-0"></i>
+                    <span class="hidden 2xl:inline">LỊCH SỬ</span>
+                    <span id="verified-plans-count-pill" class="px-1.5 py-0.5 text-[9px] rounded-full font-mono bg-purple-200/80 dark:bg-purple-900/80 text-purple-800 dark:text-purple-200 font-bold">3 CA</span>
+                </button>
+
+                <!-- Email Notification Center Button -->
+                <button id="btn-open-email-modal" onclick="openEmailModal()" class="btn-action h-9 px-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 text-xs font-mono font-semibold transition-all flex items-center gap-1.5 shadow-sm active:scale-95" title="Mở bảng điều khiển Email Cảnh Báo">
+                    <i class="ph ph-envelope-simple text-sm text-amber-600 dark:text-amber-400 shrink-0"></i>
+                    <span class="hidden 2xl:inline">CẤU HÌNH</span>
+                    <span id="email-status-pill" class="px-1.5 py-0.5 text-[9px] rounded-full font-mono bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold">ON</span>
+                </button>
+
+                <!-- Sound Toggle Button -->
+                <button id="btn-sound-toggle" title="Bật/Tắt âm thanh hiệu ứng" class="btn-action h-9 w-9 rounded-xl bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200/80 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-white text-xs flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm shrink-0">
+                    <i id="sound-icon" class="ph ph-speaker-high text-sm text-emerald-600 dark:text-emerald-400"></i>
+                </button>
+
+                <!-- Theme Toggle Button -->
+                <button id="btn-theme-toggle" title="Chuyển chế độ Sáng / Tối" class="btn-action h-9 w-9 rounded-xl bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200/80 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-white text-xs flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm shrink-0">
+                    <i class="ph ph-sun text-sm text-amber-500 dark:hidden"></i>
+                    <i class="ph ph-moon text-sm text-amber-300 hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         MAIN CONTENT: WARM HOME REALTIME MQTT DASHBOARD
+         ==================================================================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 flex-1 w-full space-y-4 pb-12">
+
+        <!-- TOP BAR: ROOM SELECTOR & REAL-TIME HIGH-FREQUENCY TELEMETRY CHART -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- Left Top: Room Selector & Floorplan Beacon (7 Cols) -->
+            <div class="lg:col-span-7 ui-panel p-4 flex flex-col justify-between space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="ph ph-map-pin text-amber-600 dark:text-amber-400 text-base"></i>
+                        <span class="text-xs font-mono font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider">Chọn Khu Vực / Trạm Cảm Biến Gia Đình:</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5 text-[11px] font-mono text-stone-500">
+                        <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="ws-broker-status">MQTT 1883 Online</span>
+                    </div>
+                </div>
+
+                <!-- Room / Station Switcher Buttons (Like screenshot STN_HN_01...) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button onclick="switchRoom('STN_KITCHEN')" id="btn-room-kitchen" class="room-btn active-room-btn px-3 py-2 rounded-xl text-left border border-amber-500 bg-amber-50 dark:bg-amber-950/40 transition-all text-xs font-mono">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <span class="font-bold text-stone-900 dark:text-white">STN_KITCHEN</span>
+                            <i class="ph ph-cooking-pot text-amber-600"></i>
+                        </div>
+                        <p class="text-[10px] text-stone-500 truncate">Phòng Bếp (Bếp từ)</p>
+                    </button>
+
+                    <button onclick="switchRoom('STN_LIVING')" id="btn-room-living" class="room-btn px-3 py-2 rounded-xl text-left border border-stone-200 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all text-xs font-mono">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <span class="font-bold text-stone-800 dark:text-stone-200">STN_LIVING</span>
+                            <i class="ph ph-television text-stone-400"></i>
+                        </div>
+                        <p class="text-[10px] text-stone-500 truncate">Phòng Khách (AC)</p>
+                    </button>
+
+                    <button onclick="switchRoom('STN_BEDROOM')" id="btn-room-bedroom" class="room-btn px-3 py-2 rounded-xl text-left border border-stone-200 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all text-xs font-mono">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <span class="font-bold text-stone-800 dark:text-stone-200">STN_BEDROOM</span>
+                            <i class="ph ph-bed text-stone-400"></i>
+                        </div>
+                        <p class="text-[10px] text-stone-500 truncate">Phòng Ngủ (Lò sưởi)</p>
+                    </button>
+
+                    <button onclick="switchRoom('STN_BALCONY')" id="btn-room-balcony" class="room-btn px-3 py-2 rounded-xl text-left border border-stone-200 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all text-xs font-mono">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <span class="font-bold text-stone-800 dark:text-stone-200">STN_BALCONY</span>
+                            <i class="ph ph-potted-plant text-stone-400"></i>
+                        </div>
+                        <p class="text-[10px] text-stone-500 truncate">Ban Công (Vườn)</p>
+                    </button>
+                </div>
+
+                <!-- Current Active Station Details Box -->
+                <div class="p-3 bg-stone-50 dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h2 id="active-room-title" class="font-bold text-sm text-stone-900 dark:text-white">Phòng Tắm & Gia Nhiệt (STN_BATHROOM)</h2>
+                            <span id="active-device-badge" class="px-2 py-0.5 text-[10px] font-mono bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded">HEATER_01</span>
+                        </div>
+                        <p id="active-room-meta" class="text-xs text-stone-500 font-mono mt-0.5">Giao thức: MQTT Direct • Vị trí: Tầng 1 (Phòng Tắm) • Giám sát: Bình nóng lạnh công suất cao (2452W)</p>
+                    </div>
+                    <button onclick="triggerScenario('heater_overheat')" class="btn-action px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-mono font-semibold rounded-lg shadow-sm flex items-center space-x-1">
+                        <i class="ph ph-lightning text-sm"></i>
+                        <span>Kích hoạt AI</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Top: Live Telemetry Line Chart (Raw vs Kalman Smoothed) (5 Cols) -->
+            <div class="lg:col-span-5 ui-panel p-4 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center space-x-2">
+                        <i class="ph ph-chart-line-up text-emerald-600 dark:text-emerald-400 text-base"></i>
+                        <span class="text-xs font-mono font-bold text-stone-700 dark:text-stone-300 uppercase">Luồng Đo Thời Gian Thực (Cửa Sổ Trượt)</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-[10px] font-mono">
+                        <span class="flex items-center space-x-1 text-emerald-600 dark:text-emerald-400">
+                            <span class="h-2 w-2 rounded-full bg-emerald-500 inline-block"></span>
+                            <span>Kalman Smoothed</span>
+                        </span>
+                        <span class="flex items-center space-x-1 text-stone-400">
+                            <span class="h-2 w-2 rounded-full bg-stone-400 inline-block"></span>
+                            <span>Raw Sensor</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="h-36 w-full relative">
+                    <canvas id="liveTelemetryChart"></canvas>
+                </div>
+                
+                <div class="mt-2 flex items-center justify-between text-[11px] font-mono text-stone-500 border-t border-stone-100 dark:border-stone-800 pt-1.5">
+                    <span>Chu kỳ lấy mẫu: 1.8s (MQTT QoS 1)</span>
+                    <span id="chart-sample-timestamp">01:13:37</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====================================================================
+             MAIN 2-COLUMN SECTION: 6 TELEMETRY CARDS (LEFT) & AI STATUS/FORECAST (RIGHT)
+             ==================================================================== -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- LEFT: 6 REAL-TIME TELEMETRY METRICS (2x3 GRID - 7 COLS) -->
+            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+                <!-- Card 1: Nhiệt độ Môi trường & Bề mặt -->
+                <div class="ui-panel p-4 flex flex-col justify-between hover:border-amber-400 transition-colors">
+                    <div class="flex items-center space-x-2 text-stone-600 dark:text-stone-400 text-xs font-mono">
+                        <i class="ph ph-thermometer text-amber-600 dark:text-amber-400 text-base"></i>
+                        <span class="font-bold">NHIỆT ĐỘ</span>
+                    </div>
+                    <div class="my-2">
+                        <div class="flex items-baseline space-x-1">
+                            <span id="val-temp" class="text-2xl sm:text-3xl font-extrabold font-display text-stone-900 dark:text-white tabular-nums">26.5</span>
+                            <span class="text-sm font-semibold text-stone-500">°C</span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-stone-500 font-mono flex items-center justify-between border-t border-stone-100 dark:border-stone-800 pt-1.5">
+                        <span>Heat Index:</span>
+                        <span id="val-heat-index" class="font-semibold text-stone-700 dark:text-stone-300">28.3 °C</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Độ ẩm Không khí -->
+                <div class="ui-panel p-4 flex flex-col justify-between hover:border-amber-400 transition-colors">
+                    <div class="flex items-center space-x-2 text-stone-600 dark:text-stone-400 text-xs font-mono">
+                        <i class="ph ph-drop text-sky-600 dark:text-sky-400 text-base"></i>
+                        <span class="font-bold">ĐỘ ẨM KHÔNG KHÍ</span>
+                    </div>
+                    <div class="my-2">
+                        <div class="flex items-baseline space-x-1">
+                            <span id="val-humidity" class="text-2xl sm:text-3xl font-extrabold font-display text-stone-900 dark:text-white tabular-nums">64</span>
+                            <span class="text-sm font-semibold text-stone-500">%</span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-stone-500 font-mono flex items-center justify-between border-t border-stone-100 dark:border-stone-800 pt-1.5">
+                        <span>Điểm sương:</span>
+                        <span id="val-dew-point" class="font-semibold text-stone-700 dark:text-stone-300">19.2 °C</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Công suất Tiêu thụ & Cường độ dòng -->
+                <div class="ui-panel p-4 flex flex-col justify-between hover:border-amber-400 transition-colors">
+                    <div class="flex items-center space-x-2 text-stone-600 dark:text-stone-400 text-xs font-mono">
+                        <i class="ph ph-lightning text-amber-500 text-base"></i>
+                        <span class="font-bold">CÔNG SUẤT P</span>
+                    </div>
+                    <div class="my-2">
+                        <div class="flex items-baseline space-x-1">
+                            <span id="val-power" class="text-2xl sm:text-3xl font-extrabold font-display text-stone-900 dark:text-white tabular-nums">185.0</span>
+                            <span class="text-sm font-semibold text-stone-500">W</span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-stone-500 font-mono flex items-center justify-between border-t border-stone-100 dark:border-stone-800 pt-1.5">
+                        <span>Dòng I / Điện áp:</span>
+                        <span id="val-current" class="font-semibold text-stone-700 dark:text-stone-300">0.84 A (220V)</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Chất lượng Không khí & Bụi mịn PM2.5 -->
+                <div class="ui-panel p-4 flex flex-col justify-between hover:border-amber-400 transition-colors">
+                    <div class="flex items-center space-x-2 text-stone-600 dark:text-stone-400 text-xs font-mono">
+                        <i class="ph ph-wind text-emerald-600 dark:text-emerald-400 text-base"></i>
+                        <span class="font-bold">BỤI MỊN PM2.5</span>
+                    </div>
+                    <div class="my-2">
+                        <div class="flex items-baseline space-x-1">
+                            <span id="val-pm25" class="text-2xl sm:text-3xl font-extrabold font-display text-stone-900 dark:text-white tabular-nums">18</span>
+                            <span class="text-sm font-semibold text-stone-500">µg/m³</span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-stone-500 font-mono flex items-center justify-between border-t border-stone-100 dark:border-stone-800 pt-1.5">
+                        <span>Chỉ số AQI:</span>
+                        <span id="val-aqi" class="font-semibold text-emerald-600 dark:text-emerald-400">42 (Tốt)</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: Cảm biến Hiện diện PIR -->
+                <div class="ui-panel p-4 flex flex-col justify-between hover:border-amber-400 transition-colors">
+                    <div class="flex items-center space-x-2 text-stone-600 dark:text-stone-400 text-xs font-mono">
+                        <i class="ph ph-person-simple text-indigo-600 dark:text-indigo-400 text-base"></i>
+                        <span class="font-bold">HIỆN DIỆN (PIR)</span>
+                    </div>
+                    <div class="my-2">
+                        <div class="flex items-center space-x-2">
+                            <span id="val-presence-dot" class="h-3 w-3 rounded-full bg-emerald-500"></span>
+                            <span id="val-presence-text" class="text-xl sm:text-2xl font-bold font-display text-stone-900 dark:text-white">CÓ NGƯỜI</span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-stone-500 font-mono flex items-center justify-between border-t border-stone-100 dark:border-stone-800 pt-1.5">
+                        <span>Cảm biến:</span>
+                        <span class="font-semibold text-stone-700 dark:text-stone-300">PIR-IR-01</span>
+                    </div>
+                </div>
+
+                <!-- Card 6: Độ rung & Tiếng ồn động cơ -->
+                <div class="ui-panel p-4 flex flex-col justify-between hover:border-amber-400 transition-colors">
+                    <div class="flex items-center space-x-2 text-stone-600 dark:text-stone-400 text-xs font-mono">
+                        <i class="ph ph-waveform text-purple-600 dark:text-purple-400 text-base"></i>
+                        <span class="font-bold">ĐỘ RUNG & ỒN</span>
+                    </div>
+                    <div class="my-2">
+                        <div class="flex items-baseline space-x-1">
+                            <span id="val-vibration" class="text-2xl sm:text-3xl font-extrabold font-display text-stone-900 dark:text-white tabular-nums">0.04</span>
+                            <span class="text-sm font-semibold text-stone-500">mm/s²</span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-stone-500 font-mono flex items-center justify-between border-t border-stone-100 dark:border-stone-800 pt-1.5">
+                        <span>Âm lượng môi trường:</span>
+                        <span id="val-noise" class="font-semibold text-stone-700 dark:text-stone-300">38.5 dB (Êm)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: AI DỰ BÁO AN TOÀN, ĐÁNH GIÁ RỦI RO & PHƯƠNG ÁN ỨNG PHÓ (5 COLS) -->
+            <div class="lg:col-span-5 space-y-3">
+                
+                <!-- AI Risk Assessment Card (Matching Screenshot Design) -->
+                <div class="ui-panel p-4 space-y-3 border-l-4 border-l-emerald-600 dark:border-l-emerald-500">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="ph ph-shield-check text-emerald-600 dark:text-emerald-400 text-lg"></i>
+                            <h3 class="font-bold text-sm text-stone-900 dark:text-white">AI Đánh Giá An Toàn & Rủi Ro Gia Đình</h3>
+                        </div>
+                        <span id="ai-engine-tag" class="px-2 py-0.5 text-[9px] font-mono font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded">AI_HOME_SAFETY_ENGINE</span>
+                    </div>
+
+                    <!-- Risk Status Banner -->
+                    <div class="p-3 bg-emerald-50/70 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-mono text-emerald-800 dark:text-emerald-300 font-bold uppercase">Hình thái trạng thái hệ thống:</span>
+                            <span id="risk-badge" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-900/80 text-emerald-800 dark:text-emerald-300 rounded">RỦI RO: 08/100 (AN TOÀN)</span>
+                        </div>
+                        <h4 id="risk-headline" class="font-bold text-stone-900 dark:text-white text-sm">Hệ thống gia đình ổn định / An toàn tuyệt đối</h4>
+                        <p id="risk-explanation" class="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
+                            Điều kiện hoạt động tại Phòng Bếp duy trì ổn định. Nhiệt độ 26.5°C, độ ẩm 64.5%, công suất phụ tải 185W cân bằng. Không có dấu hiệu chập cháy hay quá nhiệt.
+                        </p>
+                    </div>
+
+                    <!-- Forecast 6h & 24h Grid -->
+                    <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                        <div class="p-2.5 bg-stone-50 dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800">
+                            <div class="flex items-center space-x-1 text-stone-700 dark:text-stone-300 font-bold mb-1">
+                                <i class="ph ph-clock text-amber-600"></i>
+                                <span>DỰ BÁO 6 GIỜ TỚI</span>
+                            </div>
+                            <p class="text-[11px] text-stone-500 leading-snug">Phụ tải duy trì tối ưu, nhiệt độ ổn định, không có nguy cơ quá dòng.</p>
+                        </div>
+
+                        <div class="p-2.5 bg-stone-50 dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800">
+                            <div class="flex items-center space-x-1 text-stone-700 dark:text-stone-300 font-bold mb-1">
+                                <i class="ph ph-calendar text-moss-500"></i>
+                                <span>DỰ BÁO 24 GIỜ TỚI</span>
+                            </div>
+                            <p class="text-[11px] text-stone-500 leading-snug">Dự kiến mức tiêu thụ 3.8 kWh, các chỉ số an toàn nằm trong ngưỡng tốt.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phương Án Ứng Phó Tự Động & Action Button (Matching Screenshot) -->
+                <div class="ui-panel p-4 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="ph ph-cpu text-amber-600 dark:text-amber-400 text-lg"></i>
+                            <h3 class="font-bold text-sm text-stone-900 dark:text-white">Chỉ Đạo Điều Hành & Phương Án Ứng Phó</h3>
+                        </div>
+                        <span class="px-2 py-0.5 text-[9.5px] font-mono bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded">Phương Án Tự Động</span>
+                    </div>
+
+                    <div class="p-3 bg-stone-50 dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 space-y-2">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-bold text-stone-800 dark:text-stone-200 flex items-center space-x-1">
+                                <i class="ph ph-check-circle text-emerald-600"></i>
+                                <span>CHẾ ĐỘ TIẾT KIỆM NĂNG LƯỢNG & AN TOÀN</span>
+                            </span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 rounded">INFO</span>
+                        </div>
+                        
+                        <p id="action-summary-text" class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                            Thời điểm hiện tại phụ tải các thiết bị đang ở trạng thái tối ưu. Không cần can thiệp khẩn cấp.
+                        </p>
+
+                        <!-- Dynamic Interactive Action Button -->
+                        <div id="dynamic-action-container" class="pt-1">
+                            <button onclick="executeActionCommand('OPTIMAL_ECO_MODE', 'Bật chế độ tiết kiệm gia đình')" class="w-full btn-action px-3 py-2 bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-stone-200 text-white dark:text-stone-900 text-xs font-mono font-bold rounded-lg shadow-sm flex items-center justify-center space-x-2">
+                                <span>&gt;_ NOTIFY_OPTIMAL_SMART_HOME_WINDOW</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ====================================================================
+             BOTTOM PANEL: REAL-TIME MQTT JSON STREAM TERMINAL & INGESTION STATUS
+             ==================================================================== -->
+        <div class="ui-panel p-4 space-y-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="ph ph-terminal-window text-amber-600 dark:text-amber-400 text-base"></i>
+                    <h3 class="font-bold text-xs sm:text-sm text-stone-900 dark:text-white uppercase font-mono">Luồng Dữ Liệu Gốc MQTT Broker Realtime (JSON Telemetry Stream)</h3>
+                </div>
+                <div class="flex items-center space-x-3 text-xs font-mono">
+                    <span class="text-stone-500">Tốc độ: <span id="mqtt-rate" class="font-semibold text-stone-800 dark:text-stone-200">24.5 msg/s</span></span>
+                    <span class="text-stone-500">Độ trễ: <span id="mqtt-latency" class="font-semibold text-emerald-600 dark:text-emerald-400">2.8 ms</span></span>
+                </div>
+            </div>
+
+            <!-- Terminal Code Window for Live MQTT JSON -->
+            <div class="bg-stone-950 text-stone-100 p-3 rounded-xl border border-stone-800 font-mono text-xs overflow-x-auto max-h-48 terminal-scroll relative">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-stone-800 text-[10px] text-stone-400">
+                    <span>TOPIC: <span id="mqtt-stream-topic" class="text-amber-400">iot/home/kitchen/telemetry</span></span>
+                    <span>QoS: 1 • Client ID: aegis_home_gateway_01</span>
+                </div>
+                <pre id="mqtt-json-feed" class="text-emerald-400 whitespace-pre-wrap leading-relaxed">{
+  "topic": "iot/home/bathroom/telemetry",
+  "timestamp": "2026-08-16T00:13:37.892Z",
+  "device_id": "HEATER_01",
+  "metrics": {
+    "temp_c": 50.5,
+    "kalman_temp_c": 50.48,
+    "power_watts": 2452.0,
+    "current_a": 11.2,
+    "voltage_v": 220.0
+  },
+  "status": "NORMAL",
+  "anomaly_score": 0.05
+}</pre>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ====================================================================
+         BOTTOM STATUS BAR (MATCHING SCREENSHOT PROTOCOLS & STATUS)
+         ==================================================================== -->
+    <footer class="mt-auto border-t border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md px-4 sm:px-6 py-2.5">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-stone-600 dark:text-stone-400 gap-2">
+            <div class="flex items-center space-x-2 text-[11px]">
+                <span>Hệ Thống Quan Trắc & Điều Hành IoT Gia Đình Thông Minh</span>
+                <span>•</span>
+                <span>Ingestion:</span>
+                <span class="px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold rounded">MQTT 1883</span>
+                <span class="px-1.5 py-0.5 bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-400 font-bold rounded">RabbitMQ 5672</span>
+                <span class="px-1.5 py-0.5 bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-400 font-bold rounded">TimescaleDB 5432</span>
+            </div>
+            
+            <div class="flex items-center space-x-2 text-[11px]">
+                <span>Trạng thái:</span>
+                <span class="flex items-center space-x-1 font-semibold text-emerald-700 dark:text-emerald-400">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 glow-dot-emerald inline-block"></span>
+                    <span id="system-footer-status">Toàn Bộ Hệ Thống Hoạt Động Bình Thường</span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====================================================================
+         FLOATING TOAST NOTIFICATION FOR EMAIL ALERTS
+         ==================================================================== -->
+    <div id="email-toast" class="fixed bottom-14 right-4 sm:right-6 z-50 transform translate-y-24 opacity-0 pointer-events-none transition-all duration-300 max-w-sm sm:max-w-md w-full p-4 rounded-2xl bg-white dark:bg-stone-900 border border-amber-500/80 shadow-2xl space-y-2">
+        <div class="flex items-start justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="h-8 w-8 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+                    <i class="ph ph-envelope-open text-lg"></i>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-xs sm:text-sm text-stone-900 dark:text-white" id="toast-title">Đã Phát Email Cảnh Báo</h4>
+                    <p class="text-[11px] font-mono text-stone-500" id="toast-timestamp">Vừa xong</p>
+                </div>
+            </div>
+            <button onclick="hideEmailToast()" class="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200">
+                <i class="ph ph-x text-sm"></i>
+            </button>
+        </div>
+        <p class="text-xs text-stone-700 dark:text-stone-300 leading-relaxed" id="toast-body">
+            Email cảnh báo sự cố kèm quy trình xử lý đã được gửi tự động đến người dùng.
+        </p>
+        <div class="pt-1 flex items-center justify-between text-[11px] font-mono">
+            <span id="toast-recipient" class="text-amber-700 dark:text-amber-400 font-semibold truncate max-w-[200px]">user@smarthome.ai</span>
+            <button onclick="openEmailModal(); hideEmailToast();" class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline">
+                Xem Lịch Sử ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         EMAIL NOTIFICATION CENTER MODAL
+         ==================================================================== -->
+    <div id="email-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-[#FDFBF7] dark:bg-[#151210] border border-stone-200 dark:border-stone-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150">
+            
+            <!-- Modal Header -->
+            <div class="p-4 sm:p-5 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white dark:bg-stone-900">
+                <div class="flex items-center space-x-3">
+                    <div class="h-9 w-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                        <i class="ph ph-envelope-simple text-xl font-bold"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-sm sm:text-base text-stone-900 dark:text-white flex items-center space-x-2">
+                            <span>Trung Tâm Cảnh Báo Email & Phê Duyệt Từ Xa</span>
+                            <span class="px-2 py-0.5 text-[9.5px] font-mono font-semibold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded">AUTONOMOUS DISPATCH</span>
+                        </h3>
+                        <p class="text-xs text-stone-500 font-mono">Tự động gửi email kèm kế hoạch xử lý (Mitigation Plan) & liên kết mở Dashboard</p>
+                    </div>
+                </div>
+                <button onclick="closeEmailModal()" class="p-2 rounded-xl text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                    <i class="ph ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Scrollable Content -->
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 terminal-scroll">
+                
+                <!-- Section 1: Settings Form -->
+                <div class="ui-panel p-4 space-y-3 bg-white dark:bg-stone-900">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="ph ph-sliders text-amber-600 dark:text-amber-400 text-base"></i>
+                            <h4 class="font-bold text-xs sm:text-sm text-stone-900 dark:text-white uppercase font-mono">Cấu Hình Email Người Nhận Cảnh Báo</h4>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="email-toggle-input" class="sr-only peer" checked onchange="toggleEmailAlerts()">
+                                <div class="w-9 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer dark:bg-stone-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-600"></div>
+                            </label>
+                            <span id="email-toggle-label" class="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400">BẬT</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
+                        <div class="sm:col-span-8 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <label class="text-[11px] font-mono text-stone-500 font-bold">DANH SÁCH EMAIL NHẬN CẢNH BÁO (PHÂN TÁCH BẰNG DẤU PHẨY):</label>
+                                <span class="text-[10px] text-stone-400 font-mono">Đa người nhận</span>
+                            </div>
+                            <input type="text" id="email-recipient-input" placeholder="user@gmail.com, ky_su@smarthome.ai, banquanly@domain.com" class="w-full px-3 py-2 text-xs font-mono rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/80 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div class="sm:col-span-4 flex space-x-2">
+                            <button onclick="saveEmailSettings()" id="btn-save-email" class="flex-1 btn-action px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-mono font-bold rounded-xl shadow-sm flex items-center justify-center space-x-1">
+                                <i class="ph ph-floppy-disk text-sm"></i>
+                                <span>LƯU CẤU HÌNH</span>
+                            </button>
+                            <button onclick="sendTestEmail()" id="btn-test-email" class="btn-action px-3 py-2 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-mono font-bold rounded-xl shadow-sm flex items-center justify-center" title="Gửi thử nghiệm cảnh báo tới toàn bộ email">
+                                <i class="ph ph-paper-plane-tilt text-sm text-sky-600 dark:text-sky-400"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Recipient Chips Box -->
+                    <div id="modal-recipients-box" class="space-y-1.5 pt-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>Email Đang Kích Hoạt (<span id="modal-recipients-count">1</span>):</span>
+                            <span class="text-[10px] text-stone-400">Nhấn x để xóa nhanh</span>
+                        </div>
+                        <div id="modal-recipients-tags" class="flex flex-wrap gap-1.5 p-2 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700/60 min-h-[36px]">
+                            <!-- Injected by app.js -->
+                        </div>
+                    </div>
+
+                    <!-- Connection Status Banner -->
+                    <div id="smtp-status-banner" class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700/60 flex items-center justify-between text-xs font-mono">
+                        <div class="flex items-center space-x-2">
+                            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-stone-500">Chế độ vận hành:</span>
+                            <span id="smtp-mode-text" class="font-bold text-stone-800 dark:text-stone-200">Mô Phỏng An Toàn (Simulated)</span>
+                        </div>
+                        <span id="smtp-detail-text" class="text-[11px] text-stone-400 truncate max-w-[220px]">Chưa nhập SMTP_USER (Log in-memory)</span>
+                    </div>
+                </div>
+
+                <!-- Section 2: Dispatched Notifications Audit History -->
+                <div class="ui-panel p-4 space-y-3 bg-white dark:bg-stone-900">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="ph ph-clock-counter-clockwise text-indigo-600 dark:text-indigo-400 text-base"></i>
+                            <h4 class="font-bold text-xs sm:text-sm text-stone-900 dark:text-white uppercase font-mono">Lịch Sử Cảnh Báo Đã Gửi (Audit Log)</h4>
+                        </div>
+                        <button onclick="loadNotificationHistory()" class="text-xs font-mono text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center space-x-1">
+                            <i class="ph ph-arrows-clockwise text-xs"></i>
+                            <span>Làm mới</span>
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-stone-200 dark:border-stone-800">
+                        <table class="w-full text-left text-xs font-mono">
+                            <thead class="bg-stone-50 dark:bg-stone-800 text-stone-500 text-[10.5px]">
+                                <tr>
+                                    <th class="p-2.5">THỜI GIAN</th>
+                                    <th class="p-2.5">MÃ SỰ CỐ</th>
+                                    <th class="p-2.5">MỨC ĐỘ</th>
+                                    <th class="p-2.5">NGƯỜI NHẬN</th>
+                                    <th class="p-2.5">TRẠNG THÁI</th>
+                                    <th class="p-2.5 text-right">XEM TRƯỚC</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notification-history-tbody" class="divide-y divide-stone-100 dark:divide-stone-800">
+                                <tr>
+                                    <td colspan="6" class="p-4 text-center text-stone-400 font-mono text-xs">
+                                        Đang tải lịch sử thông báo email...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-3 sm:p-4 border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/60 flex items-center justify-between text-xs font-mono text-stone-500">
+                <span>Liên kết trực tiếp: <strong class="text-amber-700 dark:text-amber-400" id="modal-dashboard-url">http://localhost:8000</strong></span>
+                <button onclick="closeEmailModal()" class="px-4 py-1.5 bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-xl font-bold transition-colors">
+                    ĐÓNG
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         EMAIL HTML PREVIEW MODAL
+         ==================================================================== -->
+    <div id="email-preview-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150">
+            <div class="p-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-stone-50 dark:bg-stone-800/60">
+                <div class="flex items-center space-x-2">
+                    <i class="ph ph-file-html text-amber-600 text-lg"></i>
+                    <h4 class="font-display font-bold text-sm text-stone-900 dark:text-white" id="preview-modal-title">Xem Trước Mẫu Email Cảnh Báo</h4>
+                </div>
+                <button onclick="closeEmailPreviewModal()" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-600 dark:hover:text-stone-200">
+                    <i class="ph ph-x text-base"></i>
+                </button>
+            </div>
+            <div class="p-4 overflow-y-auto flex-1 bg-stone-100 dark:bg-stone-950">
+                <iframe id="email-preview-frame" class="w-full min-h-[480px] rounded-xl border border-stone-200 dark:border-stone-800 bg-white shadow-inner"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         VERIFIED ACTION PLANS & QDRANT MEMORY HISTORY MODAL
+         ==================================================================== -->
+    <div id="verified-plans-modal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-[#FDFBF7] dark:bg-[#151210] border border-stone-200 dark:border-stone-800 rounded-2xl max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150">
+            
+            <!-- Modal Header -->
+            <div class="p-4 sm:p-5 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white dark:bg-stone-900">
+                <div class="flex items-center space-x-3">
+                    <div class="h-9 w-9 rounded-xl bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                        <i class="ph ph-database text-xl font-bold"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-sm sm:text-base text-stone-900 dark:text-white flex items-center space-x-2">
+                            <span>Lịch Sử Sự Cố & Kế Hoạch Đã Duyệt (Qdrant Feedback Memory)</span>
+                            <span class="px-2 py-0.5 text-[9.5px] font-mono font-semibold bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 rounded">FEW-SHOT LEARNING (1024D)</span>
+                        </h3>
+                        <p class="text-xs text-stone-500 font-mono">Tra cứu các ca sự cố quá khứ, chẩn đoán RCA và phương án đã được phê duyệt lưu trong Qdrant collection `verified_action_plans`</p>
+                    </div>
+                </div>
+                <button onclick="closeVerifiedPlansModal()" class="p-2 rounded-xl text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                    <i class="ph ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 terminal-scroll">
+                
+                <!-- KPI Overview Stats Cards (4 Bento Cards) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>TỔNG SỐ CA ĐÃ DUYỆT</span>
+                            <i class="ph ph-check-circle text-purple-600"></i>
+                        </div>
+                        <div class="text-xl font-bold font-mono text-stone-900 dark:text-white" id="vp-stat-total">3</div>
+                        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">100% Khép vòng phản hồi</p>
+                    </div>
+
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>SỰ CỐ NGUY HIỂM</span>
+                            <i class="ph ph-warning-octagon text-rose-600"></i>
+                        </div>
+                        <div class="text-xl font-bold font-mono text-rose-600 dark:text-rose-400" id="vp-stat-critical">1</div>
+                        <p class="text-[10px] text-stone-500 font-mono">Mức độ CRITICAL (Quá nhiệt)</p>
+                    </div>
+
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>ĐIỆN NĂNG BẢO VỆ</span>
+                            <i class="ph ph-lightning text-amber-600"></i>
+                        </div>
+                        <div class="text-xl font-bold font-mono text-amber-700 dark:text-amber-400" id="vp-stat-energy">12.5 kWh</div>
+                        <p class="text-[10px] text-stone-500 font-mono">Ước tính tiêu thụ triệt tiêu</p>
+                    </div>
+
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>QDRANT SYNC</span>
+                            <i class="ph ph-cpu text-indigo-600"></i>
+                        </div>
+                        <div class="text-xs font-bold font-mono text-indigo-600 dark:text-indigo-400 truncate">verified_action_plans</div>
+                        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">Multilingual-E5 (1024D)</p>
+                    </div>
+                </div>
+
+                <!-- Filter & Search Toolbar -->
+                <div class="ui-panel p-3.5 bg-white dark:bg-stone-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2 w-full sm:w-auto flex-1">
+                        <div class="relative flex-1 max-w-md">
+                            <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-sm"></i>
+                            <input type="text" id="vp-search-input" oninput="filterVerifiedPlans()" placeholder="Tìm kiếm theo thiết bị, kịch bản, mã sự cố..." class="w-full pl-9 pr-3 py-1.5 text-xs font-mono rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        </div>
+                        <select id="vp-severity-select" onchange="filterVerifiedPlans()" class="px-3 py-1.5 text-xs font-mono rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="ALL">Tất cả mức độ</option>
+                            <option value="CRITICAL">CRITICAL (Khẩn cấp)</option>
+                            <option value="HIGH">HIGH (Nguy cơ cao)</option>
+                            <option value="MEDIUM">MEDIUM (Cảnh báo)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+                        <button onclick="loadVerifiedPlansHistory()" class="btn-action px-2.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-mono flex items-center space-x-1" title="Làm mới bảng">
+                            <i class="ph ph-arrows-clockwise text-xs"></i>
+                            <span class="hidden sm:inline">Làm mới</span>
+                        </button>
+                        <button onclick="exportVerifiedPlansJson()" class="btn-action px-2.5 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300 text-xs font-mono flex items-center space-x-1" title="Xuất toàn bộ lịch sử ra file JSON">
+                            <i class="ph ph-download-simple text-xs"></i>
+                            <span>Xuất JSON</span>
+                        </button>
+                        <button onclick="seedVerifiedPlans()" class="btn-action px-2.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400 text-xs font-mono flex items-center space-x-1" title="Khôi phục dữ liệu mẫu">
+                            <i class="ph ph-arrow-counter-clockwise text-xs"></i>
+                            <span class="hidden sm:inline">Reset mẫu</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Verified Plans Table -->
+                <div class="overflow-x-auto rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-stone-50 dark:bg-stone-800/80 text-stone-500 text-[10.5px] border-b border-stone-200 dark:border-stone-800">
+                            <tr>
+                                <th class="p-3">THỜI GIAN</th>
+                                <th class="p-3">MÃ SỰ CỐ / KỊCH BẢN</th>
+                                <th class="p-3">THIẾT BỊ LIÊN QUAN</th>
+                                <th class="p-3">MỨC ĐỘ</th>
+                                <th class="p-3">HÀNH ĐỘNG ĐÃ DUYỆT</th>
+                                <th class="p-3">QDRANT SYNC</th>
+                                <th class="p-3 text-right">CHI TIẾT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="verified-plans-tbody" class="divide-y divide-stone-100 dark:divide-stone-800">
+                            <tr>
+                                <td colspan="7" class="p-6 text-center text-stone-400 font-mono text-xs">
+                                    Đang tải dữ liệu lịch sử từ Qdrant memory...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-3 sm:p-4 border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/60 flex items-center justify-between text-xs font-mono text-stone-500">
+                <span class="flex items-center space-x-1">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 glow-dot-emerald inline-block"></span>
+                    <span>Qdrant Collection Status: <strong>verified_action_plans (Ready)</strong></span>
+                </span>
+                <button onclick="closeVerifiedPlansModal()" class="px-4 py-1.5 bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-xl font-bold transition-colors">
+                    ĐÓNG
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         VERIFIED PLAN DETAIL DRAWER / MODAL
+         ==================================================================== -->
+    <div id="plan-detail-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150">
+            
+            <div class="p-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-stone-50 dark:bg-stone-800/60">
+                <div class="flex items-center space-x-2.5">
+                    <div class="h-8 w-8 rounded-lg bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                        <i class="ph ph-file-text text-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-bold text-sm text-stone-900 dark:text-white" id="detail-modal-title">Chi Tiết Ca Sự Cố & Kế Hoạch</h4>
+                        <p class="text-[11px] font-mono text-stone-500" id="detail-modal-sub">Mã bản ghi: rec-hist-001</p>
+                    </div>
+                </div>
+                <button onclick="closePlanDetailModal()" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-600 dark:hover:text-stone-200">
+                    <i class="ph ph-x text-base"></i>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs font-mono flex-1 terminal-scroll" id="detail-modal-body">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <div class="p-3 border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/40 flex justify-end">
+                <button onclick="closePlanDetailModal()" class="px-4 py-1.5 bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-xl font-bold transition-colors">
+                    ĐÓNG
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- App JavaScript Logic -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
+

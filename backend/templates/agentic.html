@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis-IoT | Luồng Suy Luận Đa Tác Tử (LangGraph Multi-Agent Stream)</title>
+    
+    <!-- Theme Initialization Script (Prevent FOUC) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans, Newsreader, JetBrains Mono, Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons Regular & Bold via CDN -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS CDN with Warm Home Theme Extensions -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Newsreader', 'serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        warm: {
+                            50: '#FDFBF7',
+                            100: '#F7F4EE',
+                            200: '#EAE3D2',
+                            300: '#D5CCBC',
+                            400: '#B0A795',
+                            500: '#8A816F',
+                            600: '#696150',
+                            700: '#4E483B',
+                            800: '#342F26',
+                            900: '#1C1917',
+                            950: '#151210',
+                        },
+                        amber: {
+                            550: '#D97706',
+                            650: '#B45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-[#FDFBF7] text-stone-900 dark:bg-[#151210] dark:text-stone-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200 selection:bg-indigo-500/20 selection:text-indigo-700 dark:selection:text-indigo-300 tech-grid-bg">
+
+    <!-- ====================================================================
+         TOP FLOATING NAVIGATION BAR (4 DEDICATED STUDIOS)
+         ==================================================================== -->
+    <header class="sticky top-3 z-50 px-4 sm:px-6 max-w-7xl mx-auto w-full mb-3">
+        <div class="warm-nav-pill rounded-2xl px-3.5 sm:px-4 py-2 flex items-center justify-between gap-3 shadow-[0_4px_24px_-2px_rgba(28,25,23,0.06),0_1px_2px_rgba(28,25,23,0.04)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6)]">
+            
+            <!-- Brand & Identity (Full Block Clickable) -->
+            <a href="/" class="flex items-center gap-2.5 sm:gap-3 shrink-0 group cursor-pointer" title="Về Trang Chủ Aegis-IoT Dashboard">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-700 text-white flex items-center justify-center shadow-[0_2px_8px_rgba(79,70,229,0.3)] ring-1 ring-indigo-400/30 dark:ring-indigo-400/20 shrink-0 group-hover:scale-105 transition-transform">
+                    <i class="ph ph-tree-structure text-lg font-bold"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-bold text-sm sm:text-base tracking-tight text-stone-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AEGIS<span class="text-indigo-600 dark:text-indigo-400 font-extrabold">·AGENTIC</span></span>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/25 text-indigo-700 dark:text-indigo-300 font-mono text-[9.5px] font-semibold tracking-wider">
+                            <span class="relative flex h-1.5 w-1.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-500"></span>
+                            </span>
+                            LANGGRAPH 5-NODE
+                        </span>
+                    </div>
+                    <p class="text-[10.5px] text-stone-500 dark:text-stone-400 font-mono hidden xl:block leading-tight">Trung Tâm Phối Hợp Đa Tác Tử Tự Trị & Khép Vòng Phản Hồi</p>
+                </div>
+            </a>
+
+            <!-- 5 Dedicated Studios & User Pages Tabs - Segmented Island Control -->
+            <nav class="flex items-center bg-stone-200/50 dark:bg-stone-900/60 p-1 rounded-xl border border-stone-200/80 dark:border-stone-800/80 shadow-inner">
+                
+                <!-- Page 1: Dashboard -->
+                <a href="/" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Dashboard Giám Sát MQTT Realtime">
+                    <i class="ph ph-gauge text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">DASHBOARD</span>
+                </a>
+
+                <!-- Page 2: Multi-Agent (Current Active) -->
+                <a href="/agentic" class="nav-tab-active relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-bold transition-all duration-200 select-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.5)] ring-1 ring-stone-900/5 dark:ring-white/10" title="Luồng Suy Luận Multi-Agent">
+                    <i class="ph ph-tree-structure text-base text-indigo-600 dark:text-indigo-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">MULTI-AGENT</span>
+                </a>
+
+                <!-- Page 3: RAG & PDF Studio -->
+                <a href="/rag" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Cơ sở tri thức Qdrant & Tra cứu SOP PDF">
+                    <i class="ph ph-books text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">RAG & SOP</span>
+                </a>
+
+                <!-- Page 4: Scientific Formulas & Evidence -->
+                <a href="/evidence" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Xem đặc tả công thức toán, bằng chứng trích dẫn và BibTeX">
+                    <i class="ph ph-atom text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">BẰNG CHỨNG TOÁN</span>
+                </a>
+
+                <!-- Page 5: Cảnh Báo Email & Đăng Ký Người Nhận -->
+                <a href="/alerts" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Đăng ký & Quản lý danh sách email nhận cảnh báo sự cố">
+                    <i class="ph ph-bell-ringing text-base text-amber-500 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">CẢNH BÁO EMAIL</span>
+                </a>
+            </nav>
+
+            <!-- Utility Controls & Actions -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <!-- Verified Action Plans History Button -->
+                <button id="btn-open-verified-plans" onclick="openVerifiedPlansModal()" class="btn-action h-9 px-2.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/15 border border-purple-500/25 text-purple-800 dark:text-purple-300 text-xs font-mono font-semibold transition-all flex items-center gap-1.5 shadow-sm active:scale-95" title="Tra cứu lịch sử kế hoạch đã duyệt & Qdrant Feedback Memory">
+                    <i class="ph ph-database text-sm text-purple-600 dark:text-purple-400 shrink-0"></i>
+                    <span class="hidden 2xl:inline">LỊCH SỬ</span>
+                    <span id="verified-plans-count-pill" class="px-1.5 py-0.5 text-[9px] rounded-full font-mono bg-purple-200/80 dark:bg-purple-900/80 text-purple-800 dark:text-purple-200 font-bold">3 CA</span>
+                </button>
+
+                <!-- Sound Toggle Button -->
+                <button id="btn-sound-toggle" title="Bật/Tắt âm thanh hiệu ứng" class="btn-action h-9 w-9 rounded-xl bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200/80 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-white text-xs flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm shrink-0">
+                    <i id="sound-icon" class="ph ph-speaker-high text-sm text-emerald-600 dark:text-emerald-400"></i>
+                </button>
+
+                <!-- Theme Toggle Button -->
+                <button id="btn-theme-toggle" title="Chuyển chế độ Sáng / Tối" class="btn-action h-9 w-9 rounded-xl bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200/80 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-white text-xs flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm shrink-0">
+                    <i class="ph ph-sun text-sm text-amber-500 dark:hidden"></i>
+                    <i class="ph ph-moon text-sm text-amber-300 hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         MAIN CONTENT: MULTI-AGENT REASONING STREAM CANVAS
+         ==================================================================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 flex-1 w-full space-y-4 pb-12">
+
+        <!-- HERO SECTION: SCENARIO DISPATCHER & MULTI-AGENT STATE GRAPH CONTROLS -->
+        <section class="ui-panel p-5 space-y-4">
+            
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-stone-200 dark:border-stone-800 pb-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-mono font-medium mb-1.5">
+                        <i class="ph ph-circuitry text-indigo-600 dark:text-indigo-400"></i>
+                        <span>LANGGRAPH STATEGRAPH MULTI-AGENT ENGINE</span>
+                    </div>
+                    <h1 class="font-display font-extrabold text-xl sm:text-2xl text-stone-900 dark:text-white tracking-tight">
+                        Đồ Thị Phối Hợp <span class="text-indigo-600 dark:text-indigo-400">Đa Tác Tử Tự Trị</span> & Khép Vòng Phản Hồi IoT
+                    </h1>
+                    <p class="text-xs text-stone-600 dark:text-stone-300 max-w-3xl mt-1 leading-relaxed">
+                        Theo dõi trực quan thời gian thực luồng phân tích từ <strong>Home Coordinator</strong> &rarr; <strong>IoT Observation</strong> &rarr; <strong>Comfort & Energy RAG</strong> &rarr; <strong>Safety & Risk</strong> và <strong>Action & Verification (Qdrant Memory)</strong> trong môi trường gia đình thông minh.
+                    </p>
+                </div>
+
+                <!-- Simulation Speed & Replay Controls -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex items-center bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-0.5 rounded-lg font-mono text-[10px]">
+                        <span class="px-2 text-stone-500 hidden sm:inline">Tốc độ:</span>
+                        <button id="speed-05x" onclick="setVisualizerSpeed(0.5)" class="speed-btn px-2 py-1 rounded text-stone-600 dark:text-stone-400 transition-colors">0.5x</button>
+                        <button id="speed-1x" onclick="setVisualizerSpeed(1)" class="speed-btn active-speed px-2 py-1 rounded transition-colors font-bold text-amber-700 dark:text-amber-400">1x</button>
+                        <button id="speed-2x" onclick="setVisualizerSpeed(2)" class="speed-btn px-2 py-1 rounded text-stone-600 dark:text-stone-400 transition-colors">2x</button>
+                        <button id="speed-instant" onclick="setVisualizerSpeed(999)" class="speed-btn px-2 py-1 rounded text-stone-600 dark:text-stone-400 transition-colors">Instant</button>
+                    </div>
+
+                    <button id="btn-replay-agents" onclick="replayAgentWorkflow()" class="btn-action px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-mono font-semibold transition-colors flex items-center space-x-1.5 shadow-sm">
+                        <i class="ph ph-play-circle text-base text-indigo-600 dark:text-indigo-400"></i>
+                        <span>PHÁT LẠI</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scenario Triggers Bar -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-mono text-stone-500 flex items-center space-x-1 mr-1">
+                    <i class="ph ph-lightning text-amber-600"></i>
+                    <span>Kích hoạt sự cố thực tế:</span>
+                </span>
+                
+                <button onclick="triggerScenario('energy_saving')" id="btn-scen-energy" class="btn-action px-3 py-1.5 bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:hover:bg-sky-900/50 text-sky-700 dark:text-sky-300 text-xs font-semibold rounded-lg border border-sky-200 dark:border-sky-800/60 flex items-center space-x-1.5 shadow-sm">
+                    <i class="ph ph-lightning text-sm text-sky-600 dark:text-sky-400"></i>
+                    <span>1. Chủ động Tối Ưu Năng Lượng</span>
+                </button>
+
+                <button onclick="triggerScenario('co2_hazard')" id="btn-scen-co2" class="btn-action px-3 py-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300 text-xs font-semibold rounded-lg border border-rose-200 dark:border-rose-800/60 flex items-center space-x-1.5 shadow-sm">
+                    <i class="ph ph-shield-warning text-sm text-rose-600 dark:text-rose-400"></i>
+                    <span>2. Cảnh báo Ngạt CO2 Phòng Ngủ (&gt;1000ppm)</span>
+                </button>
+
+                <button onclick="triggerScenario('stale_data')" id="btn-scen-stale" class="btn-action px-3 py-1.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/50 text-amber-800 dark:text-amber-300 text-xs font-semibold rounded-lg border border-amber-200 dark:border-amber-800/60 flex items-center space-x-1.5 shadow-sm">
+                    <i class="ph ph-warning text-sm text-amber-600 dark:text-amber-400"></i>
+                    <span>3. Dữ Liệu Stale / Mất Kết Nối Cảm Biến</span>
+                </button>
+
+                <button onclick="triggerScenario('heater_overheat')" id="btn-scen-heater" class="btn-action px-3 py-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300 text-xs font-semibold rounded-lg border border-rose-200 dark:border-rose-800/60 flex items-center space-x-1.5 shadow-sm">
+                    <i class="ph ph-fire text-sm text-rose-600 dark:text-rose-400"></i>
+                    <span>4. Bình Nóng Lạnh Quá Nhiệt Vắng Nhà (76.5°C)</span>
+                </button>
+            </div>
+
+            <!-- SVG 5-NODE STATE GRAPH VISUALIZER -->
+            <div class="relative w-full rounded-xl bg-stone-50/80 dark:bg-stone-900/40 border border-stone-200/80 dark:border-stone-800/80 p-4 overflow-hidden">
+                <!-- Laser Flow SVG Overlay -->
+                <svg id="agent-graph-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0">
+                    <g id="svg-paths-container"></g>
+                    <g id="svg-particles-container"></g>
+                </svg>
+
+                <!-- 5 Agent Node Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 relative z-10">
+                    
+                    <!-- Node 1: Home Coordinator -->
+                    <div id="agent-card-1" onclick="inspectAgentNode(0)" class="agent-node-box cursor-pointer p-3.5 flex flex-col justify-between space-y-2 relative group shadow-sm hover:border-amber-500">
+                        <div class="flex items-center justify-between">
+                            <span class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 rounded">NODE 1</span>
+                            <span id="node-status-1" class="node-badge px-1.5 py-0.5 text-[9px] font-mono bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded border border-stone-200 dark:border-stone-700">STANDBY</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-700 dark:text-amber-300">
+                                <i class="ph ph-crown text-base"></i>
+                            </div>
+                            <div class="truncate">
+                                <h4 class="text-xs font-bold text-stone-900 dark:text-white truncate">Home Coordinator</h4>
+                                <span class="text-[9.5px] font-mono text-stone-500">Supervisor Router</span>
+                            </div>
+                        </div>
+                        <div class="pt-1.5 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-[9.5px] font-mono text-stone-500 tabular-nums">
+                            <span>Model: <span class="text-stone-700 dark:text-stone-300 font-medium">Gemini 2.5</span></span>
+                            <span id="node-lat-1">-- ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Node 2: IoT Observation -->
+                    <div id="agent-card-2" onclick="inspectAgentNode(1)" class="agent-node-box cursor-pointer p-3.5 flex flex-col justify-between space-y-2 relative group shadow-sm hover:border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <span class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 rounded">NODE 2</span>
+                            <span id="node-status-2" class="node-badge px-1.5 py-0.5 text-[9px] font-mono bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded border border-stone-200 dark:border-stone-700">STANDBY</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center text-purple-700 dark:text-purple-300">
+                                <i class="ph ph-activity text-base"></i>
+                            </div>
+                            <div class="truncate">
+                                <h4 class="text-xs font-bold text-stone-900 dark:text-white truncate">IoT Observation</h4>
+                                <span class="text-[9.5px] font-mono text-stone-500">6 Sensors & Kalman</span>
+                            </div>
+                        </div>
+                        <div class="pt-1.5 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-[9.5px] font-mono text-stone-500 tabular-nums">
+                            <span>Filter: <span class="text-stone-700 dark:text-stone-300 font-medium">Kalman 1D</span></span>
+                            <span id="node-lat-2">-- ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Node 3: Comfort & Energy RAG -->
+                    <div id="agent-card-3" onclick="inspectAgentNode(2)" class="agent-node-box cursor-pointer p-3.5 flex flex-col justify-between space-y-2 relative group shadow-sm hover:border-sky-500">
+                        <div class="flex items-center justify-between">
+                            <span class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 border border-sky-200 dark:border-sky-500/20 rounded">NODE 3</span>
+                            <span id="node-status-3" class="node-badge px-1.5 py-0.5 text-[9px] font-mono bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded border border-stone-200 dark:border-stone-700">STANDBY</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-500/20 flex items-center justify-center text-sky-700 dark:text-sky-300">
+                                <i class="ph ph-magnifying-glass text-base"></i>
+                            </div>
+                            <div class="truncate">
+                                <h4 class="text-xs font-bold text-stone-900 dark:text-white truncate">Comfort & Energy</h4>
+                                <span class="text-[9.5px] font-mono text-stone-500">RAG SOP Specialist</span>
+                            </div>
+                        </div>
+                        <div class="pt-1.5 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-[9.5px] font-mono text-stone-500 tabular-nums">
+                            <span>Qdrant: <span class="text-stone-700 dark:text-stone-300 font-medium">1024D SOP</span></span>
+                            <span id="node-lat-3">-- ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Node 4: Safety & Risk Guard -->
+                    <div id="agent-card-4" onclick="inspectAgentNode(3)" class="agent-node-box cursor-pointer p-3.5 flex flex-col justify-between space-y-2 relative group shadow-sm hover:border-rose-500">
+                        <div class="flex items-center justify-between">
+                            <span class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20 rounded">NODE 4</span>
+                            <span id="node-status-4" class="node-badge px-1.5 py-0.5 text-[9px] font-mono bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded border border-stone-200 dark:border-stone-700">STANDBY</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center text-rose-700 dark:text-rose-300">
+                                <i class="ph ph-shield-warning text-base"></i>
+                            </div>
+                            <div class="truncate">
+                                <h4 class="text-xs font-bold text-stone-900 dark:text-white truncate">Safety & Risk</h4>
+                                <span class="text-[9.5px] font-mono text-stone-500">Safety & HITL Guard</span>
+                            </div>
+                        </div>
+                        <div class="pt-1.5 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-[9.5px] font-mono text-stone-500 tabular-nums">
+                            <span>HITL: <span class="text-stone-700 dark:text-stone-300 font-medium">Interactive</span></span>
+                            <span id="node-lat-4">-- ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Node 5: Action & Verification -->
+                    <div id="agent-card-5" onclick="inspectAgentNode(4)" class="agent-node-box cursor-pointer p-3.5 flex flex-col justify-between space-y-2 relative group shadow-sm hover:border-emerald-500">
+                        <div class="flex items-center justify-between">
+                            <span class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 rounded">NODE 5</span>
+                            <span id="node-status-5" class="node-badge px-1.5 py-0.5 text-[9px] font-mono bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded border border-stone-200 dark:border-stone-700">STANDBY</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-700 dark:text-emerald-300">
+                                <i class="ph ph-arrow-counter-clockwise text-base"></i>
+                            </div>
+                            <div class="truncate">
+                                <h4 class="text-xs font-bold text-stone-900 dark:text-white truncate">Action & Verification</h4>
+                                <span class="text-[9.5px] font-mono text-stone-500">Read-back & Qdrant</span>
+                            </div>
+                        </div>
+                        <div class="pt-1.5 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-[9.5px] font-mono text-stone-500 tabular-nums">
+                            <span>Qdrant: <span class="text-stone-700 dark:text-stone-300 font-medium">Feedback Memory</span></span>
+                            <span id="node-lat-5">-- ms</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- LIVE AGENT CONSOLE & THOUGHT STREAM TERMINAL -->
+            <div class="rounded-xl bg-stone-950 text-stone-100 p-4 font-mono text-xs space-y-2.5 shadow-inner border border-stone-800">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-800 pb-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-stone-200 font-bold uppercase text-[11px] tracking-wider">TIẾN TRÌNH SUY LUẬN TRỰC TIẾP (LIVE THOUGHT STREAM)</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-[10.5px]">
+                        <span id="active-agent-badge" class="px-2 py-0.5 bg-stone-800 text-amber-300 rounded font-medium">
+                            Đang chờ kịch bản sự cố...
+                        </span>
+                        <span id="total-workflow-latency" class="text-stone-400 tabular-nums">Độ trễ: 0.0ms</span>
+                    </div>
+                </div>
+
+                <!-- Typewriter Stream Text Box -->
+                <div class="p-3.5 rounded-lg bg-stone-900/80 border border-stone-800 min-h-[90px] text-stone-300 leading-relaxed font-sans space-y-1.5">
+                    <div class="text-xs text-stone-400 font-mono mb-1 border-b border-stone-800 pb-1 flex items-center justify-between">
+                        <span id="stream-agent-role" class="text-amber-400 font-semibold uppercase">Orchestrator Supervisor:</span>
+                        <span id="stream-cursor-status" class="text-[10px] text-emerald-400 font-mono">Stream Sẵn Sàng</span>
+                    </div>
+                    <p id="typewriter-content" class="text-xs leading-relaxed text-stone-200 font-mono">
+                        Hệ thống đang ở trạng thái giám sát nền. Chọn 1 kịch bản phía trên để kích hoạt luồng suy luận tự trị 5-node.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 2-COLUMN SECTION: DIAGNOSTIC RCA & HUMAN-IN-THE-LOOP APPROVAL -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- Left: Diagnostic RCA & SOP Bằng Chứng Đối Chiếu (7 Cols) -->
+            <div class="lg:col-span-7 space-y-3">
+                <div class="ui-panel p-4 space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-stone-200 dark:border-stone-800 text-xs font-mono">
+                        <span class="text-stone-500">Mã thiết bị / Trạng thái:</span>
+                        <span id="diag-status-badge" class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded">
+                            BÌNH THƯỜNG (NORMAL)
+                        </span>
+                    </div>
+
+                    <!-- Dynamic Diagnostic Text Area -->
+                    <div class="space-y-1 font-sans">
+                        <h4 id="diag-headline" class="text-sm font-bold text-stone-900 dark:text-white">
+                            Tất cả các thông số đang nằm trong ngưỡng hoạt động an toàn
+                        </h4>
+                        <p id="diag-body" class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                            Mô hình thời gian thực đánh giá độ rủi ro trung bình là 0.08. Không có dấu hiệu chập mạch, quá nhiệt hoặc rò rỉ dòng điện nào được phát hiện.
+                        </p>
+                    </div>
+
+                    <!-- Contextual SOP / Knowledge Reference Card -->
+                    <div class="p-3 rounded-lg bg-stone-50 dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 text-xs font-mono space-y-1">
+                        <div class="flex items-center justify-between text-stone-500 text-[10px]">
+                            <span>Cơ sở tri thức (SOP Manual Reference):</span>
+                            <span class="text-purple-600 dark:text-purple-400 font-semibold">Qdrant Vector Matched</span>
+                        </div>
+                        <p id="diag-sop-context" class="text-stone-700 dark:text-stone-300 font-sans text-xs italic">
+                            SOP-SH-2026: Ngưỡng nhiệt độ an toàn của bếp từ &lt; 75°C, điều hòa Inverter dòng tải &lt; 10A, lò sưởi nhiệt độ &lt; 65°C.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Academic Formula Quick Card -->
+                <div class="p-3.5 rounded-xl bg-amber-50/60 dark:bg-stone-900/60 border border-amber-200/70 dark:border-amber-500/20 flex items-center justify-between text-xs">
+                    <div class="flex items-center space-x-2.5">
+                        <i class="ph ph-atom text-lg text-amber-600 dark:text-amber-400"></i>
+                        <div>
+                            <span class="font-bold text-stone-900 dark:text-white block font-sans">Đặc Tả Công Thức Toán & Bằng Chứng Trích Dẫn</span>
+                            <span class="text-[11px] text-stone-500 font-mono">Xem chi tiết Kalman Filter, Isolation Forest & Cosine Similarity</span>
+                        </div>
+                    </div>
+                    <a href="/evidence" class="btn-action px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-mono text-xs font-bold transition-colors shrink-0">
+                        XEM ĐẶC TẢ &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right: Human-In-The-Loop Action Dispatch & Feedback Loop (5 Cols) -->
+            <div class="lg:col-span-5 space-y-3">
+                <div class="ui-panel p-4 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono pb-2 border-b border-stone-200 dark:border-stone-800">
+                        <span class="text-stone-500">Phê duyệt kế hoạch khắc phục:</span>
+                        <span id="plan-urgency-badge" class="px-2 py-0.5 text-[10px] font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded">
+                            CHƯA CÓ YÊU CẦU
+                        </span>
+                    </div>
+
+                    <!-- Steps List -->
+                    <div class="space-y-1.5">
+                        <span class="text-xs font-mono text-stone-500 block">Quy trình đề xuất từ Planner:</span>
+                        <div id="plan-steps-list" class="space-y-1.5 font-mono text-xs text-stone-700 dark:text-stone-300">
+                            <div class="p-2 rounded bg-stone-50 dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 text-stone-500 italic">
+                                Chưa có sự cố nào cần can thiệp.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Action Buttons (Human-in-the-loop) -->
+                    <div class="space-y-2 pt-2 border-t border-stone-200 dark:border-stone-800">
+                        <span class="text-xs font-mono text-stone-500 flex items-center justify-between">
+                            <span>Phê duyệt lệnh MQTT (HITL Gate):</span>
+                            <span class="text-[10px] text-amber-700 dark:text-amber-400 font-bold">Cần xác nhận thủ công</span>
+                        </span>
+                        <div id="action-buttons-container" class="space-y-2">
+                            <button disabled class="w-full py-2.5 px-3 rounded-xl bg-stone-200 dark:bg-stone-800 text-stone-400 dark:text-stone-600 text-xs font-mono font-semibold cursor-not-allowed">
+                                Chờ Tác Tử Planner Sinh Nút Điều Khiển
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layer 5: Feedback Memory Card -->
+                <div class="ui-panel p-4 space-y-2">
+                    <div class="flex items-center justify-between font-mono text-xs">
+                        <span class="text-amber-700 dark:text-amber-400 font-bold flex items-center space-x-1.5">
+                            <i class="ph ph-arrow-counter-clockwise text-sm"></i>
+                            <span>Layer 5: Đóng Vòng Phản Hồi Tự Học</span>
+                        </span>
+                        <span class="text-stone-500 text-[10px]">Qdrant: verified_action_plans</span>
+                    </div>
+                    <p class="text-stone-600 dark:text-stone-300 text-xs font-sans leading-relaxed">
+                        Khi bạn nhấn nút xử lý sự cố, kế hoạch đã giải quyết thành công sẽ được trích xuất vector 1024D và tự động nạp vào <strong>Qdrant Vector DB</strong> để hệ thống tự học (Few-Shot Memory).
+                    </p>
+                    <div id="feedback-memory-status" class="text-[11px] font-mono text-stone-600 dark:text-stone-400 bg-stone-50 dark:bg-stone-900/50 p-2 rounded border border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                        <span>Trạng thái bộ nhớ:</span>
+                        <span class="text-emerald-700 dark:text-emerald-400 font-semibold">SẴN SÀNG HỌC TẬP</span>
+                    </div>
+                    <div class="pt-1 flex justify-end">
+                        <button onclick="openVerifiedPlansModal()" class="text-[11px] font-mono font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center space-x-1">
+                            <i class="ph ph-database text-xs"></i>
+                            <span>Xem Lịch Sử Qdrant Memory ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Bottom Status Bar -->
+    <footer class="mt-auto border-t border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md px-4 sm:px-6 py-2.5">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-stone-600 dark:text-stone-400 gap-2">
+            <div class="flex items-center space-x-3 text-[11px]">
+                <span>Kiến trúc 5 Lớp Độc Lập</span>
+                <span>•</span>
+                <span>TimescaleDB Hypertable</span>
+                <span>•</span>
+                <span>Qdrant 1024D (3 Collections)</span>
+                <span>•</span>
+                <span>LangGraph State Graph</span>
+            </div>
+            
+            <div class="flex items-center space-x-2 text-[11px]">
+                <span>Trạng thái:</span>
+                <span class="flex items-center space-x-1 font-semibold text-emerald-700 dark:text-emerald-400">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 glow-dot-emerald inline-block"></span>
+                    <span>Multi-Agent Engine Sẵn Sàng</span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====================================================================
+         VERIFIED ACTION PLANS & QDRANT MEMORY HISTORY MODAL
+         ==================================================================== -->
+    <div id="verified-plans-modal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-[#FDFBF7] dark:bg-[#151210] border border-stone-200 dark:border-stone-800 rounded-2xl max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150">
+            
+            <!-- Modal Header -->
+            <div class="p-4 sm:p-5 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white dark:bg-stone-900">
+                <div class="flex items-center space-x-3">
+                    <div class="h-9 w-9 rounded-xl bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                        <i class="ph ph-database text-xl font-bold"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-sm sm:text-base text-stone-900 dark:text-white flex items-center space-x-2">
+                            <span>Lịch Sử Sự Cố & Kế Hoạch Đã Duyệt (Qdrant Feedback Memory)</span>
+                            <span class="px-2 py-0.5 text-[9.5px] font-mono font-semibold bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 rounded">FEW-SHOT LEARNING (1024D)</span>
+                        </h3>
+                        <p class="text-xs text-stone-500 font-mono">Tra cứu các ca sự cố quá khứ, chẩn đoán RCA và phương án đã được phê duyệt lưu trong Qdrant collection `verified_action_plans`</p>
+                    </div>
+                </div>
+                <button onclick="closeVerifiedPlansModal()" class="p-2 rounded-xl text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                    <i class="ph ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 terminal-scroll">
+                
+                <!-- KPI Overview Stats Cards (4 Bento Cards) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>TỔNG SỐ CA ĐÃ DUYỆT</span>
+                            <i class="ph ph-check-circle text-purple-600"></i>
+                        </div>
+                        <div class="text-xl font-bold font-mono text-stone-900 dark:text-white" id="vp-stat-total">3</div>
+                        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">100% Khép vòng phản hồi</p>
+                    </div>
+
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>SỰ CỐ NGUY HIỂM</span>
+                            <i class="ph ph-warning-octagon text-rose-600"></i>
+                        </div>
+                        <div class="text-xl font-bold font-mono text-rose-600 dark:text-rose-400" id="vp-stat-critical">1</div>
+                        <p class="text-[10px] text-stone-500 font-mono">Mức độ CRITICAL (Quá nhiệt)</p>
+                    </div>
+
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>ĐIỆN NĂNG BẢO VỆ</span>
+                            <i class="ph ph-lightning text-amber-600"></i>
+                        </div>
+                        <div class="text-xl font-bold font-mono text-amber-700 dark:text-amber-400" id="vp-stat-energy">12.5 kWh</div>
+                        <p class="text-[10px] text-stone-500 font-mono">Ước tính tiêu thụ triệt tiêu</p>
+                    </div>
+
+                    <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-1">
+                        <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                            <span>QDRANT SYNC</span>
+                            <i class="ph ph-cpu text-indigo-600"></i>
+                        </div>
+                        <div class="text-xs font-bold font-mono text-indigo-600 dark:text-indigo-400 truncate">verified_action_plans</div>
+                        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">Multilingual-E5 (1024D)</p>
+                    </div>
+                </div>
+
+                <!-- Filter & Search Toolbar -->
+                <div class="ui-panel p-3.5 bg-white dark:bg-stone-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2 w-full sm:w-auto flex-1">
+                        <div class="relative flex-1 max-w-md">
+                            <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-sm"></i>
+                            <input type="text" id="vp-search-input" oninput="filterVerifiedPlans()" placeholder="Tìm kiếm theo thiết bị, kịch bản, mã sự cố..." class="w-full pl-9 pr-3 py-1.5 text-xs font-mono rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        </div>
+                        <select id="vp-severity-select" onchange="filterVerifiedPlans()" class="px-3 py-1.5 text-xs font-mono rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="ALL">Tất cả mức độ</option>
+                            <option value="CRITICAL">CRITICAL (Khẩn cấp)</option>
+                            <option value="HIGH">HIGH (Nguy cơ cao)</option>
+                            <option value="MEDIUM">MEDIUM (Cảnh báo)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+                        <button onclick="loadVerifiedPlansHistory()" class="btn-action px-2.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-mono flex items-center space-x-1" title="Làm mới bảng">
+                            <i class="ph ph-arrows-clockwise text-xs"></i>
+                            <span class="hidden sm:inline">Làm mới</span>
+                        </button>
+                        <button onclick="exportVerifiedPlansJson()" class="btn-action px-2.5 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300 text-xs font-mono flex items-center space-x-1" title="Xuất toàn bộ lịch sử ra file JSON">
+                            <i class="ph ph-download-simple text-xs"></i>
+                            <span>Xuất JSON</span>
+                        </button>
+                        <button onclick="seedVerifiedPlans()" class="btn-action px-2.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400 text-xs font-mono flex items-center space-x-1" title="Khôi phục dữ liệu mẫu">
+                            <i class="ph ph-arrow-counter-clockwise text-xs"></i>
+                            <span class="hidden sm:inline">Reset mẫu</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Verified Plans Table -->
+                <div class="overflow-x-auto rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-stone-50 dark:bg-stone-800/80 text-stone-500 text-[10.5px] border-b border-stone-200 dark:border-stone-800">
+                            <tr>
+                                <th class="p-3">THỜI GIAN</th>
+                                <th class="p-3">MÃ SỰ CỐ / KỊCH BẢN</th>
+                                <th class="p-3">THIẾT BỊ LIÊN QUAN</th>
+                                <th class="p-3">MỨC ĐỘ</th>
+                                <th class="p-3">HÀNH ĐỘNG ĐÃ DUYỆT</th>
+                                <th class="p-3">QDRANT SYNC</th>
+                                <th class="p-3 text-right">CHI TIẾT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="verified-plans-tbody" class="divide-y divide-stone-100 dark:divide-stone-800">
+                            <tr>
+                                <td colspan="7" class="p-6 text-center text-stone-400 font-mono text-xs">
+                                    Đang tải dữ liệu lịch sử từ Qdrant memory...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-3 sm:p-4 border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/60 flex items-center justify-between text-xs font-mono text-stone-500">
+                <span class="flex items-center space-x-1">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 glow-dot-emerald inline-block"></span>
+                    <span>Qdrant Collection Status: <strong>verified_action_plans (Ready)</strong></span>
+                </span>
+                <button onclick="closeVerifiedPlansModal()" class="px-4 py-1.5 bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-xl font-bold transition-colors">
+                    ĐÓNG
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         VERIFIED PLAN DETAIL DRAWER / MODAL
+         ==================================================================== -->
+    <div id="plan-detail-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150">
+            
+            <div class="p-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-stone-50 dark:bg-stone-800/60">
+                <div class="flex items-center space-x-2.5">
+                    <div class="h-8 w-8 rounded-lg bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                        <i class="ph ph-file-text text-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-bold text-sm text-stone-900 dark:text-white" id="detail-modal-title">Chi Tiết Ca Sự Cố & Kế Hoạch</h4>
+                        <p class="text-[11px] font-mono text-stone-500" id="detail-modal-sub">Mã bản ghi: rec-hist-001</p>
+                    </div>
+                </div>
+                <button onclick="closePlanDetailModal()" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-600 dark:hover:text-stone-200">
+                    <i class="ph ph-x text-base"></i>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs font-mono flex-1 terminal-scroll" id="detail-modal-body">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <div class="p-3 border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/40 flex justify-end">
+                <button onclick="closePlanDetailModal()" class="px-4 py-1.5 bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-xl font-bold transition-colors">
+                    ĐÓNG
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- App JavaScript Logic -->
+    <script src="/static/agentic.js"></script>
+</body>
+</html>
+

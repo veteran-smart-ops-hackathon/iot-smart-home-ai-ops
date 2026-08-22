@@ -1,0 +1,1152 @@
+{
+  "session-1787157812332": {
+    "id": "session-1787157812332",
+    "title": "kiểm tra tiền điện tháng này",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787157812333",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787157862787",
+        "sender": "user",
+        "text": "kiểm tra tiền điện tháng này",
+        "timestamp": "23:44"
+      },
+      {
+        "id": "msg-bot-1787157862919",
+        "sender": "assistant",
+        "text": "Dạ thưa bạn, tổng công suất điện tức thời của cả nhà (METER_01) đang là **3946 Watts** (~3.95 kW).\n\n📊 **Ước tính chi phí theo biểu giá EVN**:\n- Chi phí tức thời: khoảng **9,866 đ / giờ**.\n- Dự tính hóa đơn tháng: khoảng **3,906,936 đ / tháng** (đã bao gồm các thiết bị chạy luân phiên).\n\nBình nóng lạnh HEATER_01 đang tiêu thụ 2446W và máy lạnh AC_01 đang dùng 1200W. Bạn có thể bật Chế độ Tiết Kiệm (Eco) để giảm bớt hóa đơn nhé!",
+        "timestamp": "23:44"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.6588612
+  },
+  "session-default": {
+    "id": "session-default",
+    "title": "Lời Chào Ban Đầu Và Hỗ Trợ",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi là Trợ Lý Gia Đình Thông Minh Veteran Home. Đang theo dõi trực tiếp 6 thiết bị trong căn hộ qua cổng MQTT WSS. Bạn cần tôi tối ưu điện năng, kiểm tra không khí hay bật chế độ nào hôm nay không?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787157810348",
+        "sender": "user",
+        "text": "chào bạn",
+        "timestamp": "23:43"
+      },
+      {
+        "id": "msg-bot-1787157810474",
+        "sender": "assistant",
+        "text": "Dạ chào bạn! Trợ lý AI **Veteran Home** rất vui được hỗ trợ gia đình mình hôm nay.\n\nHiện tại căn hộ đang hoạt động rất an toàn và thoải mái (Nhiệt độ: 20.8°C, Điện năng: 3956W). Bạn cần kiểm tra máy lạnh, xem chất lượng không khí hay tư vấn tiết kiệm điện không ạ?",
+        "timestamp": "23:43"
+      },
+      {
+        "id": "msg-1787157825827",
+        "sender": "user",
+        "text": "hôm nay thời tiết như thế nào",
+        "timestamp": "23:43"
+      },
+      {
+        "id": "msg-bot-1787157837981",
+        "sender": "assistant",
+        "text": "Căn cứ theo tài liệu **SOP-SH-2026_Quy_Chuan_An_Toan_Nha_Thong_Minh.pdf (Trang 1)**:\n\nu phối Veteran Home phải tự động kiểm tra phụ tải tiêu thụ điện của toàn bộ thiết bị công suất cao.\n2. Các thiết bị gia nhiệt như Bếp từ (Induction Stove), Lò nướng, Bàn là điện và Lò sưởi PHẢI được ngắt nguồn khẩn cấp (POWER_OFF) nếu đang bật mà không có người giám sát.\n3. Hệ thống điều hòa nhiệt độ (HVAC/AC) phải được tự động chuyển sang chế độ tiết kiệm điện (ECO Mode 28°C) hoặc tắt hẳn để tránh tiêu hao năng lượng và giảm rủi ro quá nhiệt máy nén.\n\n*Khuyến nghị kỹ thuật:* Hệ thống tự động ghi nhận dữ liệu và áp dụng ngưỡng vận hành chuẩn theo quy định SOP.",
+        "timestamp": "23:43"
+      },
+      {
+        "id": "msg-1787159512285",
+        "sender": "user",
+        "text": "Chất lượng không khí và nồng độ CO2 phòng ngủ hiện tại thế nào?",
+        "timestamp": "00:11"
+      },
+      {
+        "id": "msg-err-1787159512357",
+        "sender": "assistant",
+        "text": "Dạ, hiện tại kết nối mạng đang bị gián đoạn. Căn hộ của bạn vẫn đang hoạt động an toàn theo cài đặt sẵn có.",
+        "timestamp": "00:11"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.6588624
+  },
+  "session-1787158720953": {
+    "id": "session-1787158720953",
+    "title": "Ước tính tiền điện tháng này c...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787158720954",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787158722092",
+        "sender": "user",
+        "text": "Ước tính tiền điện tháng này của nhà tôi hết bao nhiêu?",
+        "timestamp": "23:58"
+      },
+      {
+        "id": "msg-bot-1787158722448",
+        "sender": "assistant",
+        "text": "Dạ thưa bạn, tổng công suất điện tức thời của cả nhà (METER_01) đang là **3967 Watts** (~3.97 kW).\n\n📊 **Ước tính chi phí theo biểu giá EVN**:\n- Chi phí tức thời: khoảng **9,918 đ / giờ**.\n- Dự tính hóa đơn tháng: khoảng **3,927,528 đ / tháng** (đã bao gồm các thiết bị chạy luân phiên).\n\nBình nóng lạnh HEATER_01 đang tiêu thụ 2431W và máy lạnh AC_01 đang dùng 1227W. Bạn có thể bật Chế độ Tiết Kiệm (Eco) để giảm bớt hóa đơn nhé!",
+        "timestamp": "23:58"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.658863
+  },
+  "session-1787158718996": {
+    "id": "session-1787158718996",
+    "title": "Chất lượng không khí và nồng đ...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787158718997",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787158720048",
+        "sender": "user",
+        "text": "Chất lượng không khí và nồng độ CO2 phòng ngủ hiện tại thế nào?",
+        "timestamp": "23:58"
+      },
+      {
+        "id": "msg-bot-1787158720249",
+        "sender": "assistant",
+        "text": "Dạ, chất lượng không khí trong phòng ngủ (CO2_01) hiện đang rất trong lành đạt **593 ppm** (dưới ngưỡng tiêu chuẩn 1000 ppm). Nhiệt độ phòng khách là 20.7°C. Môi trường hiện tại rất lý tưởng cho giấc ngủ sâu và sức khỏe của cả gia đình.",
+        "timestamp": "23:58"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.658864
+  },
+  "session-1787158715217": {
+    "id": "session-1787158715217",
+    "title": "Làm sao để tiết kiệm điện tối ...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787158715217",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787158717856",
+        "sender": "user",
+        "text": "Làm sao để tiết kiệm điện tối nay mà phòng khách vẫn mát?",
+        "timestamp": "23:58"
+      },
+      {
+        "id": "msg-err-1787158718055",
+        "sender": "assistant",
+        "text": "Dạ, hiện tại kết nối mạng đang bị gián đoạn. Căn hộ của bạn vẫn đang hoạt động an toàn theo cài đặt sẵn có.",
+        "timestamp": "23:58"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.658865
+  },
+  "session-1787159383921": {
+    "id": "session-1787159383921",
+    "title": "đătj tên cuộc trò chuyện này l...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787159383922",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787159400148",
+        "sender": "user",
+        "text": "đătj tên cuộc trò chuyện này là test sesion 5",
+        "timestamp": "00:10"
+      },
+      {
+        "id": "msg-bot-1787159409014",
+        "sender": "assistant",
+        "text": "Không tìm thấy tài liệu phù hợp với câu hỏi 'đătj tên cuộc trò chuyện này là test sesion 5'. Vui lòng nạp thêm file PDF kỹ thuật hoặc chọn bộ tài liệu SOP mẫu để tra cứu.",
+        "timestamp": "00:10"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.658866
+  },
+  "session-1787159514900": {
+    "id": "session-1787159514900",
+    "title": "Chất lượng không khí và nồng đ...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787159514901",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787159516600",
+        "sender": "user",
+        "text": "Chất lượng không khí và nồng độ CO2 phòng ngủ hiện tại thế nào?",
+        "timestamp": "00:11"
+      },
+      {
+        "id": "msg-bot-1787159516785",
+        "sender": "assistant",
+        "text": "Dạ, chất lượng không khí trong phòng ngủ (CO2_01) hiện đang rất trong lành đạt **594 ppm** (dưới ngưỡng tiêu chuẩn 1000 ppm). Nhiệt độ phòng khách là 20.8°C. Môi trường hiện tại rất lý tưởng cho giấc ngủ sâu và sức khỏe của cả gia đình.",
+        "timestamp": "00:11"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.6588771
+  },
+  "session-1787159518383": {
+    "id": "session-1787159518383",
+    "title": "Ước tính tiền điện tháng này c...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787159518384",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787159519700",
+        "sender": "user",
+        "text": "Ước tính tiền điện tháng này của nhà tôi hết bao nhiêu?",
+        "timestamp": "00:11"
+      },
+      {
+        "id": "msg-bot-1787159519981",
+        "sender": "assistant",
+        "text": "Dạ thưa bạn, tổng công suất điện tức thời của cả nhà (METER_01) đang là **3959 Watts** (~3.96 kW).\n\n📊 **Ước tính chi phí theo biểu giá EVN**:\n- Chi phí tức thời: khoảng **9,898 đ / giờ**.\n- Dự tính hóa đơn tháng: khoảng **3,919,608 đ / tháng** (đã bao gồm các thiết bị chạy luân phiên).\n\nBình nóng lạnh HEATER_01 đang tiêu thụ 2399W và máy lạnh AC_01 đang dùng 1252W. Bạn có thể bật Chế độ Tiết Kiệm (Eco) để giảm bớt hóa đơn nhé!",
+        "timestamp": "00:11"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.6588786
+  },
+  "session-1787159522750": {
+    "id": "session-1787159522750",
+    "title": "máy nước nóng đnag bao nhiêu đ...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787159522750",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787159530477",
+        "sender": "user",
+        "text": "máy nước nóng đnag bao nhiêu độ",
+        "timestamp": "00:12"
+      },
+      {
+        "id": "msg-err-1787159530608",
+        "sender": "assistant",
+        "text": "Dạ, hiện tại kết nối mạng đang bị gián đoạn. Căn hộ của bạn vẫn đang hoạt động an toàn theo cài đặt sẵn có.",
+        "timestamp": "00:12"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165446.6588795
+  },
+  "session-1787161859358": {
+    "id": "session-1787161859358",
+    "title": "chào bạn",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787161859360",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787165630707",
+        "sender": "user",
+        "text": "chào bạn",
+        "timestamp": "01:53"
+      },
+      {
+        "id": "msg-bot-1787165630880",
+        "sender": "assistant",
+        "text": "Dạ chào bạn! Trợ lý AI **Veteran Home** rất vui được hỗ trợ gia đình mình hôm nay.\n\nHiện tại căn hộ đang hoạt động rất an toàn và thoải mái (Nhiệt độ: 28.5°C, Điện năng: 150W). Bạn cần kiểm tra máy lạnh, xem chất lượng không khí hay tư vấn tiết kiệm điện không ạ?",
+        "timestamp": "01:53"
+      },
+      {
+        "id": "msg-1787166215822",
+        "sender": "user",
+        "text": "Chất lượng không khí và nồng độ CO2 phòng ngủ hiện tại thế nào?",
+        "timestamp": "02:03"
+      },
+      {
+        "id": "msg-err-1787166215923",
+        "sender": "assistant",
+        "text": "Dạ, hiện tại kết nối mạng đang bị gián đoạn. Căn hộ của bạn vẫn đang hoạt động an toàn theo cài đặt sẵn có.",
+        "timestamp": "02:03"
+      },
+      {
+        "id": "msg-1787166220041",
+        "sender": "user",
+        "text": "Ước tính tiền điện tháng này của nhà tôi hết bao nhiêu?",
+        "timestamp": "02:03"
+      },
+      {
+        "id": "msg-err-1787166220365",
+        "sender": "assistant",
+        "text": "Dạ, hiện tại kết nối mạng đang bị gián đoạn. Căn hộ của bạn vẫn đang hoạt động an toàn theo cài đặt sẵn có.",
+        "timestamp": "02:03"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787165630.883576
+  },
+  "rag-session-1787161657522": {
+    "id": "rag-session-1787161657522",
+    "title": "Chủ đề tra cứu mới",
+    "updatedAt": "00:47",
+    "messages": [
+      {
+        "id": "welcome-1787161657523",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "00:47:37"
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787165704.2867389
+  },
+  "rag-session-1787161407151": {
+    "id": "rag-session-1787161407151",
+    "title": "chào bạn",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "welcome-1787161407155",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "12:43:27 AM"
+      },
+      {
+        "id": "1787161411208",
+        "sender": "user",
+        "content": "chào bạn",
+        "timestamp": "12:43:31 AM"
+      },
+      {
+        "id": "1787161411209",
+        "sender": "assistant",
+        "content": "Xin chào bạn! Tôi là **Trợ Lý Kỹ Thuật Veteran Home**.\n\nTôi có thể hỗ trợ bạn tra cứu quy chuẩn SOP thiết bị, đối chiếu ngưỡng vận hành an toàn, hoặc tra cứu các kịch bản xử lý sự cố. Bạn cần hỗ trợ kiểm tra thiết bị nào trong hệ thống?",
+        "timestamp": "12:43:31 AM",
+        "model_used": "Veteran Home Instant Router",
+        "confidence_score": 0.99,
+        "latency_ms": 0.06,
+        "citations": [],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Nhận diện Ý định Giao tiếp",
+            "detail": "Người dùng gửi lời chào xã giao. Chuyển sang chế độ phản hồi thân thiện, ngắn gọn.",
+            "status": "completed",
+            "latency_ms": 20
+          }
+        ],
+        "thought_process": "Phản hồi chào hỏi trực tiếp và sẵn sàng nhận câu hỏi kỹ thuật.",
+        "is_loading": false
+      },
+      {
+        "id": "1787161416521",
+        "sender": "user",
+        "content": "bạnhi",
+        "timestamp": "12:43:36 AM"
+      },
+      {
+        "id": "1787161416522",
+        "sender": "assistant",
+        "content": "Xin chào bạn! Tôi là **Trợ Lý Kỹ Thuật Veteran Home**.\n\nTôi có thể hỗ trợ bạn tra cứu quy chuẩn SOP thiết bị, đối chiếu ngưỡng vận hành an toàn, hoặc tra cứu các kịch bản xử lý sự cố. Bạn cần hỗ trợ kiểm tra thiết bị nào trong hệ thống?",
+        "timestamp": "12:43:36 AM",
+        "model_used": "Veteran Home Instant Router",
+        "confidence_score": 0.99,
+        "latency_ms": 0.13,
+        "citations": [],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Nhận diện Ý định Giao tiếp",
+            "detail": "Người dùng gửi lời chào xã giao. Chuyển sang chế độ phản hồi thân thiện, ngắn gọn.",
+            "status": "completed",
+            "latency_ms": 20
+          }
+        ],
+        "thought_process": "Phản hồi chào hỏi trực tiếp và sẵn sàng nhận câu hỏi kỹ thuật.",
+        "is_loading": false
+      },
+      {
+        "id": "1787161419123",
+        "sender": "user",
+        "content": "hi",
+        "timestamp": "12:43:39 AM"
+      },
+      {
+        "id": "1787161419124",
+        "sender": "assistant",
+        "content": "Xin chào bạn! Tôi là **Trợ Lý Kỹ Thuật Veteran Home**.\n\nTôi có thể hỗ trợ bạn tra cứu quy chuẩn SOP thiết bị, đối chiếu ngưỡng vận hành an toàn, hoặc tra cứu các kịch bản xử lý sự cố. Bạn cần hỗ trợ kiểm tra thiết bị nào trong hệ thống?",
+        "timestamp": "12:43:39 AM",
+        "model_used": "Veteran Home Instant Router",
+        "confidence_score": 0.99,
+        "latency_ms": 0.03,
+        "citations": [],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Nhận diện Ý định Giao tiếp",
+            "detail": "Người dùng gửi lời chào xã giao. Chuyển sang chế độ phản hồi thân thiện, ngắn gọn.",
+            "status": "completed",
+            "latency_ms": 20
+          }
+        ],
+        "thought_process": "Phản hồi chào hỏi trực tiếp và sẵn sàng nhận câu hỏi kỹ thuật.",
+        "is_loading": false
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787165704.2867496
+  },
+  "rag-session-1787159431702": {
+    "id": "rag-session-1787159431702",
+    "title": "Máy nước nóng đang bao nhiêu đ...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "welcome-1787159431702",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "12:10:31 AM"
+      },
+      {
+        "id": "1787159446584",
+        "sender": "user",
+        "content": "Máy nước nóng đang bao nhiêu độ",
+        "timestamp": "12:10:46 AM"
+      },
+      {
+        "id": "1787159446585",
+        "sender": "assistant",
+        "content": "Căn cứ theo tài liệu **HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf (Trang 2)**:\n\nCHƯƠNG 2: BẢO TRÌ HỆ THỐNG GIẢI NHIỆT VÀ QUẠT DÀN NÓNG\n\nChương 2.1: Nhiệt độ đầu đẩy máy nén (Discharge Temperature)\nNhiệt độ đầu đẩy tối đa cho phép là 105°C. Nếu cảm biến nhiệt độ dàn ngưng đo được > 45°C trong điều kiện môi trường 32°C, dàn nóng đang bị bám bụi hoặc quạt tản nhiệt quay dưới 600 RPM.\nChương 2.2: Quy trình làm sạch và kiểm tra định kỳ\n- Vệ sinh cánh tản nhiệt nhôm định kỳ mỗi 90 ngày bằng dung dịch kiềm nhẹ.\n- Đo điện trở cách điện của cuộn dây động cơ máy nén (đạt tối thiểu > 10 MegaOhm).\n\n*Khuyến nghị kỹ thuật:* Hệ thống tự động ghi nhận dữ liệu và áp dụng ngưỡng vận hành chuẩn theo quy định SOP.",
+        "timestamp": "12:10:54 AM",
+        "model_used": "Veteran Home Semantic Grounding Engine (Fallback)",
+        "confidence_score": 0.744,
+        "latency_ms": 7820,
+        "citations": [
+          {
+            "citation_id": "CIT-1",
+            "chunk_id": "sample_8a9866_p2_c0",
+            "filename": "HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf",
+            "page_number": 2,
+            "similarity_score": 0.744,
+            "text_snippet": "CHƯƠNG 2: BẢO TRÌ HỆ THỐNG GIẢI NHIỆT VÀ QUẠT DÀN NÓNG\n\nChương 2.1: Nhiệt độ đầu đẩy máy nén (Discharge Temperature)\nNhiệt độ đầu đẩy tối đa cho phép là 105°C. Nếu cảm biến nhiệt độ dàn ngưng đo được ...",
+            "full_text": "CHƯƠNG 2: BẢO TRÌ HỆ THỐNG GIẢI NHIỆT VÀ QUẠT DÀN NÓNG\n\nChương 2.1: Nhiệt độ đầu đẩy máy nén (Discharge Temperature)\nNhiệt độ đầu đẩy tối đa cho phép là 105°C. Nếu cảm biến nhiệt độ dàn ngưng đo được > 45°C trong điều kiện môi trường 32°C, dàn nóng đang bị bám bụi hoặc quạt tản nhiệt quay dưới 600 RPM.\nChương 2.2: Quy trình làm sạch và kiểm tra định kỳ\n- Vệ sinh cánh tản nhiệt nhôm định kỳ mỗi 90 ngày bằng dung dịch kiềm nhẹ.\n- Đo điện trở cách điện của cuộn dây động cơ máy nén (đạt tối thiểu > 10 MegaOhm)."
+          },
+          {
+            "citation_id": "CIT-2",
+            "chunk_id": "sample_4e292b_p1_c1",
+            "filename": "SOP-SH-2026_Quy_Chuan_An_Toan_Nha_Thong_Minh.pdf",
+            "page_number": 1,
+            "similarity_score": 0.7096,
+            "text_snippet": "u phối Veteran Home phải tự động kiểm tra phụ tải tiêu thụ điện của toàn bộ thiết bị công suất cao.\n2. Các thiết bị gia nhiệt như Bếp từ (Induction Stove), Lò nướng, Bàn là điện và Lò sưởi PHẢI được n...",
+            "full_text": "u phối Veteran Home phải tự động kiểm tra phụ tải tiêu thụ điện của toàn bộ thiết bị công suất cao.\n2. Các thiết bị gia nhiệt như Bếp từ (Induction Stove), Lò nướng, Bàn là điện và Lò sưởi PHẢI được ngắt nguồn khẩn cấp (POWER_OFF) nếu đang bật mà không có người giám sát.\n3. Hệ thống điều hòa nhiệt độ (HVAC/AC) phải được tự động chuyển sang chế độ tiết kiệm điện (ECO Mode 28°C) hoặc tắt hẳn để tránh tiêu hao năng lượng và giảm rủi ro quá nhiệt máy nén."
+          }
+        ],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Phân tích Ý định & Thực thể Kỹ thuật",
+            "detail": "Trích xuất ý định truy vấn từ kỹ sư: 'Máy nước nóng đang bao nhiêu độ'. Xác định thực thể thiết bị liên quan, các đại lượng đo lường (nhiệt độ, công suất, dòng điện) và yêu cầu quy chuẩn an toàn.",
+            "status": "completed",
+            "latency_ms": 1173
+          },
+          {
+            "step_number": 2,
+            "title": "Truy vấn Vector Đa Không Gian (Qdrant Hybrid Search)",
+            "detail": "Quét toàn bộ không gian vector (1024D). Đã đánh giá 11 chunks dữ liệu, trích xuất thành công 2 đoạn văn bản khớp ngữ nghĩa cao nhất. Điểm cosine cao nhất: 0.744 từ nguồn HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf (Trang 2).",
+            "status": "completed",
+            "latency_ms": 2737
+          },
+          {
+            "step_number": 3,
+            "title": "Đối chiếu Quy chuẩn Kỹ thuật & Bằng chứng SOP",
+            "detail": "Kiểm định các điều khoản an toàn, ngưỡng nhiệt độ vận hành và quy trình xử lý khẩn cấp từ 2 tài liệu SOP chuẩn. Đối chiếu với chính sách Veteran Home L4.",
+            "status": "completed",
+            "latency_ms": 1564
+          },
+          {
+            "step_number": 4,
+            "title": "Tổng hợp Lập luận & Định dạng Grounded Response",
+            "detail": "Điều phối qua mô hình Veteran Home Semantic Grounding Engine (Fallback). Tổng hợp luận điểm kỹ thuật chuẩn xác, định dạng Markdown rõ ràng và liên kết 2 trích dẫn nguồn có thể kiểm chứng.",
+            "status": "completed",
+            "latency_ms": 2346
+          }
+        ],
+        "thought_process": "**1. Phân tích ngữ cảnh:** Yêu cầu tra cứu kỹ thuật đối với 'Máy nước nóng đang bao nhiêu độ'.\n**2. Kết quả truy vấn vector:** Lấy 2 đoạn văn bản có điểm cosine tương đồng cao nhất 0.744.\n**3. Xác thực bằng chứng:** Đối chiếu ngưỡng an toàn thiết bị trong quy chuẩn HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf (Trang 2).\n**4. Kết luận:** Soạn câu trả lời kèm trích dẫn đối chiếu trực tiếp từ tài liệu.",
+        "is_loading": false
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787165704.2867517
+  },
+  "rag-session-default": {
+    "id": "rag-session-default",
+    "title": "chào bạn",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "welcome",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi là **Trợ Lý Kỹ Thuật Veteran-RAG**. Bạn có thể hỏi bất kỳ quy chuẩn SOP, ngưỡng an toàn thiết bị, hoặc tra cứu các kịch bản sự cố tương tự trong cơ sở dữ liệu vector Qdrant.",
+        "timestamp": "11:48:57 PM"
+      },
+      {
+        "id": "1787158158056",
+        "sender": "user",
+        "content": "chào bạn",
+        "timestamp": "11:49:18 PM"
+      },
+      {
+        "id": "1787158158057",
+        "sender": "assistant",
+        "content": "Xin chào bạn! Tôi là **Trợ Lý Kỹ Thuật Veteran Home**.\n\nTôi có thể hỗ trợ bạn tra cứu quy chuẩn SOP thiết bị, đối chiếu ngưỡng vận hành an toàn, hoặc tra cứu các kịch bản xử lý sự cố. Bạn cần hỗ trợ kiểm tra thiết bị nào trong hệ thống?",
+        "timestamp": "11:49:18 PM",
+        "model_used": "Veteran Home Instant Router",
+        "confidence_score": 0.99,
+        "latency_ms": 0.05,
+        "citations": [],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Nhận diện Ý định Giao tiếp",
+            "detail": "Người dùng gửi lời chào xã giao. Chuyển sang chế độ phản hồi thân thiện, ngắn gọn.",
+            "status": "completed",
+            "latency_ms": 20
+          }
+        ],
+        "thought_process": "Phản hồi chào hỏi trực tiếp và sẵn sàng nhận câu hỏi kỹ thuật.",
+        "is_loading": false
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787165704.2867532
+  },
+  "rag-session-1787158165038": {
+    "id": "rag-session-1787158165038",
+    "title": "hôm nay có sự cố gì xảy ra k",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "welcome-1787158165039",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "11:49:25 PM"
+      },
+      {
+        "id": "1787158179130",
+        "sender": "user",
+        "content": "hôm nay có sự cố gì xảy ra k",
+        "timestamp": "11:49:39 PM"
+      },
+      {
+        "id": "1787158179131",
+        "sender": "assistant",
+        "content": "Không tìm thấy tài liệu phù hợp với câu hỏi 'hôm nay có sự cố gì xảy ra k'. Vui lòng nạp thêm file PDF kỹ thuật hoặc chọn bộ tài liệu SOP mẫu để tra cứu.",
+        "timestamp": "11:49:50 PM",
+        "model_used": "Veteran Home Semantic Grounding Engine (Fallback)",
+        "confidence_score": 0.75,
+        "latency_ms": 11260.71,
+        "citations": [],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Phân tích Ý định & Thực thể Kỹ thuật",
+            "detail": "Trích xuất ý định truy vấn từ kỹ sư: 'hôm nay có sự cố gì xảy ra k'. Xác định thực thể thiết bị liên quan, các đại lượng đo lường (nhiệt độ, công suất, dòng điện) và yêu cầu quy chuẩn an toàn.",
+            "status": "completed",
+            "latency_ms": 1689.1
+          },
+          {
+            "step_number": 2,
+            "title": "Truy vấn Vector Đa Không Gian (Qdrant Hybrid Search)",
+            "detail": "Quét toàn bộ không gian vector (1024D). Đã đánh giá 11 chunks dữ liệu, trích xuất thành công 0 đoạn văn bản khớp ngữ nghĩa cao nhất. Điểm cosine cao nhất: N/A từ nguồn Không có.",
+            "status": "completed",
+            "latency_ms": 3941.2
+          },
+          {
+            "step_number": 3,
+            "title": "Đối chiếu Quy chuẩn Kỹ thuật & Bằng chứng SOP",
+            "detail": "Kiểm định các điều khoản an toàn, ngưỡng nhiệt độ vận hành và quy trình xử lý khẩn cấp từ 0 tài liệu SOP chuẩn. Đối chiếu với chính sách Veteran Home L4.",
+            "status": "completed",
+            "latency_ms": 2252.1
+          },
+          {
+            "step_number": 4,
+            "title": "Tổng hợp Lập luận & Định dạng Grounded Response",
+            "detail": "Điều phối qua mô hình Veteran Home Semantic Grounding Engine (Fallback). Tổng hợp luận điểm kỹ thuật chuẩn xác, định dạng Markdown rõ ràng và liên kết 0 trích dẫn nguồn có thể kiểm chứng.",
+            "status": "completed",
+            "latency_ms": 3378.2
+          }
+        ],
+        "thought_process": "**1. Phân tích ngữ cảnh:** Yêu cầu tra cứu kỹ thuật đối với 'hôm nay có sự cố gì xảy ra k'.\n**2. Kết quả truy vấn vector:** Lấy 0 đoạn văn bản có điểm cosine tương đồng cao nhất N/A.\n**3. Xác thực bằng chứng:** Đối chiếu ngưỡng an toàn thiết bị trong quy chuẩn Không có.\n**4. Kết luận:** Soạn câu trả lời kèm trích dẫn đối chiếu trực tiếp từ tài liệu.",
+        "is_loading": false
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787165704.2867546
+  },
+  "rag-session-1787166569873": {
+    "id": "rag-session-1787166569873",
+    "title": "Chủ đề tra cứu mới",
+    "updatedAt": "02:09",
+    "messages": [
+      {
+        "id": "welcome-1787166569874",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "02:09:29"
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787166569.8223248
+  },
+  "rag-session-1787166572842": {
+    "id": "rag-session-1787166572842",
+    "title": "Chủ đề tra cứu mới",
+    "updatedAt": "02:09",
+    "messages": [
+      {
+        "id": "welcome-1787166572842",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "02:09:32"
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787166572.7754908
+  },
+  "rag-session-1787166573785": {
+    "id": "rag-session-1787166573785",
+    "title": "hôm nay là ngày máy",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "welcome-1787166573785",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "02:09:33"
+      },
+      {
+        "id": "1787295400041",
+        "sender": "user",
+        "content": "hôm nay là ngày máy",
+        "timestamp": "1:56:40 PM"
+      },
+      {
+        "id": "1787295400043",
+        "sender": "assistant",
+        "content": "Chào kỹ sư, dựa trên tài liệu kỹ thuật của hệ thống **Veteran Home**, nếu câu hỏi của anh/chị liên quan đến **chu kỳ bảo trì định kỳ của máy**, xin được thông tin chính xác như sau:\n\n*   **Chu kỳ vệ sinh định kỳ:** Cánh tản nhiệt nhôm của dàn nóng phải được vệ sinh định kỳ **mỗi 90 ngày** bằng dung dịch kiềm nhẹ.\n*   **Chu kỳ kiểm tra điện trở:** Đo điện trở cách điện của cuộn dây động cơ máy nén định kỳ, đảm bảo đạt tối thiểu **> 10 MegaOhm**.\n\n**Các thông số kỹ thuật quan trọng cần lưu ý trong quá trình kiểm tra:**\n*   Nhiệt độ đầu đẩy tối đa cho phép của máy nén: **105°C**.\n*   Dấu hiệu cần vệ sinh/kiểm tra khẩn cấp: Nếu cảm biến dàn ngưng đo được **> 45°C** trong điều kiện môi trường **32°C** (do dàn nóng bám bụi hoặc quạt tản nhiệt quay dưới **600 RPM**).",
+        "timestamp": "1:56:48 PM",
+        "model_used": "FPT AI Factory (Llama-3.3-70B-Instruct)",
+        "confidence_score": 0.7221,
+        "latency_ms": 8313.82,
+        "citations": [
+          {
+            "citation_id": "CIT-1",
+            "chunk_id": "sample_28ae7f_p2_c0",
+            "filename": "HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf",
+            "page_number": 2,
+            "similarity_score": 0.7221,
+            "text_snippet": "CHƯƠNG 2: BẢO TRÌ HỆ THỐNG GIẢI NHIỆT VÀ QUẠT DÀN NÓNG\n\nChương 2.1: Nhiệt độ đầu đẩy máy nén (Discharge Temperature)\nNhiệt độ đầu đẩy tối đa cho phép là 105°C. Nếu cảm biến nhiệt độ dàn ngưng đo được ...",
+            "full_text": "CHƯƠNG 2: BẢO TRÌ HỆ THỐNG GIẢI NHIỆT VÀ QUẠT DÀN NÓNG\n\nChương 2.1: Nhiệt độ đầu đẩy máy nén (Discharge Temperature)\nNhiệt độ đầu đẩy tối đa cho phép là 105°C. Nếu cảm biến nhiệt độ dàn ngưng đo được > 45°C trong điều kiện môi trường 32°C, dàn nóng đang bị bám bụi hoặc quạt tản nhiệt quay dưới 600 RPM.\nChương 2.2: Quy trình làm sạch và kiểm tra định kỳ\n- Vệ sinh cánh tản nhiệt nhôm định kỳ mỗi 90 ngày bằng dung dịch kiềm nhẹ.\n- Đo điện trở cách điện của cuộn dây động cơ máy nén (đạt tối thiểu > 10 MegaOhm)."
+          }
+        ],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Phân tích Ý định & Thực thể Kỹ thuật",
+            "detail": "Trích xuất ý định truy vấn từ kỹ sư: 'hôm nay là ngày máy'. Xác định thực thể thiết bị liên quan, các đại lượng đo lường (nhiệt độ, công suất, dòng điện) và yêu cầu quy chuẩn an toàn.",
+            "status": "completed",
+            "latency_ms": 1247.1
+          },
+          {
+            "step_number": 2,
+            "title": "Truy vấn Vector Đa Không Gian (Qdrant Hybrid Search)",
+            "detail": "Quét toàn bộ không gian vector (1024D). Đã đánh giá 11 chunks dữ liệu, trích xuất thành công 1 đoạn văn bản khớp ngữ nghĩa cao nhất. Điểm cosine cao nhất: 0.722 từ nguồn HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf (Trang 2).",
+            "status": "completed",
+            "latency_ms": 2909.8
+          },
+          {
+            "step_number": 3,
+            "title": "Đối chiếu Quy chuẩn Kỹ thuật & Bằng chứng SOP",
+            "detail": "Kiểm định các điều khoản an toàn, ngưỡng nhiệt độ vận hành và quy trình xử lý khẩn cấp từ 1 tài liệu SOP chuẩn. Đối chiếu với chính sách Veteran Home L4.",
+            "status": "completed",
+            "latency_ms": 1662.8
+          },
+          {
+            "step_number": 4,
+            "title": "Tổng hợp Lập luận & Định dạng Grounded Response",
+            "detail": "Điều phối qua mô hình FPT AI Factory (Llama-3.3-70B-Instruct). Tổng hợp luận điểm kỹ thuật chuẩn xác, định dạng Markdown rõ ràng và liên kết 1 trích dẫn nguồn có thể kiểm chứng.",
+            "status": "completed",
+            "latency_ms": 2494.1
+          }
+        ],
+        "thought_process": "**1. Phân tích ngữ cảnh:** Yêu cầu tra cứu kỹ thuật đối với 'hôm nay là ngày máy'.\n**2. Kết quả truy vấn vector:** Lấy 1 đoạn văn bản có điểm cosine tương đồng cao nhất 0.722.\n**3. Xác thực bằng chứng:** Đối chiếu ngưỡng an toàn thiết bị trong quy chuẩn HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf (Trang 2).\n**4. Kết luận:** Soạn câu trả lời kèm trích dẫn đối chiếu trực tiếp từ tài liệu.",
+        "is_loading": false
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787295408.4002554
+  },
+  "session-1787294500057": {
+    "id": "session-1787294500057",
+    "title": "hôm nay là ngày mấy",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787294500057",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787294508472",
+        "sender": "user",
+        "text": "hôm nay là ngày mấy",
+        "timestamp": "13:41"
+      },
+      {
+        "id": "msg-bot-1787294512973",
+        "sender": "assistant",
+        "text": "Chào kỹ sư, hiện tại trong tài liệu kỹ thuật được cung cấp của hệ thống Veteran Home không có thông tin về ngày tháng hôm nay. \n\nNếu anh/chị cần hỗ trợ các thông tin kỹ thuật có trong tài liệu như nhiệt độ đầu đẩy máy nén (tối đa 105°C), chu kỳ vệ sinh dàn nóng (mỗi 90 ngày), hay thông số điện trở cách điện (tối thiểu > 10 MegaOhm), xin vui lòng cho tôi biết!",
+        "timestamp": "13:41"
+      },
+      {
+        "id": "msg-1787294532069",
+        "sender": "user",
+        "text": "hiện tại là mấy",
+        "timestamp": "13:42"
+      },
+      {
+        "id": "msg-bot-1787294542179",
+        "sender": "assistant",
+        "text": "Chào kỹ sư, câu hỏi \"hiện tại là mấy\" hiện chưa rõ ràng về thông số cụ thể cần tra cứu. \n\nĐể hỗ trợ anh/chị nhanh nhất, dưới đây là tổng hợp các thông số kỹ thuật hiện tại được quy định trong tài liệu của hệ thống **Veteran Home**:\n\n1. **Trạng thái vắng nhà (Unoccupied Mode):**\n   * Thời gian xác nhận vắng nhà: Quá **15 phút** liên tục không phát hiện chuyển động (qua cảm biến PIR và mmWave).\n\n2. **An toàn bếp điện từ công nghiệp:**\n   * Thời gian phát hiện đáy nồi nhiễm từ: Trong vòng **3 chu kỳ sóng (0.15ms)**.\n   * Thời gian tự động tắt mặt bếp khi không có nồi: Sau **60 giây**.\n   * Nhiệt độ chịu nhiệt tối đa của mặt kính Schott Ceran: **650°C**.\n   * Ngưỡng bảo vệ 1 (Warning) của cảm biến NTC: **65°C** (hệ thống sẽ tự động tăng tốc quạt làm mát đáy lên 100% công suất).\n\nAnh/chị vui lòng làm rõ câu hỏi nếu cần tra cứu một thông số cụ thể khác!",
+        "timestamp": "13:42"
+      },
+      {
+        "id": "msg-1787294598995",
+        "sender": "user",
+        "text": "bây giờ là mấy giờ mấy phút",
+        "timestamp": "13:43"
+      },
+      {
+        "id": "msg-bot-1787294603168",
+        "sender": "assistant",
+        "text": "Chào kỹ sư, hiện tại tài liệu kỹ thuật của hệ thống Veteran Home không chứa thông tin về thời gian thực tế, và tôi không có kết nối trực tiếp với đồng hồ thời gian thực (RTC) trên thiết bị của bạn để cung cấp giờ phút chính xác. \n\nXin vui lòng kiểm tra thời gian trực tiếp trên màn hình thiết bị điều khiển hoặc giao diện giám sát của hệ thống Veteran Home.",
+        "timestamp": "13:43"
+      },
+      {
+        "id": "msg-1787295459534",
+        "sender": "user",
+        "text": "hôm nay là ngày máy",
+        "timestamp": "13:57"
+      },
+      {
+        "id": "msg-bot-1787295465066",
+        "sender": "assistant",
+        "text": "Chào kỹ sư, đối với hệ thống **Veteran Home**, nếu câu hỏi của bạn liên quan đến chu kỳ bảo trì định kỳ (số ngày) của máy, tài liệu kỹ thuật quy định các mốc thời gian và thông số tiêu chuẩn như sau:\n\n*   **Chu kỳ vệ sinh định kỳ:** Thực hiện vệ sinh cánh tản nhiệt nhôm mỗi **90 ngày** bằng dung dịch kiềm nhẹ.\n*   **Đo điện trở cách điện:** Đo định kỳ cuộn dây động cơ máy nén, yêu cầu đạt tối thiểu **> 10 MegaOhm**.\n*   **Các thông số kỹ thuật cần giám sát:**\n    *   Nhiệt độ đầu đẩy tối đa cho phép: **105°C**.\n    *   Nếu cảm biến dàn ngưng đo được **> 45°C** (trong điều kiện môi trường 32°C): Dàn nóng đang bị bám bụi (cần vệ sinh) hoặc quạt tản nhiệt đang quay yếu dưới **600 RPM**.",
+        "timestamp": "13:57"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787295465.080324
+  },
+  "session-1787295496450": {
+    "id": "session-1787295496450",
+    "title": "bây giờ là mấy giờ",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787295496450",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787295509058",
+        "sender": "user",
+        "text": "bây giờ là mấy giờ",
+        "timestamp": "13:58"
+      },
+      {
+        "id": "msg-bot-1787295517134",
+        "sender": "assistant",
+        "text": "Không tìm thấy tài liệu phù hợp với câu hỏi 'bây giờ là mấy giờ'. Vui lòng nạp thêm file PDF kỹ thuật hoặc chọn bộ tài liệu SOP mẫu để tra cứu.",
+        "timestamp": "13:58"
+      },
+      {
+        "id": "msg-1787295793700",
+        "sender": "user",
+        "text": "bây giừo là mấy giừo",
+        "timestamp": "14:03"
+      },
+      {
+        "id": "msg-bot-1787295799368",
+        "sender": "assistant",
+        "text": "Báo cáo kỹ sư, thời gian hiện tại của hệ thống Veteran Home là **14:03** (chiều), Thứ Sáu, ngày **21/08/2026**.",
+        "timestamp": "14:03"
+      },
+      {
+        "id": "msg-1787296288631",
+        "sender": "user",
+        "text": "chào bạn",
+        "timestamp": "14:11"
+      },
+      {
+        "id": "msg-err-1787296319252",
+        "sender": "assistant",
+        "text": "Dạ, hiện tại kết nối mạng đang bị gián đoạn. Căn hộ của bạn vẫn đang hoạt động an toàn theo cài đặt sẵn có.",
+        "timestamp": "14:11"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787295799.3756652
+  },
+  "session-1787296871553": {
+    "id": "session-1787296871553",
+    "title": "chào bạn",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787296871553",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787296874827",
+        "sender": "user",
+        "text": "chào bạn",
+        "timestamp": "14:21"
+      },
+      {
+        "id": "msg-bot-1787296875184",
+        "sender": "assistant",
+        "text": "Dạ chào bạn! Trợ lý AI **Veteran Home** rất vui được hỗ trợ gia đình mình hôm nay.\n\nHiện tại căn hộ đang hoạt động rất an toàn và thoải mái (Nhiệt độ: 20.8°C, Điện năng: 3989W). Bạn cần kiểm tra máy lạnh, xem chất lượng không khí hay tư vấn tiết kiệm điện không ạ?",
+        "timestamp": "14:21"
+      },
+      {
+        "id": "msg-1787297349908",
+        "sender": "user",
+        "text": "bạn là ai",
+        "timestamp": "14:29"
+      },
+      {
+        "id": "msg-bot-1787297350162",
+        "sender": "assistant",
+        "text": "Dạ chào bạn! Trợ lý AI **Veteran Home** rất vui được hỗ trợ gia đình mình hôm nay.\n\nHiện tại căn hộ đang hoạt động rất an toàn và thoải mái (Nhiệt độ: 20.8°C, Điện năng: 3894W). Bạn cần kiểm tra máy lạnh, xem chất lượng không khí hay tư vấn tiết kiệm điện không ạ?",
+        "timestamp": "14:29"
+      },
+      {
+        "id": "msg-1787297360713",
+        "sender": "user",
+        "text": "bây g là mây giừo",
+        "timestamp": "14:29"
+      },
+      {
+        "id": "msg-bot-1787297360876",
+        "sender": "assistant",
+        "text": "Dạ thưa bạn, bây giờ là **14:29** (Thứ Sáu, ngày 21 tháng 08 năm 2026) - Múi giờ Việt Nam (GMT+7).\n\nHiện tại căn hộ của mình đang hoạt động an toàn và thoải mái: Nhiệt độ phòng khách là **20.7°C**, chất lượng không khí **641 ppm** và tổng công suất điện là **3935W**.\n\nBạn có cần tôi hỗ trợ hẹn giờ hay kiểm tra thiết bị nào trong nhà không ạ?",
+        "timestamp": "14:29"
+      },
+      {
+        "id": "msg-1787297367628",
+        "sender": "user",
+        "text": "hôm nay là ngày mấy",
+        "timestamp": "14:29"
+      },
+      {
+        "id": "msg-bot-1787297367809",
+        "sender": "assistant",
+        "text": "Dạ thưa bạn, bây giờ là **14:29** (Thứ Sáu, ngày 21 tháng 08 năm 2026) - Múi giờ Việt Nam (GMT+7).\n\nHiện tại căn hộ của mình đang hoạt động an toàn và thoải mái: Nhiệt độ phòng khách là **20.8°C**, chất lượng không khí **636 ppm** và tổng công suất điện là **3988W**.\n\nBạn có cần tôi hỗ trợ hẹn giờ hay kiểm tra thiết bị nào trong nhà không ạ?",
+        "timestamp": "14:29"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787297367.927844
+  },
+  "rag-session-1787297382407": {
+    "id": "rag-session-1787297382407",
+    "title": "Ngưỡng nhiệt độ an toàn của bế...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "welcome-1787297382407",
+        "sender": "assistant",
+        "content": "Xin chào! Tôi đã sẵn sàng tra cứu một chủ đề kỹ thuật mới. Bạn cần đối chiếu tài liệu hay thiết bị nào?",
+        "timestamp": "2:29:42 PM"
+      },
+      {
+        "id": "1787297386106",
+        "sender": "user",
+        "content": "Ngưỡng nhiệt độ an toàn của bếp từ là bao nhiêu?",
+        "timestamp": "2:29:46 PM"
+      },
+      {
+        "id": "1787297386107",
+        "sender": "assistant",
+        "content": "Chào kỹ sư, dựa trên tài liệu kỹ thuật của hệ thống **Veteran Home**, các ngưỡng nhiệt độ an toàn và cơ chế bảo vệ quá nhiệt của bếp từ được quy định chi tiết như sau:\n\n### 1. Tiêu chuẩn an toàn nhiệt độ của bếp từ công suất cao\n*   **Giới hạn chịu nhiệt của mặt kính (Schott Ceran):** Tối đa **650°C**.\n*   **Ngưỡng bảo vệ của cảm biến nhiệt điện trở NTC (dưới đáy kính):**\n    *   **Ngưỡng 1 (Warning) - 65°C:** Hệ thống tự động kích hoạt tăng tốc quạt làm mát đáy bếp lên **100% công suất** để giải nhiệt.\n\n### 2. Phân cấp ngưỡng nhiệt độ vận hành thiết bị chung (SOP-SH-2026)\nĐối với các cảm biến bề mặt của thiết bị trong hệ thống, các mức cảnh báo nhiệt độ được áp dụng như sau:\n*   **Mức Bình Thường (Normal):** Nhiệt độ bề mặt cảm biến **<= 55.0°C**. Thiết bị vận hành định mức.\n*   **Mức Cảnh Báo Sớm (Early Warning / Medium):** Từ **55.1°C đến 65.0°C**. Cần theo dõi sát sao nếu gia tốc tăng nhiệt độ vượt quá **2.5°C/phút**.\n*   **Mức Rủi Ro Cao (High Hazard):** Từ **65.1°C đến 75.0°C**. Nguy cơ gây lão hóa linh kiện bán dẫn công suất và quá nhiệt cuộn dây của bếp.\n*   **Mức Sự Cố Nghiêm Trọng (Critical Anomaly):** **> 75.0°C**. Nguy cơ chập cháy và phát hỏa tức thời.\n\n### 3. Quy trình an toàn bổ sung khi vắng nhà\nTrong trường hợp hệ thống **Veteran Home** kích hoạt trạng thái vắng nhà (Unoccupied Mode - không phát hiện chuyển động liên tục quá 15 phút), bếp từ PHẢI được tự động ngắt nguồn khẩn cấp (**POWER_OFF**) nếu đang bật mà không có người giám sát để phòng ngừa rủi ro hỏa hoạn.",
+        "timestamp": "2:30:00 PM",
+        "model_used": "FPT AI Factory (Llama-3.3-70B-Instruct)",
+        "confidence_score": 0.7604,
+        "latency_ms": 13896.08,
+        "citations": [
+          {
+            "citation_id": "CIT-1",
+            "chunk_id": "sample_34a11b_p2_c0",
+            "filename": "SOP-SH-2026_Quy_Chuan_An_Toan_Nha_Thong_Minh.pdf",
+            "page_number": 2,
+            "similarity_score": 0.7604,
+            "text_snippet": "MỤC 2: NGƯỠNG CẢNH BÁO NHIỆT ĐỘ & QUY TRÌNH CHỐNG CHÁY NỔ (THERMAL THRESHOLDS)\n\nMục 2.1: Phân cấp ngưỡng nhiệt độ vận hành\n- Mức Bình Thường (Normal): Nhiệt độ bề mặt cảm biến <= 55.0°C. Thiết bị vận ...",
+            "full_text": "MỤC 2: NGƯỠNG CẢNH BÁO NHIỆT ĐỘ & QUY TRÌNH CHỐNG CHÁY NỔ (THERMAL THRESHOLDS)\n\nMục 2.1: Phân cấp ngưỡng nhiệt độ vận hành\n- Mức Bình Thường (Normal): Nhiệt độ bề mặt cảm biến <= 55.0°C. Thiết bị vận hành định mức.\n- Mức Cảnh Báo Sớm (Early Warning / Medium): Nhiệt độ từ 55.1°C đến 65.0°C. Cần theo dõi gia tốc tăng nhiệt độ (dT/dt > 2.5°C/phút).\n- Mức Rủi Ro Cao (High Hazard): Nhiệt độ từ 65.1°C đến 75.0°C. Nguy cơ lão hóa linh kiện bán dẫn công suất và quá nhiệt cuộn dây.\n- Mức Sự Cố Nghiêm Trọng (Critical Anomaly): Nhiệt độ > 75.0°C. Nguy cơ chập cháy và phát hỏa tức thời."
+          },
+          {
+            "citation_id": "CIT-2",
+            "chunk_id": "sample_11c9be_p1_c0",
+            "filename": "SO_TAY_AN_TOAN_BEP_TU_CONG_NGHIEP_KITCHEN.pdf",
+            "page_number": 1,
+            "similarity_score": 0.7474,
+            "text_snippet": "TIÊU CHUẨN AN TOÀN BẾP ĐIỆN TỪ CÔNG SUẤT CAO (INDUCTION COOKER SAFETY)\n\nSỔ TAY KỸ THUẬT & AN TOÀN BẾP ĐIỆN TỪ THÔNG MINH\n1. Cơ chế tự động ngắt khi không có nồi (Pan Detection Sensor):\nCảm biến dòng c...",
+            "full_text": "TIÊU CHUẨN AN TOÀN BẾP ĐIỆN TỪ CÔNG SUẤT CAO (INDUCTION COOKER SAFETY)\n\nSỔ TAY KỸ THUẬT & AN TOÀN BẾP ĐIỆN TỪ THÔNG MINH\n1. Cơ chế tự động ngắt khi không có nồi (Pan Detection Sensor):\nCảm biến dòng cao tần phải phát hiện sự hiện diện của đáy nồi nhiễm từ trong vòng 3 chu kỳ sóng (0.15ms). Nếu không có đáy nồi sau 60 giây, tự động tắt mặt bếp.\n2. Bảo vệ quá nhiệt cảm biến nhiệt điện trở NTC mặt kính:\nMặt kính Schott Ceran chịu nhiệt tối đa 650°C. Tuy nhiên, cảm biến NTC dưới đáy kính được cài đặt ngưỡng bảo vệ:\n- Ngưỡng 1 (Warning): 65°C - Tăng tốc quạt làm mát đáy lên 100% công suất."
+          },
+          {
+            "citation_id": "CIT-3",
+            "chunk_id": "sample_34a11b_p1_c1",
+            "filename": "SOP-SH-2026_Quy_Chuan_An_Toan_Nha_Thong_Minh.pdf",
+            "page_number": 1,
+            "similarity_score": 0.7384,
+            "text_snippet": "u phối Veteran Home phải tự động kiểm tra phụ tải tiêu thụ điện của toàn bộ thiết bị công suất cao.\n2. Các thiết bị gia nhiệt như Bếp từ (Induction Stove), Lò nướng, Bàn là điện và Lò sưởi PHẢI được n...",
+            "full_text": "u phối Veteran Home phải tự động kiểm tra phụ tải tiêu thụ điện của toàn bộ thiết bị công suất cao.\n2. Các thiết bị gia nhiệt như Bếp từ (Induction Stove), Lò nướng, Bàn là điện và Lò sưởi PHẢI được ngắt nguồn khẩn cấp (POWER_OFF) nếu đang bật mà không có người giám sát.\n3. Hệ thống điều hòa nhiệt độ (HVAC/AC) phải được tự động chuyển sang chế độ tiết kiệm điện (ECO Mode 28°C) hoặc tắt hẳn để tránh tiêu hao năng lượng và giảm rủi ro quá nhiệt máy nén."
+          },
+          {
+            "citation_id": "CIT-4",
+            "chunk_id": "sample_f09c5e_p2_c0",
+            "filename": "HUONG_DAN_KY_THUAT_MAY_NEN_BIEN_TAN_INVERTER.pdf",
+            "page_number": 2,
+            "similarity_score": 0.7255,
+            "text_snippet": "CHƯƠNG 2: BẢO TRÌ HỆ THỐNG GIẢI NHIỆT VÀ QUẠT DÀN NÓNG\n\nChương 2.1: Nhiệt độ đầu đẩy máy nén (Discharge Temperature)\nNhiệt độ đầu đẩy tối đa cho phép là 105°C. Nếu cảm biến nhiệt độ dàn ngưng đo được ...",
+            "full_text": "CHƯƠNG 2: BẢO TRÌ HỆ THỐNG GIẢI NHIỆT VÀ QUẠT DÀN NÓNG\n\nChương 2.1: Nhiệt độ đầu đẩy máy nén (Discharge Temperature)\nNhiệt độ đầu đẩy tối đa cho phép là 105°C. Nếu cảm biến nhiệt độ dàn ngưng đo được > 45°C trong điều kiện môi trường 32°C, dàn nóng đang bị bám bụi hoặc quạt tản nhiệt quay dưới 600 RPM.\nChương 2.2: Quy trình làm sạch và kiểm tra định kỳ\n- Vệ sinh cánh tản nhiệt nhôm định kỳ mỗi 90 ngày bằng dung dịch kiềm nhẹ.\n- Đo điện trở cách điện của cuộn dây động cơ máy nén (đạt tối thiểu > 10 MegaOhm)."
+          },
+          {
+            "citation_id": "CIT-5",
+            "chunk_id": "sample_34a11b_p1_c0",
+            "filename": "SOP-SH-2026_Quy_Chuan_An_Toan_Nha_Thong_Minh.pdf",
+            "page_number": 1,
+            "similarity_score": 0.7231,
+            "text_snippet": "MỤC 1: QUY CHUẨN VẬN HÀNH CHẾ ĐỘ VẮNG NHÀ (UNOCCUPIED SAFETY PROTOCOL)\n\nTIÊU CHUẨN KỸ THUẬT QUỐC GIA VỀ AN TOÀN NHÀ THÔNG MINH (SOP-SH-2026)\nMục 1.1: Định nghĩa trạng thái vắng nhà\nTrạng thái vắng nhà...",
+            "full_text": "MỤC 1: QUY CHUẨN VẬN HÀNH CHẾ ĐỘ VẮNG NHÀ (UNOCCUPIED SAFETY PROTOCOL)\n\nTIÊU CHUẨN KỸ THUẬT QUỐC GIA VỀ AN TOÀN NHÀ THÔNG MINH (SOP-SH-2026)\nMục 1.1: Định nghĩa trạng thái vắng nhà\nTrạng thái vắng nhà (Unoccupied Mode) được xác nhận khi toàn bộ cảm biến PIR hồng ngoại và cảm biến hiện diện vi sóng mmWave không phát hiện chuyển động con người trong vùng kiểm soát liên tục quá 15 phút.\nMục 1.2: Các hành động an toàn bắt buộc khi vắng nhà\n1. Hệ thống điều phối Veteran Home phải tự động kiểm tra phụ tải tiêu thụ điện của toàn bộ thiết bị công suất cao.\n2."
+          }
+        ],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Phân tích Ý định & Thực thể Kỹ thuật",
+            "detail": "Trích xuất ý định truy vấn từ kỹ sư: 'Ngưỡng nhiệt độ an toàn của bếp từ là bao nhiêu?'. Xác định thực thể thiết bị liên quan, các đại lượng đo lường (nhiệt độ, công suất, dòng điện) và yêu cầu quy chuẩn an toàn.",
+            "status": "completed",
+            "latency_ms": 2084.4
+          },
+          {
+            "step_number": 2,
+            "title": "Truy vấn Vector Đa Không Gian (Qdrant Hybrid Search)",
+            "detail": "Quét toàn bộ không gian vector (1024D). Đã đánh giá 11 chunks dữ liệu, trích xuất thành công 5 đoạn văn bản khớp ngữ nghĩa cao nhất. Điểm cosine cao nhất: 0.760 từ nguồn SOP-SH-2026_Quy_Chuan_An_Toan_Nha_Thong_Minh.pdf (Trang 2).",
+            "status": "completed",
+            "latency_ms": 4863.6
+          },
+          {
+            "step_number": 3,
+            "title": "Đối chiếu Quy chuẩn Kỹ thuật & Bằng chứng SOP",
+            "detail": "Kiểm định các điều khoản an toàn, ngưỡng vận hành và hướng dẫn sử dụng từ 5 tài liệu chuẩn. Đối chiếu với chính sách Veteran Home.",
+            "status": "completed",
+            "latency_ms": 2779.2
+          },
+          {
+            "step_number": 4,
+            "title": "Tổng hợp Lập luận & Định dạng Grounded Response",
+            "detail": "Điều phối qua mô hình FPT AI Factory (Llama-3.3-70B-Instruct). Tổng hợp thông tin chuẩn xác, định dạng Markdown rõ ràng và liên kết 5 trích dẫn nguồn có thể kiểm chứng.",
+            "status": "completed",
+            "latency_ms": 4168.8
+          }
+        ],
+        "thought_process": "**1. Phân tích ngữ cảnh:** Yêu cầu tra cứu kỹ thuật đối với 'Ngưỡng nhiệt độ an toàn của bếp từ là bao nhiêu?'.\n**2. Kết quả truy vấn vector:** Lấy 5 đoạn văn bản có điểm cosine tương đồng cao nhất 0.760.\n**3. Xác thực bằng chứng:** Đối chiếu ngưỡng an toàn thiết bị trong quy chuẩn SOP-SH-2026_Quy_Chuan_An_Toan_Nha_Thong_Minh.pdf (Trang 2).\n**4. Kết luận:** Soạn câu trả lời kèm trích dẫn đối chiếu trực tiếp từ tài liệu.",
+        "is_loading": false
+      },
+      {
+        "id": "1787319241044",
+        "sender": "user",
+        "content": "tiền điện được tínhh nhưu thế nào",
+        "timestamp": "8:34:01 PM"
+      },
+      {
+        "id": "1787319241049",
+        "sender": "assistant",
+        "content": "Căn cứ theo tài liệu **SOP_IEEE_METER_01_Power_Surge_Electrical_Safety.md (Trang 2)**:\n\n## 1. Đặc Tính Kỹ Thuật Đồng Hồ Đo Điện Tổng\n\nThiết bị **`METER_01`** chịu trách nhiệm giám sát toàn bộ phụ tải điện năng đầu vào của căn hộ/tòa nhà, kết nối trực tiếp với rơ-le ngắt nguồn thông minh (Smart Circuit Breaker):\n\n* **Thông số đo lường:** Điện áp lưới (V [Volt]), Dòng điện tổng (I [Ampe]), Công suất tiêu thụ tức thời (P [Watt]), Tần số lưới (f = 50.0 Hz).\n\n*Khuyến nghị kỹ thuật:* Hệ thống tự động ghi nhận dữ liệu và áp dụng ngưỡng vận hành chuẩn theo quy định SOP.",
+        "timestamp": "8:35:14 PM",
+        "model_used": "Veteran Home Semantic Grounding Engine (Fallback)",
+        "confidence_score": 0.7241,
+        "latency_ms": 52396.29,
+        "citations": [
+          {
+            "citation_id": "CIT-1",
+            "chunk_id": "sop_SOP_IEEE_METER_01__p2_c0",
+            "filename": "SOP_IEEE_METER_01_Power_Surge_Electrical_Safety.md",
+            "page_number": 2,
+            "similarity_score": 0.7241,
+            "text_snippet": "## 1. Đặc Tính Kỹ Thuật Đồng Hồ Đo Điện Tổng\n\nThiết bị **`METER_01`** chịu trách nhiệm giám sát toàn bộ phụ tải điện năng đầu vào của căn hộ/tòa nhà, kết nối trực tiếp với rơ-le ngắt nguồn thông minh ...",
+            "full_text": "## 1. Đặc Tính Kỹ Thuật Đồng Hồ Đo Điện Tổng\n\nThiết bị **`METER_01`** chịu trách nhiệm giám sát toàn bộ phụ tải điện năng đầu vào của căn hộ/tòa nhà, kết nối trực tiếp với rơ-le ngắt nguồn thông minh (Smart Circuit Breaker):\n\n* **Thông số đo lường:** Điện áp lưới (V [Volt]), Dòng điện tổng (I [Ampe]), Công suất tiêu thụ tức thời (P [Watt]), Tần số lưới (f = 50.0 Hz)."
+          },
+          {
+            "citation_id": "CIT-2",
+            "chunk_id": "doc_934585b1_p7_c0",
+            "filename": "EVNHCMC_2025_Electronic_Power_Meter_OBIS_Guide.pdf",
+            "page_number": 7,
+            "similarity_score": 0.7203,
+            "text_snippet": "7\nMã chỉ số hiển thị\nMã chỉ số Ý nghĩa\n1.8.0 Chỉ số tổng điện năng tiêu thụ\n1.8.1 Chỉ số điện năng tiêu thụ vào giờ bình thường\n1.8.2 Chỉ số điện năng tiêu thụ vào giờ cao điểm\n1.8.3 Chỉ số điện năng ...",
+            "full_text": "7\nMã chỉ số hiển thị\nMã chỉ số Ý nghĩa\n1.8.0 Chỉ số tổng điện năng tiêu thụ\n1.8.1 Chỉ số điện năng tiêu thụ vào giờ bình thường\n1.8.2 Chỉ số điện năng tiêu thụ vào giờ cao điểm\n1.8.3 Chỉ số điện năng tiêu thụ vào giờ thấp điểm\n3.8.0 Chỉ số điện năng phản kháng\n2.8.0 Chỉ số tổng điện năng phát ngược\n2.8.1 Chỉ số điện năng phát ngược vào giờ bình thường\n2.8.2 Chỉ số điện năng phát ngược vào giờ cao điểm\n2.8.3 Chỉ số điện năng phát ngược vào giờ thấp điểm\n4.8.0 Chỉ số điện năng phản kháng phát ngược\nGiá trị đo đếm\nĐơn vị tính của \ngiá trị đo đếm\nÝ NGHĨA CÁC THÔNG SỐ HIỂN THỊ TRÊN MÀN HÌNH CÔNG TƠ ĐIỆN TỬ NHIỀU BIỂU GIÁ\nMàn hình công tơ điện tử 03 pha nhiều biểu giá lắp đặt cho khách hàng \nđang hiển thị chỉ số tổng điện năng tiêu thụ có giá trị là 12345,8 kWh\n HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14 HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14\n HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14 HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14\n HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14 HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14"
+          },
+          {
+            "citation_id": "CIT-3",
+            "chunk_id": "doc_934585b1_p8_c0",
+            "filename": "EVNHCMC_2025_Electronic_Power_Meter_OBIS_Guide.pdf",
+            "page_number": 8,
+            "similarity_score": 0.7196,
+            "text_snippet": "8\nCÁC BẢNG MÃ CHỈ SỐ KHÁC\nMã số Ý nghĩa\n0.4.2 Tỉ số biến dòng\n0.4.3 Tỉ số biến áp\nC.2.0 Số lần lập trình\nC.2.1 Thời gian lập trình gần nhất\n1.8.0.1 Chỉ số chốt tháng tổng điện năng tiêu thụ\n1.8.1.1 Ch...",
+            "full_text": "8\nCÁC BẢNG MÃ CHỈ SỐ KHÁC\nMã số Ý nghĩa\n0.4.2 Tỉ số biến dòng\n0.4.3 Tỉ số biến áp\nC.2.0 Số lần lập trình\nC.2.1 Thời gian lập trình gần nhất\n1.8.0.1 Chỉ số chốt tháng tổng điện năng tiêu thụ\n1.8.1.1 Chỉ số chốt tháng điện năng tiêu thụ giờ bình thường\n1.8.2.1 Chỉ số chốt tháng điện năng tiêu thụ giờ cao điểm\n1.8.3.1 Chỉ số chốt tháng điện năng tiêu thụ giờ thấp điểm\n3.8.0.1 Chỉ số chốt tháng tổng điện năng phản kháng\n2.8.0.1 Chỉ số chốt tháng tổng điện năng tiêu thụ phát ngược\n2.8.1.1 Chỉ số chốt tháng điện năng tiêu thụ phát ngược giờ bình thường \n2.8.2.1 Chỉ số chốt tháng điện năng tiêu thụ phát ngược giờ cao điểm \n2.8.3.1 Chỉ số chốt tháng điện năng tiêu thụ phát ngược giờ thấp điểm \n4.8.0.1 Chỉ số chốt tháng tổng điện năng phản kháng phát ngược\nMã số Ý nghĩa\n0.9.1 Giờ hiện tại của công tơ\n0.9.2 Ngày hiện tại của công tơ\n33.7.0 Hệ số công suất pha A\n53.7.0 Hệ số công suất pha B\n73.7.0 Hệ số công suất pha C\n21.7.0 Công suất hữu công\n23.7.0 Công suất vô công\n14.7.0 Tần số\n1.6.0 Công suất cực đại\n1.6.1 Công suất cực đại giờ bình thường\n1.6.2 Công suất cực đại giờ cao điểm\n1.6.3 Công suất cực đại giờ thấp điểm\n31.7.0 Dòng điện pha A\n51.7.0 Dòng điện pha B\n71.7.0 Dòng điện pha C\n32.7.0 Điện áp pha A\n52.7.0 Điện áp pha B\n72.7.0 Điện áp pha C\n HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14 HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14\n HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14 HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14\n HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14 HCMPC\\THUANPT(Phan Thị Thuận) 16/09/2025 09:14"
+          },
+          {
+            "citation_id": "CIT-4",
+            "chunk_id": "sop_SOP_IEEE_METER_01__p1_c0",
+            "filename": "SOP_IEEE_METER_01_Power_Surge_Electrical_Safety.md",
+            "page_number": 1,
+            "similarity_score": 0.7163,
+            "text_snippet": "# 📘 TIÊU CHUẨN ĐO LƯỜNG ĐIỆN NĂNG & BẢO VỆ QUÁ TẢI SỰ CỐ (METER_01)\n\n> **Mã thiết bị áp dụng:** `METER_01` (Công Tơ Điện Thông Minh & Đồng Hồ Điện Tổng)  \n> **Tiêu chuẩn tham chiếu:** IEEE C37 (Circui...",
+            "full_text": "# 📘 TIÊU CHUẨN ĐO LƯỜNG ĐIỆN NĂNG & BẢO VỆ QUÁ TẢI SỰ CỐ (METER_01)\n\n> **Mã thiết bị áp dụng:** `METER_01` (Công Tơ Điện Thông Minh & Đồng Hồ Điện Tổng)  \n> **Tiêu chuẩn tham chiếu:** IEEE C37 (Circuit Breakers & Protective Relays) / IEC 62053 (Electricity Metering Equipment) / IEC 61000 (Power Quality & Voltage Surges) / IEEE Smart Grid WSN Protocols (Erol-Kantarci & Mouftah, IEEE Trans. Smart Grid)  \n> **Phân loại:** Standard Operating Procedure (SOP) & Electrical Life-Safety Standard\n\n---"
+          },
+          {
+            "citation_id": "CIT-5",
+            "chunk_id": "sop_SOP_IEEE_METER_01__p3_c0",
+            "filename": "SOP_IEEE_METER_01_Power_Surge_Electrical_Safety.md",
+            "page_number": 3,
+            "similarity_score": 0.7155,
+            "text_snippet": "## 2. Các Ngưỡng Giới Hạn Vận Hành Điện An Toàn",
+            "full_text": "## 2. Các Ngưỡng Giới Hạn Vận Hành Điện An Toàn"
+          }
+        ],
+        "chain_of_thought": [
+          {
+            "step_number": 1,
+            "title": "Phân tích Ý định & Thực thể Kỹ thuật",
+            "detail": "Trích xuất ý định truy vấn từ kỹ sư: 'tiền điện được tínhh nhưu thế nào'. Xác định thực thể thiết bị liên quan, các đại lượng đo lường (nhiệt độ, công suất, dòng điện) và yêu cầu quy chuẩn an toàn.",
+            "status": "completed",
+            "latency_ms": 7859.4
+          },
+          {
+            "step_number": 2,
+            "title": "Truy vấn Vector Đa Không Gian (Qdrant Hybrid Search)",
+            "detail": "Quét toàn bộ không gian vector (1024D). Đã đánh giá 3206 chunks dữ liệu, trích xuất thành công 5 đoạn văn bản khớp ngữ nghĩa cao nhất. Điểm cosine cao nhất: 0.724 từ nguồn SOP_IEEE_METER_01_Power_Surge_Electrical_Safety.md (Trang 2).",
+            "status": "completed",
+            "latency_ms": 18338.7
+          },
+          {
+            "step_number": 3,
+            "title": "Đối chiếu Quy chuẩn Kỹ thuật & Bằng chứng SOP",
+            "detail": "Kiểm định các điều khoản an toàn, ngưỡng vận hành và hướng dẫn sử dụng từ 5 tài liệu chuẩn. Đối chiếu với chính sách Veteran Home.",
+            "status": "completed",
+            "latency_ms": 10479.3
+          },
+          {
+            "step_number": 4,
+            "title": "Tổng hợp Lập luận & Định dạng Grounded Response",
+            "detail": "Điều phối qua mô hình Veteran Home Semantic Grounding Engine (Fallback). Tổng hợp thông tin chuẩn xác, định dạng Markdown rõ ràng và liên kết 5 trích dẫn nguồn có thể kiểm chứng.",
+            "status": "completed",
+            "latency_ms": 15718.9
+          }
+        ],
+        "thought_process": "**1. Phân tích ngữ cảnh:** Yêu cầu tra cứu kỹ thuật đối với 'tiền điện được tínhh nhưu thế nào'.\n**2. Kết quả truy vấn vector:** Lấy 5 đoạn văn bản có điểm cosine tương đồng cao nhất 0.724.\n**3. Xác thực bằng chứng:** Đối chiếu ngưỡng an toàn thiết bị trong quy chuẩn SOP_IEEE_METER_01_Power_Surge_Electrical_Safety.md (Trang 2).\n**4. Kết luận:** Soạn câu trả lời kèm trích dẫn đối chiếu trực tiếp từ tài liệu.",
+        "is_loading": false
+      }
+    ],
+    "role": "tech",
+    "timestamp": 1787319315.046058
+  },
+  "session-1787323117838": {
+    "id": "session-1787323117838",
+    "title": "nếu mỗi ngày mình sử dụng 7kw ...",
+    "updatedAt": "Vừa xong",
+    "messages": [
+      {
+        "id": "msg-welcome-1787323117838",
+        "sender": "assistant",
+        "text": "Xin chào Nguyễn Văn Minh Tâm! Tôi đã sẵn sàng cho một chủ đề mới. Bạn cần tôi hỗ trợ kiểm tra hoặc tối ưu thiết bị nào?",
+        "timestamp": "Vừa xong"
+      },
+      {
+        "id": "msg-1787323148362",
+        "sender": "user",
+        "text": "nếu mỗi ngày mình sử dụng 7kw điện thì 1 tháng mình tốn bao nhiêu tiền và mức điện đc tính là bao nhiêu",
+        "timestamp": "21:39"
+      },
+      {
+        "id": "msg-bot-1787323148387",
+        "sender": "assistant",
+        "text": "Dạ thưa bạn, tổng công suất điện tức thời của cả nhà (METER_01) đang là **4059 Watts** (~4.06 kW).\n\n📊 **Ước tính chi phí theo biểu giá EVN**:\n- Chi phí tức thời: khoảng **10,147 đ / giờ**.\n- Dự tính hóa đơn tháng: khoảng **4,018,212 đ / tháng** (đã bao gồm các thiết bị chạy luân phiên).\n\nBình nóng lạnh HEATER_01 đang tiêu thụ 2487W và máy lạnh AC_01 đang dùng 1264W. Bạn có thể bật Chế độ Tiết Kiệm (Eco) để giảm bớt hóa đơn nhé!",
+        "timestamp": "21:39"
+      },
+      {
+        "id": "msg-1787323176110",
+        "sender": "user",
+        "text": "tra giúp mình mức điện só 4 bao nhiêu 1 kw",
+        "timestamp": "21:39"
+      },
+      {
+        "id": "msg-bot-1787323182194",
+        "sender": "assistant",
+        "text": "Theo hướng dẫn của hệ thống **Veteran Home** (SOP_IEEE_METER_01_Power_Surge_Electrical_Safety.md):\n\n## 1. Đặc Tính Kỹ Thuật Đồng Hồ Đo Điện Tổng\n\nThiết bị **`METER_01`** chịu trách nhiệm giám sát toàn bộ phụ tải điện năng đầu vào của căn hộ/tòa nhà, kết nối trực tiếp với rơ-le ngắt nguồn thông minh (Smart Circuit Breaker):\n\n* **Thông số đo lường:** Điện áp lưới (V [Volt]), Dòng điện tổng (I [Ampe]), Công suất tiêu thụ tức thời (P [Watt]), Tần số lưới (f = 50.0 Hz).\n\n*Ghi chú:* Hệ thống đang bảo vệ và giám sát an toàn căn hộ 24/7.",
+        "timestamp": "21:39"
+      },
+      {
+        "id": "msg-1787323229356",
+        "sender": "user",
+        "text": "nhiệt độ bây giừo là bao nhiêu",
+        "timestamp": "21:40"
+      },
+      {
+        "id": "msg-bot-1787323229373",
+        "sender": "assistant",
+        "text": "Dạ thưa bạn, bây giờ là **21:40** (Thứ Sáu, ngày 21 tháng 08 năm 2026) - Múi giờ Việt Nam (GMT+7).\n\nHiện tại căn hộ của mình đang hoạt động an toàn và thoải mái: Nhiệt độ phòng khách là **20.8°C**, chất lượng không khí **629 ppm** và tổng công suất điện là **3940W**.\n\nBạn có cần tôi hỗ trợ hẹn giờ hay kiểm tra thiết bị nào trong nhà không ạ?",
+        "timestamp": "21:40"
+      }
+    ],
+    "role": "homeowner",
+    "timestamp": 1787323229.3773887
+  }
+}

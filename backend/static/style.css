@@ -1,0 +1,326 @@
+/* ==========================================================================
+   AEGIS-IOT DESIGN SYSTEM - COZY SMART HOME MINIMALISM ("TRẦM ẤM GIA ĐÌNH")
+   Warm Monochrome, Oatmeal Linen Canvas, Terracotta/Amber Accents, Crisp Borders
+   ========================================================================== */
+
+:root {
+  /* Warm Home Light Mode Palette (Default) */
+  --bg-app: #FDFBF7;           /* Warm Oatmeal / Bone Canvas */
+  --bg-surface: #FFFFFF;       /* Pure White Card */
+  --bg-surface-elevated: #F8F5EE; /* Warm Linen */
+  --bg-subtle: #F3EFE6;        /* Subtle Warm Sand */
+  --bg-muted: #EAE3D2;         /* Muted Warm Stone */
+  
+  --border-subtle: #E8E2D5;     /* Crisp 1px Warm Border */
+  --border-strong: #D5CCBC;     /* Focused Warm Border */
+  --border-focus: #B45309;      /* Warm Honey Amber Focus */
+  
+  --text-primary: #1C1917;      /* Warm Off-Black Wood Charcoal */
+  --text-secondary: #57534E;    /* Warm Stone Gray */
+  --text-muted: #78716C;        /* Muted Warm Slate */
+  --text-faint: #A8A29E;        /* Faint Warm Sand */
+
+  /* Cozy Semantic Accents (Warm & Safe) */
+  --accent-amber: #D97706;      /* Warm Honey / Core Focus */
+  --accent-terracotta: #C2410C; /* Terracotta Clay / Thermal Alert */
+  --accent-moss: #15803D;       /* Warm Moss / Healthy Status */
+  --accent-wood: #78350F;       /* Rich Warm Timber */
+  --accent-indigo: #4338CA;     /* Deep Evening Indigo */
+
+  /* Pastels for Badges */
+  --pastel-amber: #FEF3C7;
+  --pastel-amber-text: #92400E;
+  --pastel-terracotta: #FFEDD5;
+  --pastel-terracotta-text: #9A3412;
+  --pastel-moss: #DCFCE7;
+  --pastel-moss-text: #166534;
+  --pastel-indigo: #E0E7FF;
+  --pastel-indigo-text: #3730A3;
+
+  --shadow-card: 0 1px 3px 0 rgba(28, 25, 23, 0.04), 0 1px 2px -1px rgba(28, 25, 23, 0.02);
+  --shadow-elevated: 0 10px 20px -5px rgba(28, 25, 23, 0.06), 0 4px 6px -4px rgba(28, 25, 23, 0.03);
+  
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark {
+  /* Warm Home Dark Mode Palette */
+  --bg-app: #151210;           /* Deep Espresso Hearth */
+  --bg-surface: #1E1A17;       /* Dark Walnut Card */
+  --bg-surface-elevated: #28231F; /* Elevated Wood Charcoal */
+  --bg-subtle: #332D28;        /* Subtle Warm Charcoal */
+  --bg-muted: #443C36;         /* Muted Dark Timber */
+  
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-focus: #F59E0B;
+  
+  --text-primary: #FAF8F5;      /* Warm Bone White */
+  --text-secondary: #D6D3D1;    /* Light Warm Stone */
+  --text-muted: #A8A29E;        /* Muted Warm Slate */
+  --text-faint: #78716C;        /* Faint Warm Sand */
+
+  --accent-amber: #F59E0B;      /* Warm Glowing Amber */
+  --accent-terracotta: #FB923C; /* Soft Terracotta */
+  --accent-moss: #4ADE80;       /* Luminous Sage/Moss */
+  --accent-wood: #D97706;
+  --accent-indigo: #818CF8;
+
+  --pastel-amber: rgba(245, 158, 11, 0.15);
+  --pastel-amber-text: #FDE68A;
+  --pastel-terracotta: rgba(251, 146, 60, 0.15);
+  --pastel-terracotta-text: #FFEDD5;
+  --pastel-moss: rgba(74, 222, 128, 0.15);
+  --pastel-moss-text: #BBF7D0;
+  --pastel-indigo: rgba(129, 140, 248, 0.15);
+  --pastel-indigo-text: #E0E7FF;
+
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 12px 30px -5px rgba(0, 0, 0, 0.6), 0 8px 12px -6px rgba(0, 0, 0, 0.4);
+}
+
+/* Base Body Surface & Ambient Warm Texture */
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  transition: background-color 0.25s var(--ease-smooth), color 0.25s var(--ease-smooth);
+}
+
+/* Subtle Warm Line Grid Background */
+.tech-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(120, 113, 108, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(120, 113, 108, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.dark .tech-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* --------------------------------------------------------------------------
+   WARM CARD PANELS & BUTTONS
+   -------------------------------------------------------------------------- */
+
+.warm-nav-pill {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  box-shadow: 
+    0 1px 2px 0 rgba(0, 0, 0, 0.03),
+    0 4px 16px -2px rgba(28, 25, 23, 0.05),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+.dark .warm-nav-pill {
+  background: rgba(24, 20, 17, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(68, 64, 60, 0.7);
+  box-shadow: 
+    0 4px 20px -2px rgba(0, 0, 0, 0.5),
+    0 1px 3px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+.nav-island-track {
+  background: rgba(231, 229, 228, 0.5);
+  border: 1px solid rgba(231, 229, 228, 0.8);
+  border-radius: 0.75rem; /* 12px */
+  padding: 0.25rem;
+}
+
+.dark .nav-island-track {
+  background: rgba(28, 25, 23, 0.6);
+  border: 1px solid rgba(68, 64, 60, 0.8);
+}
+
+.nav-tab-active {
+  background-color: #FFFFFF !important;
+  color: #1C1917 !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(231, 229, 228, 0.8) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.dark .nav-tab-active {
+  background-color: #28231F !important;
+  color: #FAF8F5 !important;
+  border: 1px solid rgba(68, 64, 60, 0.8) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+.ui-panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.875rem; /* 14px */
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
+}
+
+.ui-panel:hover {
+  border-color: var(--border-strong);
+}
+
+/* Interactive tactile buttons */
+.btn-action {
+  transition: all 0.18s var(--ease-smooth);
+}
+
+.btn-action:active {
+  transform: scale(0.97);
+}
+
+/* Tabular figures for telemetry data */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   LANGGRAPH MULTI-AGENT STATE GRAPH & LASER TRACKS
+   -------------------------------------------------------------------------- */
+
+.agent-node-box {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  transition: all 0.25s var(--ease-smooth);
+}
+
+.agent-node-box:hover {
+  border-color: var(--accent-amber);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(217, 119, 6, 0.12);
+}
+
+.dark .agent-node-box:hover {
+  box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.2);
+}
+
+.agent-node-box.node-active-thinking {
+  border-color: var(--accent-amber) !important;
+  background: rgba(217, 119, 6, 0.06) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px var(--accent-amber), 0 6px 16px -2px rgba(217, 119, 6, 0.2) !important;
+}
+
+.agent-node-box.node-completed {
+  border-color: var(--accent-moss) !important;
+  background: rgba(21, 128, 61, 0.05) !important;
+}
+
+/* SVG Connection Lines */
+.laser-track {
+  stroke: var(--border-strong);
+  stroke-dasharray: 4 4;
+  stroke: var(--accent-primary);
+  stroke-width: 2;
+  stroke-dasharray: none;
+}
+
+.laser-particle {
+  fill: var(--accent-primary);
+  transition: r 0.2s ease;
+}
+
+/* Speed Button Controller */
+.speed-btn {
+  border: 1px solid transparent;
+  color: var(--text-muted);
+}
+
+.speed-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-subtle);
+}
+
+.speed-btn.active-speed {
+  background-color: rgba(2, 132, 199, 0.1) !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--accent-primary) !important;
+  font-weight: 600;
+}
+
+.dark .speed-btn.active-speed {
+  background-color: rgba(56, 189, 248, 0.15) !important;
+  color: var(--accent-primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   TERMINAL & CONSOLE STREAM
+   -------------------------------------------------------------------------- */
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  background-color: var(--accent-primary);
+  vertical-align: middle;
+  margin-left: 2px;
+  animation: cursor-blink 0.8s step-start infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   SPARKLINE CANVAS & METRICS
+   -------------------------------------------------------------------------- */
+
+.sparkline-canvas {
+  width: 100%;
+  height: 28px;
+  display: block;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   RAG STUDIO & CITATION BADGES
+   -------------------------------------------------------------------------- */
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+  }
+}
+
+.rag-glow-box {
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+.citation-chip {
+  transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.citation-chip:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
+}

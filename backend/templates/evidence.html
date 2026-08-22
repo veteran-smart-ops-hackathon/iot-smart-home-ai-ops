@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis-IoT | Đặc Tả Công Thức Toán Học, Bằng Chứng Đối Chiếu & Trích Dẫn</title>
+    
+    <!-- Theme Initialization Script (Prevent FOUC) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans, Newsreader, JetBrains Mono, Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Scientific Formula Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    
+    <!-- Phosphor Icons Regular & Bold via CDN -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS CDN with Warm Home Theme Extensions -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Newsreader', 'serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        warm: {
+                            50: '#FDFBF7',
+                            100: '#F7F4EE',
+                            200: '#EAE3D2',
+                            300: '#D5CCBC',
+                            400: '#B0A795',
+                            500: '#8A816F',
+                            600: '#696150',
+                            700: '#4E483B',
+                            800: '#342F26',
+                            900: '#1C1917',
+                            950: '#151210',
+                        },
+                        amber: {
+                            550: '#D97706',
+                            650: '#B45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-[#FDFBF7] text-stone-900 dark:bg-[#151210] dark:text-stone-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200 selection:bg-amber-500/20 selection:text-amber-700 dark:selection:text-amber-300 tech-grid-bg">
+
+    <!-- ====================================================================
+         TOP FLOATING NAVIGATION BAR (4 DEDICATED STUDIOS)
+         ==================================================================== -->
+    <header class="sticky top-3 z-50 px-4 sm:px-6 max-w-7xl mx-auto w-full mb-3">
+        <div class="warm-nav-pill rounded-2xl px-3.5 sm:px-4 py-2 flex items-center justify-between gap-3 shadow-[0_4px_24px_-2px_rgba(28,25,23,0.06),0_1px_2px_rgba(28,25,23,0.04)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6)]">
+            
+            <!-- Brand & Identity (Full Block Clickable) -->
+            <a href="/" class="flex items-center gap-2.5 sm:gap-3 shrink-0 group cursor-pointer" title="Về Trang Chủ Aegis-IoT Dashboard">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 text-white flex items-center justify-center shadow-[0_2px_8px_rgba(217,119,6,0.3)] ring-1 ring-amber-400/30 dark:ring-amber-400/20 shrink-0 group-hover:scale-105 transition-transform">
+                    <i class="ph ph-atom text-lg font-bold"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-bold text-sm sm:text-base tracking-tight text-stone-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">AEGIS<span class="text-amber-600 dark:text-amber-400 font-extrabold">·EVIDENCE</span></span>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 text-amber-800 dark:text-amber-300 font-mono text-[9.5px] font-semibold tracking-wider">
+                            <span class="relative flex h-1.5 w-1.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
+                            </span>
+                            SCIENTIFIC MATH
+                        </span>
+                    </div>
+                    <p class="text-[10.5px] text-stone-500 dark:text-stone-400 font-mono hidden xl:block leading-tight">Nền Tảng Toán Học, Bằng Chứng Thực Nghiệm & Trích Dẫn Học Thuật</p>
+                </div>
+            </a>
+
+            <!-- 5 Dedicated Studios & User Pages Tabs - Segmented Island Control -->
+            <nav class="flex items-center bg-stone-200/50 dark:bg-stone-900/60 p-1 rounded-xl border border-stone-200/80 dark:border-stone-800/80 shadow-inner">
+                
+                <!-- Page 1: Dashboard -->
+                <a href="/" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Dashboard Giám Sát MQTT Realtime">
+                    <i class="ph ph-gauge text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">DASHBOARD</span>
+                </a>
+
+                <!-- Page 2: Multi-Agent -->
+                <a href="/agentic" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Luồng Suy Luận Multi-Agent">
+                    <i class="ph ph-tree-structure text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">MULTI-AGENT</span>
+                </a>
+
+                <!-- Page 3: RAG & SOP -->
+                <a href="/rag" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Cơ sở tri thức Qdrant & Tra cứu SOP PDF">
+                    <i class="ph ph-books text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">RAG & SOP</span>
+                </a>
+
+                <!-- Page 4: Scientific Formulas (Current Active) -->
+                <a href="/evidence" class="nav-tab-active relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-bold transition-all duration-200 select-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.5)] ring-1 ring-stone-900/5 dark:ring-white/10" title="Xem đặc tả công thức toán, bằng chứng trích dẫn và BibTeX">
+                    <i class="ph ph-atom text-base text-emerald-600 dark:text-emerald-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">BẰNG CHỨNG TOÁN</span>
+                </a>
+
+                <!-- Page 5: Cảnh Báo Email & Đăng Ký Người Nhận -->
+                <a href="/alerts" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Đăng ký & Quản lý danh sách email nhận cảnh báo sự cố">
+                    <i class="ph ph-bell-ringing text-base text-amber-500 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">CẢNH BÁO EMAIL</span>
+                </a>
+            </nav>
+
+            <!-- Utility Controls (Theme Toggle) -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <!-- Theme Toggle Button -->
+                <button id="btn-theme-toggle" title="Chuyển chế độ Sáng / Tối" class="btn-action h-9 w-9 rounded-xl bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200/80 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-white text-xs flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm shrink-0">
+                    <i class="ph ph-sun text-sm text-amber-500 dark:hidden"></i>
+                    <i class="ph ph-moon text-sm text-amber-300 hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         MAIN CONTENT: EVIDENCE & MATHEMATICAL SPECIFICATIONS
+         ==================================================================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 flex-1 w-full space-y-5 pb-12">
+
+        <!-- HEADER BANNER -->
+        <div class="ui-panel p-5 space-y-2">
+            <div class="flex items-center space-x-2 text-xs font-mono text-amber-600 dark:text-amber-400 font-bold">
+                <i class="ph ph-certificate text-base"></i>
+                <span>RIGOROUS MATHEMATICAL & SCIENTIFIC FOUNDATION</span>
+            </div>
+            <h1 class="font-display font-extrabold text-xl sm:text-2xl text-stone-900 dark:text-white">
+                Đặc Tả Công Thức Toán Học, <span class="text-amber-600 dark:text-amber-400">Bằng Chứng Đối Chiếu</span> & Trích Dẫn Khoa Học
+            </h1>
+            <p class="text-xs text-stone-600 dark:text-stone-300 max-w-3xl leading-relaxed">
+                Tất cả các mô hình trong Aegis-IoT được xây dựng trên nền tảng toán học chặt chẽ: từ bộ lọc Kalman làm mượt chuỗi dữ liệu nhiễu, thuật toán Isolation Forest phát hiện dị thường, đến hàm khoảng cách Cosine trên không gian vector 1024 chiều.
+            </p>
+        </div>
+
+        <!-- 4 INTERACTIVE MATHEMATICAL FORMULA CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Formula 1: 1D Kalman Filter -->
+            <div class="ui-panel p-5 space-y-3 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2 mb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded">LAYER 2</span>
+                            <h3 class="font-bold text-sm text-stone-900 dark:text-white">1D Discrete Kalman Filter (Làm Mượt Chuỗi Thời Gian)</h3>
+                        </div>
+                        <i class="ph ph-wave-sine text-emerald-600 text-lg"></i>
+                    </div>
+
+                    <!-- LaTeX Formulas Render -->
+                    <div class="p-3 bg-stone-50 dark:bg-stone-900/70 rounded-xl border border-stone-200/80 dark:border-stone-800 font-mono text-xs space-y-2 overflow-x-auto">
+                        <div class="text-stone-700 dark:text-stone-300">
+                            <strong>Dự đoán (Predict):</strong><br>
+                            $$\hat{x}_{k|k-1} = \hat{x}_{k-1|k-1}, \quad P_{k|k-1} = P_{k-1|k-1} + Q$$
+                        </div>
+                        <div class="text-stone-700 dark:text-stone-300 pt-1 border-t border-stone-200 dark:border-stone-800">
+                            <strong>Cập nhật (Update):</strong><br>
+                            $$K_k = \frac{P_{k|k-1}}{P_{k|k-1} + R}, \quad \hat{x}_{k|k} = \hat{x}_{k|k-1} + K_k(z_k - \hat{x}_{k|k-1})$$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Playground Slider -->
+                <div class="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-2 text-xs font-mono">
+                    <div class="flex items-center justify-between">
+                        <span class="text-stone-500">Thử nghiệm tham số nhiễu đo $R$:</span>
+                        <span id="kalman-r-val" class="font-bold text-emerald-600">0.05</span>
+                    </div>
+                    <input type="range" id="kalman-r-slider" min="0.01" max="0.5" step="0.01" value="0.05" oninput="calculateKalmanLive()" class="w-full accent-emerald-600">
+                    <div class="p-2 bg-emerald-50/70 dark:bg-emerald-950/30 rounded border border-emerald-200 dark:border-emerald-900 text-[11px] flex justify-between">
+                        <span>Giá trị đo $z_k = 78.5^\circ\text{C}$ &rarr; Kết quả làm mượt:</span>
+                        <strong id="kalman-calc-output" class="text-emerald-700 dark:text-emerald-300">77.82 °C</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formula 2: Isolation Forest Anomaly Score -->
+            <div class="ui-panel p-5 space-y-3 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2 mb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 rounded">LAYER 2</span>
+                            <h3 class="font-bold text-sm text-stone-900 dark:text-white">Isolation Forest (Độ Dị Thường $s(x, n)$)</h3>
+                        </div>
+                        <i class="ph ph-tree-view text-amber-600 text-lg"></i>
+                    </div>
+
+                    <!-- LaTeX Formulas Render -->
+                    <div class="p-3 bg-stone-50 dark:bg-stone-900/70 rounded-xl border border-stone-200/80 dark:border-stone-800 font-mono text-xs space-y-2 overflow-x-auto">
+                        <div class="text-stone-700 dark:text-stone-300">
+                            <strong>Độ dài đường dẫn trung bình $c(n)$:</strong><br>
+                            $$c(n) = 2 \ln(n - 1) + 0.5772156649 - \frac{2(n - 1)}{n}$$
+                        </div>
+                        <div class="text-stone-700 dark:text-stone-300 pt-1 border-t border-stone-200 dark:border-stone-800">
+                            <strong>Điểm dị thường (Anomaly Score):</strong><br>
+                            $$s(x, n) = 2^{-\frac{E(h(x))}{c(n)}}, \quad s \to 1 \implies \text{Dị Thường}$$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Playground Slider -->
+                <div class="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-2 text-xs font-mono">
+                    <div class="flex items-center justify-between">
+                        <span class="text-stone-500">Độ sâu đường dẫn $E(h(x))$:</span>
+                        <span id="iforest-depth-val" class="font-bold text-amber-600">3.2</span>
+                    </div>
+                    <input type="range" id="iforest-depth-slider" min="1" max="15" step="0.1" value="3.2" oninput="calculateIForestLive()" class="w-full accent-amber-600">
+                    <div class="p-2 bg-amber-50/70 dark:bg-amber-950/30 rounded border border-amber-200 dark:border-amber-900 text-[11px] flex justify-between">
+                        <span>Điểm dị thường $s(x, 256)$:</span>
+                        <strong id="iforest-calc-output" class="text-amber-700 dark:text-amber-300">0.82 (BẤT THƯỜNG CAO)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formula 3: 1024D Dense Cosine Similarity -->
+            <div class="ui-panel p-5 space-y-3 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2 mb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 rounded">LAYER 3B</span>
+                            <h3 class="font-bold text-sm text-stone-900 dark:text-white">Multilingual-E5 Dense Cosine Similarity</h3>
+                        </div>
+                        <i class="ph ph-compass text-purple-600 text-lg"></i>
+                    </div>
+
+                    <!-- LaTeX Formulas Render -->
+                    <div class="p-3 bg-stone-50 dark:bg-stone-900/70 rounded-xl border border-stone-200/80 dark:border-stone-800 font-mono text-xs space-y-2 overflow-x-auto">
+                        <div class="text-stone-700 dark:text-stone-300">
+                            <strong>Độ tương đồng Cosine trong $\mathbb{R}^{1024}$:</strong><br>
+                            $$S_C(A, B) = \frac{A \cdot B}{\|A\|_2 \|B\|_2} = \frac{\sum_{i=1}^{1024} A_i B_i}{\sqrt{\sum_{i=1}^{1024} A_i^2} \sqrt{\sum_{i=1}^{1024} B_i^2}}$$
+                        </div>
+                        <div class="text-stone-700 dark:text-stone-300 pt-1 border-t border-stone-200 dark:border-stone-800">
+                            <strong>Khoảng cách Cosine trong Qdrant:</strong><br>
+                            $$D_C(A, B) = 1 - S_C(A, B)$$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Playground Slider -->
+                <div class="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-2 text-xs font-mono">
+                    <div class="flex items-center justify-between">
+                        <span class="text-stone-500">Góc lệch giữa 2 vector $\theta$:</span>
+                        <span id="cosine-angle-val" class="font-bold text-purple-600">19.5°</span>
+                    </div>
+                    <input type="range" id="cosine-angle-slider" min="0" max="90" step="1" value="19.5" oninput="calculateCosineLive()" class="w-full accent-purple-600">
+                    <div class="p-2 bg-purple-50/70 dark:bg-purple-950/30 rounded border border-purple-200 dark:border-purple-900 text-[11px] flex justify-between">
+                        <span>Độ tương đồng Cosine $S_C$:</span>
+                        <strong id="cosine-calc-output" class="text-purple-700 dark:text-purple-300">0.942 (RẤT KHỚP)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formula 4: Robust Z-Score & IQR Outlier Filter -->
+            <div class="ui-panel p-5 space-y-3 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2 mb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 rounded">LAYER 1 & 2</span>
+                            <h3 class="font-bold text-sm text-stone-900 dark:text-white">Robust Z-Score & IQR (Lọc Ngoại Lai Thống Kê)</h3>
+                        </div>
+                        <i class="ph ph-chart-bar text-sky-600 text-lg"></i>
+                    </div>
+
+                    <!-- LaTeX Formulas Render -->
+                    <div class="p-3 bg-stone-50 dark:bg-stone-900/70 rounded-xl border border-stone-200/80 dark:border-stone-800 font-mono text-xs space-y-2 overflow-x-auto">
+                        <div class="text-stone-700 dark:text-stone-300">
+                            <strong>Z-Score chuẩn hóa:</strong><br>
+                            $$Z = \frac{x - \mu}{\sigma}, \quad |Z| > 3 \implies \text{Outlier}$$
+                        </div>
+                        <div class="text-stone-700 dark:text-stone-300 pt-1 border-t border-stone-200 dark:border-stone-800">
+                            <strong>Khoảng tứ phân vị IQR:</strong><br>
+                            $$\text{IQR} = Q_3 - Q_1, \quad [\text{Lower}, \text{Upper}] = [Q_1 - 1.5\text{IQR}, Q_3 + 1.5\text{IQR}]$$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Playground Slider -->
+                <div class="pt-3 border-t border-stone-200 dark:border-stone-800 space-y-2 text-xs font-mono">
+                    <div class="flex items-center justify-between">
+                        <span class="text-stone-500">Giá trị đo $x$ ($\mu = 26.5, \sigma = 1.2$):</span>
+                        <span id="zscore-x-val" class="font-bold text-sky-600">32.0</span>
+                    </div>
+                    <input type="range" id="zscore-x-slider" min="20" max="40" step="0.5" value="32.0" oninput="calculateZScoreLive()" class="w-full accent-sky-600">
+                    <div class="p-2 bg-sky-50/70 dark:bg-sky-950/30 rounded border border-sky-200 dark:border-sky-900 text-[11px] flex justify-between">
+                        <span>Z-Score tính toán:</span>
+                        <strong id="zscore-calc-output" class="text-sky-700 dark:text-sky-300">4.58 (NGOẠI LAI VƯỢT $3\sigma$)</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ACADEMIC CITATIONS & BIBTEX EXPORT -->
+        <div class="ui-panel p-5 space-y-3">
+            <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2">
+                <div class="flex items-center space-x-2">
+                    <i class="ph ph-quotes text-amber-600 text-lg"></i>
+                    <h3 class="font-bold text-sm text-stone-900 dark:text-white font-mono uppercase">Trích Dẫn Học Thuật & BibTeX Export (Academic References)</h3>
+                </div>
+                <button onclick="copyBibtex()" class="btn-action px-3 py-1 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-700 dark:text-stone-300 text-xs font-mono rounded border border-stone-200 dark:border-stone-700 flex items-center space-x-1">
+                    <i class="ph ph-copy"></i>
+                    <span>SAO CHÉP BIBTEX</span>
+                </button>
+            </div>
+
+            <!-- Code Block with BibTeX -->
+            <div class="bg-stone-950 text-stone-100 p-4 rounded-xl border border-stone-800 font-mono text-xs overflow-x-auto leading-relaxed">
+<pre id="bibtex-content" class="text-amber-300">@article{kalman1960new,
+  title={A new approach to linear filtering and prediction problems},
+  author={Kalman, Rudolph Emil},
+  journal={Journal of Basic Engineering},
+  volume={82},
+  number={1},
+  pages={35--45},
+  year={1960}
+}
+
+@inproceedings{liu2008isolation,
+  title={Isolation forest},
+  author={Liu, Fei Tony and Ting, Kai Ming and Zhou, Zhi-Hua},
+  booktitle={2008 Eighth IEEE International Conference on Data Mining},
+  pages={413--422},
+  year={2008},
+  organization={IEEE}
+}
+
+@article{wang2024multilingual,
+  title={Multilingual-E5: Text Embeddings for Universal Information Retrieval},
+  author={Wang, Liang and Yang, Nan and Huang, Shaohan and Jiao, Binxing and Yang, Linjun and Jiang, Daxin and Majumder, Rangan and Wei, Furu},
+  journal={arXiv preprint arXiv:2402.05672},
+  year={2024}
+}</pre>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- App JavaScript Logic -->
+    <script src="/static/models.js"></script>
+</body>
+</html>

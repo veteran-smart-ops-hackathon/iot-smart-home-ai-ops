@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis-IoT | Đăng Ký Nhận Cảnh Báo Sự Cố Qua Email (Đa Người Nhận)</title>
+    
+    <!-- Theme Initialization Script (Prevent FOUC) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans, Outfit, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons Regular & Bold via CDN -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS CDN with Warm Theme Extensions -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        warm: {
+                            50: '#FDFBF7',
+                            100: '#F7F4EE',
+                            200: '#EAE3D2',
+                            300: '#D5CCBC',
+                            400: '#B0A795',
+                            500: '#8A816F',
+                            600: '#696150',
+                            700: '#4E483B',
+                            800: '#342F26',
+                            900: '#1C1917',
+                            950: '#151210',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-[#FDFBF7] text-stone-900 dark:bg-[#151210] dark:text-stone-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200 selection:bg-amber-500/20 selection:text-amber-700 dark:selection:text-amber-300 tech-grid-bg">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-3 z-50 px-4 sm:px-6 max-w-7xl mx-auto w-full mb-3">
+        <div class="warm-nav-pill rounded-2xl px-3.5 sm:px-4 py-2 flex items-center justify-between gap-3 shadow-[0_4px_24px_-2px_rgba(28,25,23,0.06),0_1px_2px_rgba(28,25,23,0.04)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6)]">
+            
+            <!-- Brand & Identity (Full Block Clickable) -->
+            <a href="/" class="flex items-center gap-2.5 sm:gap-3 shrink-0 group cursor-pointer" title="Về Trang Chủ Aegis-IoT Dashboard">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 text-white flex items-center justify-center shadow-[0_2px_8px_rgba(217,119,6,0.3)] ring-1 ring-amber-400/30 dark:ring-amber-400/20 shrink-0 group-hover:scale-105 transition-transform">
+                    <i class="ph ph-envelope-simple-open text-lg font-bold"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-bold text-sm sm:text-base tracking-tight text-stone-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">AEGIS<span class="text-amber-600 dark:text-amber-400 font-extrabold">·NOTIFY</span></span>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400 font-mono text-[9.5px] font-semibold tracking-wider">
+                            <span class="relative flex h-1.5 w-1.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                            </span>
+                            MULTI-RECIPIENT
+                        </span>
+                    </div>
+                    <p class="text-[10.5px] text-stone-500 dark:text-stone-400 font-mono hidden xl:block leading-tight">Đăng Ký & Quản Lý Cảnh Báo Sự Cố Cho Gia Đình</p>
+                </div>
+            </a>
+
+            <!-- 5 Dedicated Studios & User Pages Tabs - Segmented Island Control -->
+            <nav class="flex items-center bg-stone-200/50 dark:bg-stone-900/60 p-1 rounded-xl border border-stone-200/80 dark:border-stone-800/80 shadow-inner">
+                
+                <!-- Page 1: Dashboard -->
+                <a href="/" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Dashboard Giám Sát MQTT Realtime">
+                    <i class="ph ph-gauge text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">DASHBOARD</span>
+                </a>
+
+                <!-- Page 2: Multi-Agent -->
+                <a href="/agentic" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Xem luồng suy luận LangGraph Multi-Agent">
+                    <i class="ph ph-tree-structure text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">MULTI-AGENT</span>
+                </a>
+
+                <!-- Page 3: RAG & SOP -->
+                <a href="/rag" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Cơ sở tri thức Qdrant & Tra cứu SOP PDF">
+                    <i class="ph ph-books text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">RAG & SOP</span>
+                </a>
+
+                <!-- Page 4: Scientific Formulas & Evidence -->
+                <a href="/evidence" class="relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60 transition-all duration-200 select-none" title="Xem đặc tả công thức toán, bằng chứng trích dẫn và BibTeX">
+                    <i class="ph ph-atom text-base text-stone-500 dark:text-stone-400 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">BẰNG CHỨNG TOÁN</span>
+                </a>
+
+                <!-- Page 5: Cảnh Báo Email (Current Active) -->
+                <a href="/alerts" class="nav-tab-active relative flex items-center justify-center gap-1.5 h-8 px-2 sm:px-3 rounded-lg text-xs font-mono font-bold transition-all duration-200 select-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.5)] ring-1 ring-stone-900/5 dark:ring-white/10" title="Đăng ký & Quản lý danh sách email nhận cảnh báo sự cố">
+                    <i class="ph ph-bell-ringing text-base text-amber-500 shrink-0"></i>
+                    <span class="hidden sm:inline tracking-tight">CẢNH BÁO EMAIL</span>
+                </a>
+            </nav>
+
+            <!-- Utility Controls & Actions -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <!-- Theme Toggle Button -->
+                <button id="btn-theme-toggle" title="Chuyển chế độ Sáng / Tối" class="btn-action h-9 w-9 rounded-xl bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200/80 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-white text-xs flex items-center justify-center transition-all duration-200 active:scale-95 shadow-sm shrink-0">
+                    <i class="ph ph-sun text-sm text-amber-500 dark:hidden"></i>
+                    <i class="ph ph-moon text-sm text-amber-300 hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 flex-1 w-full flex flex-col justify-center py-6 sm:py-10 space-y-6">
+
+        <!-- Central Card Box -->
+        <div class="ui-panel p-6 sm:p-10 shadow-xl border border-stone-200/80 dark:border-stone-800 space-y-6 relative overflow-hidden bg-white/90 dark:bg-stone-900/90 backdrop-blur-md">
+            
+            <!-- Ambient Glow Effect -->
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Card Header -->
+            <div class="text-center space-y-3">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono font-semibold">
+                    <i class="ph ph-users text-amber-600 dark:text-amber-400"></i>
+                    <span>TỰ ĐỘNG GỬI CẢNH BÁO TỚI NHIỀU EMAIL ĐỒNG THỜI</span>
+                </div>
+
+                <h1 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-stone-900 dark:text-white tracking-tight leading-tight">
+                    Đăng Ký Email Nhận <span class="text-amber-600 dark:text-amber-400">Cảnh Báo Tức Thì</span>
+                </h1>
+
+                <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-xl mx-auto leading-relaxed">
+                    Bạn có thể tự do nhập <strong>1 hoặc nhiều email</strong> (phân tách bằng dấu phẩy). Khi có bất thường, hệ thống sẽ tự động phát email cảnh báo kèm kế hoạch xử lý và <strong>nút phê duyệt hành động</strong> đến tất cả người nhận.
+                </p>
+            </div>
+
+            <!-- Multi-Email Input Form -->
+            <form id="subscribe-form" onsubmit="handleSubscribe(event)" class="space-y-4 max-w-xl mx-auto">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label for="user-email" class="block text-xs font-mono font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                            Nhập Danh Sách Email Nhận Cảnh Báo:
+                        </label>
+                        <span class="text-[11px] text-stone-400 font-mono">Cách nhau bằng dấu phẩy (,)</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-stone-400">
+                            <i class="ph ph-envelope-simple text-xl"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="user-email" 
+                            name="email" 
+                            required 
+                            placeholder="chủ_nhà@gmail.com, ky_su@smarthome.ai, quan_ly@domain.com" 
+                            class="w-full pl-12 pr-4 py-3.5 text-sm sm:text-base font-mono rounded-2xl border-2 border-stone-300 dark:border-stone-700 bg-stone-50/80 dark:bg-stone-800/80 text-stone-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 focus:bg-white dark:focus:bg-stone-900 shadow-inner transition-all"
+                        >
+                    </div>
+                </div>
+
+                <!-- Active Recipients Tags Display -->
+                <div id="active-recipients-box" class="space-y-2 pt-1">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-stone-500 dark:text-stone-400 font-semibold flex items-center gap-1.5">
+                            <i class="ph ph-paper-plane-right text-amber-500"></i>
+                            <span>Email Đang Nhận Cảnh Báo (<span id="recipient-count-num">1</span>):</span>
+                        </span>
+                        <span class="text-[10.5px] text-stone-400">Nhấn dấu x để xóa nhanh</span>
+                    </div>
+                    <div id="recipients-tags-container" class="flex flex-wrap gap-2 p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 min-h-[44px]">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <button 
+                    type="submit" 
+                    id="btn-submit" 
+                    class="w-full btn-action py-3.5 px-6 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-mono font-bold text-sm sm:text-base shadow-lg shadow-amber-600/20 flex items-center justify-center space-x-2 transition-all transform active:scale-98"
+                >
+                    <i class="ph ph-paper-plane-tilt text-lg"></i>
+                    <span>LƯU & PHÁT CẢNH BÁO TỚI TẤT CẢ EMAIL NGAY ➔</span>
+                </button>
+            </form>
+
+            <!-- Success Confirmation Box (Hidden initially) -->
+            <div id="success-box" class="hidden p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 space-y-4 max-w-xl mx-auto animate-in fade-in zoom-in duration-200">
+                <div class="flex items-start space-x-3">
+                    <div class="h-10 w-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                        <i class="ph ph-check-circle text-2xl font-bold"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h4 class="font-display font-bold text-sm sm:text-base text-emerald-900 dark:text-emerald-300">
+                            Đã Phát Email Cảnh Báo Về Toàn Bộ Hộp Thư Thành Công!
+                        </h4>
+                        <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                            Email cảnh báo kèm kế hoạch xử lý sự cố đã được gửi đồng thời đến:
+                        </p>
+                        <div id="confirmed-emails-list" class="flex flex-wrap gap-1.5 pt-1">
+                            <!-- Dynamic Tag List -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Metadata Badge -->
+                <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-emerald-100 dark:border-emerald-900/50 flex flex-wrap items-center justify-between text-xs font-mono gap-2">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-stone-400">Mã thông báo:</span>
+                        <span id="notif-id-badge" class="font-bold text-stone-800 dark:text-stone-200">NOTIF-XXXX</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-stone-400">Chế độ:</span>
+                        <span id="delivery-mode-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">SIMULATED</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Quick Buttons -->
+                <div class="flex flex-col sm:flex-row items-center gap-2 pt-1">
+                    <a href="/" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-stone-200 text-white dark:text-stone-900 text-xs font-mono font-bold flex items-center justify-center space-x-1.5 shadow-sm">
+                        <i class="ph ph-gauge text-base"></i>
+                        <span>Mở Bảng Điều Khiển Dashboard</span>
+                    </a>
+                    <button onclick="resetSubscribeForm()" class="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-stone-200/80 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-mono font-semibold">
+                        Thêm / Chỉnh Sửa Email Khác
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3 Core Feature Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-stone-100 dark:border-stone-800/80 text-xs">
+                <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-800 space-y-1">
+                    <div class="flex items-center space-x-1.5 font-bold text-stone-800 dark:text-stone-200 font-mono">
+                        <i class="ph ph-users-three text-amber-500"></i>
+                        <span>Đa Người Nhận</span>
+                    </div>
+                    <p class="text-[11px] text-stone-500 leading-snug">Gửi đồng thời tới cả gia đình, ban quản lý và kỹ sư vận hành.</p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-800 space-y-1">
+                    <div class="flex items-center space-x-1.5 font-bold text-stone-800 dark:text-stone-200 font-mono">
+                        <i class="ph ph-shield-check text-emerald-500"></i>
+                        <span>Quy Trình Xử Lý SOP</span>
+                    </div>
+                    <p class="text-[11px] text-stone-500 leading-snug">Trích dẫn tiêu chuẩn an toàn và kế hoạch từng bước cụ thể.</p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-800 space-y-1">
+                    <div class="flex items-center space-x-1.5 font-bold text-stone-800 dark:text-stone-200 font-mono">
+                        <i class="ph ph-cursor-click text-sky-500"></i>
+                        <span>Duyệt Lệnh Từ Xa</span>
+                    </div>
+                    <p class="text-[11px] text-stone-500 leading-snug">Bấm nút từ email để ngắt nguồn khẩn cấp qua MQTT an toàn.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md px-4 sm:px-6 py-3 text-center text-xs font-mono text-stone-500">
+        <span>Aegis-IoT Operations Center • Multi-Agent Autonomous Smart Home System</span>
+    </footer>
+
+    <!-- Subscribe Script -->
+    <script>
+        // Theme toggle
+        document.getElementById('btn-theme-toggle')?.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        let currentRecipients = [];
+
+        // Load current recipient emails
+        window.addEventListener('DOMContentLoaded', async () => {
+            await fetchAndRenderRecipients();
+        });
+
+        async function fetchAndRenderRecipients() {
+            try {
+                const res = await fetch('/api/notifications/settings');
+                const data = await res.json();
+                currentRecipients = data.recipient_emails || (data.recipient_email ? data.recipient_email.split(',') : ['user@smarthome.ai']);
+                renderRecipientTags();
+
+                const input = document.getElementById('user-email');
+                if (input && currentRecipients.length > 0) {
+                    input.value = currentRecipients.join(', ');
+                }
+            } catch (e) {
+                console.error('Lỗi tải danh sách người nhận:', e);
+            }
+        }
+
+        function renderRecipientTags() {
+            const container = document.getElementById('recipients-tags-container');
+            const countNum = document.getElementById('recipient-count-num');
+            if (countNum) countNum.innerText = currentRecipients.length;
+
+            if (!container) return;
+
+            if (currentRecipients.length === 0) {
+                container.innerHTML = `<span class="text-xs text-stone-400 font-mono italic">Chưa có email nào. Hãy nhập email vào ô trên.</span>`;
+                return;
+            }
+
+            container.innerHTML = currentRecipients.map((email, idx) => `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono bg-amber-100/80 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800/80 shadow-xs">
+                    <i class="ph ph-envelope-simple text-xs text-amber-600 dark:text-amber-400"></i>
+                    <span>${email}</span>
+                    <button type="button" onclick="removeEmail('${email}')" class="hover:text-rose-600 dark:hover:text-rose-400 ml-0.5 p-0.5 rounded transition-colors" title="Xóa email này">
+                        <i class="ph ph-x text-xs"></i>
+                    </button>
+                </span>
+            `).join('');
+        }
+
+        async function removeEmail(email) {
+            try {
+                const res = await fetch('/api/notifications/recipients/remove', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                const data = await res.json();
+                currentRecipients = data.settings?.recipient_emails || [];
+                renderRecipientTags();
+                const input = document.getElementById('user-email');
+                if (input) input.value = currentRecipients.join(', ');
+            } catch (e) {
+                console.error('Lỗi khi xóa email:', e);
+            }
+        }
+
+        async function handleSubscribe(e) {
+            e.preventDefault();
+            const input = document.getElementById('user-email');
+            const raw = input ? input.value.trim() : '';
+            const btn = document.getElementById('btn-submit');
+            const form = document.getElementById('subscribe-form');
+            const successBox = document.getElementById('success-box');
+
+            if (!raw) {
+                alert('Vui lòng nhập ít nhất một địa chỉ email.');
+                return;
+            }
+
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = `<i class="ph ph-circle-notch animate-spin text-lg"></i><span>ĐANG LƯU & GỬI CẢNH BÁO...</span>`;
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/subscribe-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: raw })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.status === 'SUCCESS') {
+                    form.classList.add('hidden');
+                    successBox.classList.remove('hidden');
+
+                    const emailsList = document.getElementById('confirmed-emails-list');
+                    const notifIdEl = document.getElementById('notif-id-badge');
+                    const modeEl = document.getElementById('delivery-mode-badge');
+
+                    if (emailsList && data.recipient_emails) {
+                        emailsList.innerHTML = data.recipient_emails.map(em => `
+                            <span class="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-xs font-bold border border-emerald-300 dark:border-emerald-800">
+                                ✉️ ${em}
+                            </span>
+                        `).join('');
+                    }
+                    if (notifIdEl && data.notification) notifIdEl.innerText = data.notification.notification_id || 'NOTIF-OK';
+                    if (modeEl && data.notification) {
+                        modeEl.innerText = data.notification.delivery_mode === 'SMTP_LIVE' ? 'LIVE SMTP' : 'MÔ PHỎNG AN TOÀN (SIMULATED)';
+                    }
+                } else {
+                    alert(data.error || 'Có lỗi xảy ra khi gửi email. Vui lòng thử lại.');
+                    btn.innerHTML = origHtml;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error('Lỗi đăng ký email:', err);
+                alert('Không thể kết nối đến máy chủ. Vui lòng thử lại.');
+                btn.innerHTML = origHtml;
+                btn.disabled = false;
+            }
+        }
+
+        function resetSubscribeForm() {
+            const form = document.getElementById('subscribe-form');
+            const successBox = document.getElementById('success-box');
+            const btn = document.getElementById('btn-submit');
+            const input = document.getElementById('user-email');
+
+            if (form) form.classList.remove('hidden');
+            if (successBox) successBox.classList.add('hidden');
+            if (btn) {
+                btn.innerHTML = `<i class="ph ph-paper-plane-tilt text-lg"></i><span>LƯU & PHÁT CẢNH BÁO TỚI TẤT CẢ EMAIL NGAY ➔</span>`;
+                btn.disabled = false;
+            }
+            if (input) {
+                input.focus();
+                input.select();
+            }
+            fetchAndRenderRecipients();
+        }
+    </script>
+</body>
+</html>
