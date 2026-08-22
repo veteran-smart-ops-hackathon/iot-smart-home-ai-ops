@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mqtt-gateway": {
+      "command": "python",
+      "args": ["-m", "agentic.mcp_server"],
+      "env": {
+        "MQTT_BROKER_URL": "${MQTT_BROKER_URL}",
+        "RABBITMQ_URI": "${RABBITMQ_URI}"
+      }
+    }
+  }
+}

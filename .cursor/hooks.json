@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "bash scripts/pre_tool_guard.sh"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "bash scripts/post_tool_feedback.sh"
+      }
+    ]
+  }
+}

@@ -80,8 +80,6 @@ dashboard/data/chat_sessions_db.json
 Thumbs.db
 .idea/
 .vscode/
-.cursor/
-.agents/
 .taste_skills_temp/
 *.log
 *.tmp
