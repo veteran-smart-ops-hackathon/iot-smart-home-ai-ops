@@ -1,0 +1,16 @@
+version: '3.8'
+# ==============================================================================
+# 🛠️ Aegis-IoT Development Compose (Hot-Reload & Live Volume Mount)
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+# ==============================================================================
+
+services:
+  app:
+    command: ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes:
+      - .:/app
+      - /app/frontend/node_modules
+      - ./frontend/dist:/app/frontend/dist
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1

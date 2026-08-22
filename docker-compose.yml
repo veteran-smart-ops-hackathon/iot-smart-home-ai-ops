@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # ==============================================================================
+  # 🗄️ 1. Operational TSDB (PostgreSQL 16 + TimescaleDB HA)
+  # ==============================================================================
+  timescaledb:
+    image: timescale/timescaledb-ha:pg16
+    container_name: iot_timescaledb
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_secret
+      POSTGRES_DB: iot_ground_truth
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ==============================================================================
+  # 🎯 2. Vector Database (Qdrant)
+  # ==============================================================================
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: iot_qdrant
+    restart: always
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 3 bash -c '</dev/tcp/localhost/6333' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ==============================================================================
+  # 🐰 3. Message Broker (RabbitMQ với Management Web Dashboard)
+  # ==============================================================================
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: iot_rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"     # AMQP Protocol cho Microservices
+      - "15672:15672"   # Management Web UI (http://localhost:15672)
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==============================================================================
+  # 📡 4. MQTT Broker (Eclipse Mosquitto)
+  # ==============================================================================
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: iot_mosquitto
+    restart: always
+    ports:
+      - "1883:1883"     # MQTT Protocol
+      - "9001:9001"     # MQTT qua WebSockets
+    volumes:
+      - ./database/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+  # ==============================================================================
+  # 🚀 5. Multi-Agent & Dashboard Application (FastAPI + React 19 SPA)
+  # ==============================================================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: iot_app
+    restart: always
+    command: ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - TIMESCALE_URL=postgresql+asyncpg://postgres:postgres_secret@timescaledb:5432/iot_ground_truth
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672/
+      - MQTT_BROKER_HOST=mosquitto
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USE_TLS=false
+      - MQTT_TRANSPORT=tcp
+      - DASHBOARD_BASE_URL=${DASHBOARD_BASE_URL:-http://localhost:8000}
+    volumes:
+      - chat_data:/app/backend/data
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+
+volumes:
+  timescaledb_data:
+  qdrant_data:
+  rabbitmq_data:
+  mosquitto_data:
+  mosquitto_log:
+  chat_data:
+

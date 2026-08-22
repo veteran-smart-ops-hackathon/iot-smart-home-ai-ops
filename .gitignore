@@ -1,0 +1,86 @@
+# ==============================================================================
+# 🔒 Environment Variables & Secrets (DO NOT COMMIT SENSITIVE KEYS)
+# ==============================================================================
+.env
+.env.*
+*.env
+!.env.example
+Api Key*.md
+api_key*.md
+*api_key*
+smarthome_telemetry_*.json
+harness-report.md
+
+# ==============================================================================
+# 🐍 Python Artifacts & Caches
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual Environments
+venv/
+.venv/
+ENV/
+env/
+
+# ==============================================================================
+# ⚛️ Frontend & Node
+# ==============================================================================
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/logs/
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# ==============================================================================
+# 🗄️ Database & Storage Runtime Volumes
+# ==============================================================================
+*.sqlite3
+*.db
+timescaledb_data/
+qdrant_data/
+rabbitmq_data/
+mosquitto_data/
+mosquitto_log/
+dashboard/data/chat_sessions_db.json
+
+# ==============================================================================
+# 💻 IDE & OS Metadata
+# ==============================================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.cursor/
+.agents/
+.taste_skills_temp/
+*.log
+*.tmp
