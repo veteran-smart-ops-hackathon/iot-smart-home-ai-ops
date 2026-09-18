@@ -43,6 +43,10 @@ export const AlertsView: React.FC = () => {
   const [smtpHost, setSmtpHost] = useState('smtp.gmail.com');
   const [smtpPort, setSmtpPort] = useState(587);
   const [smtpFromEmail, setSmtpFromEmail] = useState('veteran-home@smarthome.ai');
+  const [smtpPassword, setSmtpPassword] = useState('');
+  const [showSmtpSettings, setShowSmtpSettings] = useState(false);
+  const [isVerifyingSmtp, setIsVerifyingSmtp] = useState(false);
+  const [smtpVerifyResult, setSmtpVerifyResult] = useState<{ success: boolean; message?: string; error?: string; hint?: string } | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
@@ -60,7 +64,7 @@ export const AlertsView: React.FC = () => {
         setSmtpConfigured(data.smtp_configured ?? false);
         setSmtpHost(data.smtp_host || 'smtp.gmail.com');
         setSmtpPort(data.smtp_port || 587);
-        setSmtpFromEmail(data.smtp_from_email || 'veteran-home@smarthome.ai');
+        setSmtpFromEmail(data.from_email || data.smtp_from_email || 'nvmtamm@gmail.com');
       }
     } catch (err) {
       console.error('Failed to fetch notification settings:', err);
@@ -192,21 +196,25 @@ export const AlertsView: React.FC = () => {
         body: JSON.stringify({})
       });
       const data = await res.json();
-      if (res.ok && data.status === 'SUCCESS') {
+      if (res.ok && (data.status === 'SENT' || data.status === 'SIMULATED' || data.status === 'SUCCESS')) {
         sound.playSuccess();
         if (data.notification) {
           setLastNotification(data.notification);
         }
+        const isLive = data.delivery_mode === 'SMTP_LIVE' && data.status === 'SENT';
         setStatusMessage({
           type: 'success',
-          text: `Đã gửi email thử nghiệm tới ${recipientEmails.length} người nhận thành công!`
+          text: isLive
+            ? `🎉 Đã gửi email thử nghiệm thành công qua Google SMTP tới ${recipientEmails.length} người nhận!`
+            : `📬 Đã phát email thử nghiệm tới ${recipientEmails.length} người nhận (Chế độ: ${data.delivery_mode}).`
         });
         fetchHistory();
       } else {
         sound.playAlarm();
+        const err = data.notification?.error_message || data.error || 'Lỗi khi gửi email thử nghiệm.';
         setStatusMessage({
           type: 'error',
-          text: data.error || 'Lỗi khi gửi email thử nghiệm.'
+          text: `❌ ${err} 👉 Vui lòng kiểm tra lại Mật khẩu ứng dụng 16 ký tự của Gmail ở phần Cấu hình SMTP.`
         });
       }
     } catch (err) {
@@ -217,6 +225,74 @@ export const AlertsView: React.FC = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Verify and Save SMTP Configuration
+  const handleVerifyAndSaveSmtp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const userClean = smtpFromEmail.trim();
+    const pwdClean = smtpPassword.trim();
+    if (!userClean || !pwdClean) {
+      setSmtpVerifyResult({
+        success: false,
+        error: 'Vui lòng nhập đầy đủ Email người gửi và Mật khẩu ứng dụng 16 ký tự.'
+      });
+      return;
+    }
+    sound.playClick();
+    setIsVerifyingSmtp(true);
+    setSmtpVerifyResult(null);
+    try {
+      // 1. Verify SMTP handshake
+      const vRes = await fetch('/api/notifications/verify-smtp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          smtp_user: userClean,
+          smtp_password: pwdClean,
+          smtp_host: smtpHost,
+          smtp_port: smtpPort
+        })
+      });
+      const vData = await vRes.json();
+      if (!vRes.ok || !vData.success) {
+        sound.playAlarm();
+        setSmtpVerifyResult({
+          success: false,
+          error: vData.error || 'Xác thực Google SMTP thất bại.',
+          hint: vData.hint
+        });
+        return;
+      }
+      // 2. Persist to backend and .env
+      await fetch('/api/notifications/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          smtp_user: userClean,
+          smtp_password: vData.valid_password || pwdClean,
+          smtp_from_email: userClean,
+          smtp_host: smtpHost,
+          smtp_port: smtpPort,
+          enabled: true
+        })
+      });
+      sound.playSuccess();
+      setSmtpConfigured(true);
+      setSmtpPassword('');
+      setSmtpVerifyResult({
+        success: true,
+        message: '🎉 Kết nối máy chủ Google SMTP thành công 100%! Cấu hình đã được lưu vĩnh viễn.'
+      });
+    } catch {
+      sound.playAlarm();
+      setSmtpVerifyResult({
+        success: false,
+        error: 'Không thể kết nối tới máy chủ khi kiểm tra SMTP.'
+      });
+    } finally {
+      setIsVerifyingSmtp(false);
     }
   };
 
@@ -369,15 +445,83 @@ export const AlertsView: React.FC = () => {
               </div>
             </form>
 
-            {/* SMTP Information Details */}
-            <div className="pt-3 border-t border-stone-200/80 dark:border-stone-800 text-[11px] font-mono text-stone-500 dark:text-stone-400 space-y-1">
+            {/* SMTP Information Details & Configuration */}
+            <div className="pt-3 border-t border-stone-200/80 dark:border-stone-800 text-[11px] font-mono text-stone-500 dark:text-stone-400 space-y-2">
               <div className="flex items-center justify-between">
                 <span>SMTP Host: <strong className="text-stone-700 dark:text-stone-300">{smtpHost}:{smtpPort}</strong></span>
                 <span>Người gửi: <strong className="text-stone-700 dark:text-stone-300">{smtpFromEmail}</strong></span>
               </div>
-              <p className="text-[10px] text-stone-400 italic">
-                * Khi chưa thiết lập mật khẩu ứng dụng Gmail trong biến môi trường SMTP, hệ thống tự động ghi nhận mô phỏng chuẩn xác 100% không làm gián đoạn luồng vận hành.
-              </p>
+              <button
+                type="button"
+                onClick={() => setShowSmtpSettings(!showSmtpSettings)}
+                className="text-amber-600 dark:text-amber-400 hover:underline font-bold text-xs flex items-center gap-1 cursor-pointer"
+              >
+                <span>⚙️ Cấu Hình Mật Khẩu Ứng Dụng Gmail (Google SMTP)</span>
+                <span>{showSmtpSettings ? '▲' : '▼'}</span>
+              </button>
+
+              {showSmtpSettings && (
+                <div className="mt-2 p-3.5 rounded-xl bg-amber-50/50 dark:bg-stone-950/80 border border-amber-500/20 space-y-3">
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-stone-600 dark:text-stone-400 mb-1">
+                      Tài khoản Gmail người gửi:
+                    </label>
+                    <input
+                      type="email"
+                      value={smtpFromEmail}
+                      onChange={(e) => setSmtpFromEmail(e.target.value)}
+                      placeholder="nvmtamm@gmail.com"
+                      className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs text-stone-900 dark:text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-stone-600 dark:text-stone-400 mb-1">
+                      Mật khẩu ứng dụng 16 ký tự của Google:
+                    </label>
+                    <input
+                      type="password"
+                      value={smtpPassword}
+                      onChange={(e) => setSmtpPassword(e.target.value)}
+                      placeholder="16 chữ số từ Google Account (App passwords)"
+                      className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs text-stone-900 dark:text-white"
+                    />
+                  </div>
+
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={isVerifyingSmtp || !smtpFromEmail.trim() || !smtpPassword.trim()}
+                    onClick={handleVerifyAndSaveSmtp}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs font-bold"
+                  >
+                    {isVerifyingSmtp ? 'ĐANG XÁC THỰC GOOGLE SMTP...' : 'KIỂM TRA & LƯU CẤU HÌNH GMAIL'}
+                  </Button>
+
+                  {smtpVerifyResult && (
+                    <div className={`p-2 rounded-lg text-[11px] leading-relaxed border ${
+                      smtpVerifyResult.success
+                        ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300'
+                        : 'bg-red-50 dark:bg-red-950/60 text-red-800 dark:text-red-300 border-red-300'
+                    }`}>
+                      <div className="font-bold">{smtpVerifyResult.message || smtpVerifyResult.error}</div>
+                      {smtpVerifyResult.hint && (
+                        <div className="mt-1 text-[10px] text-stone-600 dark:text-stone-400">
+                          👉 {smtpVerifyResult.hint}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="text-[10px] text-stone-500 space-y-0.5">
+                    <p className="font-bold text-stone-700 dark:text-stone-300">📖 4 Bước lấy Mật khẩu ứng dụng Gmail:</p>
+                    <p>1. Vào <strong>myaccount.google.com/security</strong></p>
+                    <p>2. Bật <strong>Xác minh 2 bước</strong> (2-Step Verification)</p>
+                    <p>3. Tìm <strong>Mật khẩu ứng dụng</strong> (App passwords) và tạo mới</p>
+                    <p>4. Dán 16 chữ số vào ô trên và bấm nút Xác Thực & Lưu</p>
+                  </div>
+                </div>
+              )}
             </div>
           </Card>
         </div>

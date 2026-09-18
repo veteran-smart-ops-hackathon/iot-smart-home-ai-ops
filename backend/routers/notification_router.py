@@ -20,6 +20,18 @@ class NotificationUpdateRequest(BaseModel):
     recipient_email: Optional[str] = None
     recipient_emails: Optional[List[str]] = None
     enabled: Optional[bool] = None
+    smtp_user: Optional[str] = None
+    smtp_password: Optional[str] = None
+    smtp_from_email: Optional[str] = None
+    smtp_host: Optional[str] = None
+    smtp_port: Optional[int] = None
+
+
+class VerifySmtpRequest(BaseModel):
+    smtp_user: str
+    smtp_password: str
+    smtp_host: Optional[str] = "smtp.gmail.com"
+    smtp_port: Optional[int] = 587
 
 
 class TestEmailRequest(BaseModel):
@@ -51,18 +63,41 @@ async def update_notification_settings(
     orchestrator=Depends(get_orchestrator)
 ):
     """
-    Updates recipient emails and toggle state for automated incident email alerts.
+    Updates recipient emails, SMTP credentials, and toggle state for automated incident email alerts.
     """
     updated = orchestrator.notification_service.update_settings(
         recipient_email=req.recipient_email,
         recipient_emails=req.recipient_emails,
-        enabled=req.enabled
+        enabled=req.enabled,
+        smtp_user=req.smtp_user,
+        smtp_password=req.smtp_password,
+        smtp_from_email=req.smtp_from_email,
+        smtp_host=req.smtp_host,
+        smtp_port=req.smtp_port
     )
     return JSONResponse(content={
         "status": "SUCCESS",
         "message": "Đã cập nhật cấu hình thông báo email thành công.",
         "settings": updated.model_dump()
     })
+
+
+@router.post("/api/notifications/verify-smtp")
+async def verify_smtp_credentials(
+    req: VerifySmtpRequest,
+    orchestrator=Depends(get_orchestrator)
+):
+    """
+    Tests SMTP connection & authentication with provided credentials without saving.
+    """
+    res = orchestrator.notification_service.verify_smtp_credentials(
+        user=req.smtp_user,
+        password=req.smtp_password,
+        host=req.smtp_host or "smtp.gmail.com",
+        port=req.smtp_port or 587
+    )
+    status_code = 200 if res.get("success") else 400
+    return JSONResponse(status_code=status_code, content=res)
 
 
 @router.post("/api/notifications/recipients/add")

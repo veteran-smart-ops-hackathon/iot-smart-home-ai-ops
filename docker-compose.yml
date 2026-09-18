@@ -103,6 +103,7 @@ services:
       - MQTT_TRANSPORT=tcp
       - DASHBOARD_BASE_URL=${DASHBOARD_BASE_URL:-http://localhost:8000}
     volumes:
+      - .:/app
       - chat_data:/app/backend/data
     depends_on:
       timescaledb:
