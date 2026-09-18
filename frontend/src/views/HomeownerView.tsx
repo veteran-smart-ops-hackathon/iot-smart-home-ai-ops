@@ -336,6 +336,12 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
   const [emailStatusMsg, setEmailStatusMsg] = useState<string>('');
   const [isSavingEmail, setIsSavingEmail] = useState<boolean>(false);
   const [isTestingEmail, setIsTestingEmail] = useState<boolean>(false);
+  const [smtpUser, setSmtpUser] = useState<string>('');
+  const [smtpPassword, setSmtpPassword] = useState<string>('');
+  const [smtpConfigured, setSmtpConfigured] = useState<boolean>(false);
+  const [showSmtpConfig, setShowSmtpConfig] = useState<boolean>(false);
+  const [isVerifyingSmtp, setIsVerifyingSmtp] = useState<boolean>(false);
+  const [smtpVerifyMsg, setSmtpVerifyMsg] = useState<{ type: 'success' | 'error'; text: string; hint?: string } | null>(null);
 
   // Notification Center History List
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
@@ -416,10 +422,20 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
         const res = await fetch('/api/notifications/settings');
         if (res.ok) {
           const data = await res.json();
-          if (data && data.recipient_email) {
-            setFamilyEmail(data.recipient_email);
-          } else if (user.email) {
-            setFamilyEmail(user.email);
+          if (data) {
+            if (data.recipient_emails && data.recipient_emails.length > 0) {
+              setFamilyEmail(data.recipient_emails.join(', '));
+            } else if (data.recipient_email) {
+              setFamilyEmail(data.recipient_email);
+            } else if (user.email) {
+              setFamilyEmail(user.email);
+            }
+            if (data.smtp_configured !== undefined) {
+              setSmtpConfigured(data.smtp_configured);
+            }
+            if (data.from_email && data.from_email.includes('@')) {
+              setSmtpUser(data.from_email);
+            }
           }
         }
       } catch (e) {
@@ -1145,12 +1161,12 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
     }
   };
 
-  // Save/Update Family Email
+  // Save/Update Family Email (supports single or comma-separated emails)
   const handleUpdateFamilyEmail = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const clean = familyEmail.trim();
     if (!clean || !clean.includes('@')) {
-      setEmailStatusMsg('Vui lòng nhập địa chỉ email hợp lệ (ví dụ: gia_dinh@gmail.com).');
+      setEmailStatusMsg('Vui lòng nhập ít nhất một địa chỉ email hợp lệ (ví dụ: gia_dinh@gmail.com).');
       return;
     }
 
@@ -1166,8 +1182,11 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
       });
 
       if (!res.ok) throw new Error('Failed to update email');
+      const data = await res.json();
       sound.playSuccess();
-      setEmailStatusMsg(`✅ Đã cập nhật thành công email nhận cảnh báo: ${clean}`);
+      const updatedList = data.settings?.recipient_emails?.join(', ') || clean;
+      setFamilyEmail(updatedList);
+      setEmailStatusMsg(`✅ Đã cập nhật thành công danh sách email nhận cảnh báo: ${updatedList}`);
     } catch {
       sound.playAlarm();
       setEmailStatusMsg('❌ Không thể lưu email lúc này. Vui lòng thử lại sau.');
@@ -1198,11 +1217,16 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
       if (!res.ok) throw new Error('Failed to test email');
       const data = await res.json();
 
-      sound.playSuccess();
-      if (data.delivery_mode === 'SMTP_LIVE') {
-        setEmailStatusMsg(`🎉 Đã gửi email cảnh báo THỰC TẾ thành công qua Google SMTP tới ${clean}! Vui lòng kiểm tra hộp thư đến của bạn.`);
+      if (data.status === 'SENT' && data.delivery_mode === 'SMTP_LIVE') {
+        sound.playSuccess();
+        setEmailStatusMsg(`🎉 Đã gửi email cảnh báo THỰC TẾ thành công qua Google SMTP tới ${clean}! Vui lòng kiểm tra Hộp thư đến (hoặc thư mục Spam).`);
+      } else if (data.status === 'FAILED') {
+        sound.playAlarm();
+        const errMsg = data.notification?.error_message || 'Mật khẩu ứng dụng Gmail không hợp lệ hoặc bị Google từ chối.';
+        setEmailStatusMsg(`❌ Gửi qua Gmail thất bại: ${errMsg} 👉 Bấm "Cấu Hình Tài Khoản Gmail Gửi" bên dưới để cập nhật Mật khẩu ứng dụng 16 chữ số mới.`);
       } else {
-        setEmailStatusMsg(`📬 Đã tạo email cảnh báo thử nghiệm tới ${clean} (Chế độ: MÔ PHỎNG AN TOÀN). Bạn có thể bấm "Xem Thư" ở danh sách bên dưới để xem giao diện thư! Để gửi thư thật vào Gmail, chỉ cần cấu hình SMTP_USER và SMTP_PASSWORD vào file .env.`);
+        sound.playSuccess();
+        setEmailStatusMsg(`📬 Đã tạo email cảnh báo thử nghiệm tới ${clean} (Chế độ: MÔ PHỎNG AN TOÀN). Bạn có thể bấm "Xem Thư" ở danh sách thông báo bên dưới để xem giao diện thư! Để gửi thư thật vào Gmail, bấm "Cấu Hình Tài Khoản Gmail Gửi" bên dưới để nhập Mật khẩu ứng dụng 16 chữ số.`);
       }
       fetchNotificationHistory();
     } catch {
@@ -1210,6 +1234,63 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
       setEmailStatusMsg('❌ Không thể gửi email thử nghiệm. Vui lòng kiểm tra lại kết nối mạng.');
     } finally {
       setIsTestingEmail(false);
+    }
+  };
+
+  // Verify and Save SMTP Credentials
+  const handleVerifyAndSaveSmtp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const userClean = smtpUser.trim();
+    const pwdClean = smtpPassword.trim();
+    if (!userClean || !pwdClean) {
+      setSmtpVerifyMsg({ type: 'error', text: 'Vui lòng nhập đầy đủ Email người gửi và Mật khẩu ứng dụng 16 ký tự.' });
+      return;
+    }
+    sound.playClick();
+    setIsVerifyingSmtp(true);
+    setSmtpVerifyMsg(null);
+    try {
+      // 1. Kiểm tra xác thực trước
+      const vRes = await fetch('/api/notifications/verify-smtp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ smtp_user: userClean, smtp_password: pwdClean })
+      });
+      const vData = await vRes.json();
+      if (!vRes.ok || !vData.success) {
+        sound.playAlarm();
+        setSmtpVerifyMsg({
+          type: 'error',
+          text: vData.error || 'Xác thực Google SMTP thất bại.',
+          hint: vData.hint || 'Hãy chắc chắn rằng tài khoản Google đã BẬT xác minh 2 bước và tạo Mật khẩu ứng dụng 16 chữ số.'
+        });
+        return;
+      }
+      // 2. Lưu vào backend & .env
+      const sRes = await fetch('/api/notifications/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          smtp_user: userClean,
+          smtp_password: vData.valid_password || pwdClean,
+          smtp_from_email: userClean,
+          enabled: true
+        })
+      });
+      if (sRes.ok) {
+        sound.playSuccess();
+        setSmtpConfigured(true);
+        setSmtpPassword('');
+        setSmtpVerifyMsg({
+          type: 'success',
+          text: '🎉 Đã kết nối và lưu thông tin Gmail SMTP thành công 100%! Giờ đây hệ thống sẽ tự động gửi email cảnh báo thật đến bất kỳ người nhận nào.'
+        });
+      }
+    } catch {
+      sound.playAlarm();
+      setSmtpVerifyMsg({ type: 'error', text: 'Lỗi kết nối tới máy chủ khi kiểm tra SMTP.' });
+    } finally {
+      setIsVerifyingSmtp(false);
     }
   };
 
@@ -1705,25 +1786,40 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
 
               {/* Family Email Alerts Card - Cập nhật email */}
               <div className="p-6 rounded-3xl bg-white dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="h-9 w-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-                    <Mail className="h-5 w-5" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-9 w-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                      <Mail className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-stone-900 dark:text-white">Email Nhận Cảnh Báo An Toàn</h3>
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400">Gửi cảnh báo đến chủ nhà hoặc bất kỳ ai</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-stone-900 dark:text-white">Cập Nhật Email Cảnh Báo An Toàn</h3>
-                    <p className="text-[11px] text-stone-500 dark:text-stone-400">Nhận thông báo khẩn cấp cho cả gia đình</p>
-                  </div>
+                  <span className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full font-semibold ${
+                    smtpConfigured 
+                      ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20'
+                      : 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20'
+                  }`}>
+                    {smtpConfigured ? '● GMAIL SMTP LIVE' : '○ MÔ PHỎNG AN TOÀN'}
+                  </span>
                 </div>
 
                 <div className="space-y-3">
                   <div>
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-300 mb-1">
+                      Email người nhận (Nhập 1 hoặc nhiều email cách nhau bằng dấu phẩy):
+                    </label>
                     <input
-                      type="email"
+                      type="text"
                       value={familyEmail}
                       onChange={(e) => setFamilyEmail(e.target.value)}
-                      placeholder="nhap_email_cua_ban@gmail.com"
+                      placeholder="vi_du: chuhogiadinh@gmail.com, nguoi_than@gmail.com"
                       className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700 text-xs text-stone-900 dark:text-white placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
                     />
+                    <p className="text-[10px] text-stone-400 mt-1">
+                      * Bạn có thể đổi sang bất kỳ email nào tại đây để nhận thư cảnh báo.
+                    </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
@@ -1733,7 +1829,7 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
                       className="py-2.5 px-3 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                     >
                       {isSavingEmail ? <Activity className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
-                      <span>Cập Nhật Email</span>
+                      <span>Lưu Danh Sách</span>
                     </button>
 
                     <button
@@ -1747,10 +1843,87 @@ export const HomeownerView: React.FC<HomeownerViewProps> = ({ onSwitchToTechView
                   </div>
 
                   {emailStatusMsg && (
-                    <p className="text-[11px] font-medium animate-in fade-in leading-relaxed p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                    <div className="text-[11px] font-medium animate-in fade-in leading-relaxed p-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700">
                       {emailStatusMsg}
-                    </p>
+                    </div>
                   )}
+
+                  {/* Collapsible SMTP Sender Configuration */}
+                  <div className="pt-2 border-t border-stone-100 dark:border-stone-800">
+                    <button
+                      type="button"
+                      onClick={() => setShowSmtpConfig(!showSmtpConfig)}
+                      className="w-full text-left flex items-center justify-between text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline py-1"
+                    >
+                      <span>⚙️ Cấu Hình Tài Khoản Gmail Gửi Thư (SMTP)</span>
+                      <span className="text-xs font-mono">{showSmtpConfig ? '▲ Đóng' : '▼ Mở'}</span>
+                    </button>
+
+                    {showSmtpConfig && (
+                      <div className="mt-3 p-3.5 rounded-2xl bg-amber-500/5 dark:bg-stone-950/60 border border-amber-500/20 space-y-3 animate-in fade-in">
+                        <div>
+                          <label className="block text-[10.5px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                            Tài khoản Gmail người gửi:
+                          </label>
+                          <input
+                            type="email"
+                            value={smtpUser}
+                            onChange={(e) => setSmtpUser(e.target.value)}
+                            placeholder="nvmtamm@gmail.com"
+                            className="w-full px-3 py-2 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-xs font-mono text-stone-900 dark:text-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[10.5px] font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                            Mật khẩu ứng dụng 16 ký tự của Google:
+                          </label>
+                          <input
+                            type="password"
+                            value={smtpPassword}
+                            onChange={(e) => setSmtpPassword(e.target.value)}
+                            placeholder="16 chữ số (ví dụ: abcd efgh ijkl mnop)"
+                            className="w-full px-3 py-2 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-xs font-mono text-stone-900 dark:text-white"
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={handleVerifyAndSaveSmtp}
+                          disabled={isVerifyingSmtp || !smtpUser.trim() || !smtpPassword.trim()}
+                          className="w-full py-2 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 transition-all cursor-pointer"
+                        >
+                          {isVerifyingSmtp ? <Activity className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                          <span>Kiểm Tra Kết Nối & Lưu Gmail</span>
+                        </button>
+
+                        {smtpVerifyMsg && (
+                          <div className={`p-2.5 rounded-lg text-xs leading-relaxed border ${
+                            smtpVerifyMsg.type === 'success'
+                              ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
+                              : 'bg-red-50 dark:bg-red-950/60 text-red-800 dark:text-red-300 border-red-300 dark:border-red-800'
+                          }`}>
+                            <div className="font-semibold">{smtpVerifyMsg.text}</div>
+                            {smtpVerifyMsg.hint && (
+                              <div className="text-[10.5px] mt-1 text-stone-600 dark:text-stone-400 italic">
+                                👉 {smtpVerifyMsg.hint}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        <div className="p-2.5 rounded-lg bg-stone-100 dark:bg-stone-800/80 text-[10px] text-stone-600 dark:text-stone-400 space-y-1">
+                          <p className="font-semibold text-stone-700 dark:text-stone-300">📖 Cách tạo Mật khẩu ứng dụng Gmail (16 chữ số):</p>
+                          <ol className="list-decimal list-inside space-y-0.5">
+                            <li>Vào trang quản lý tài khoản: <strong>myaccount.google.com/security</strong></li>
+                            <li>Bật tính năng <strong>Xác minh 2 bước</strong> (2-Step Verification)</li>
+                            <li>Tìm mục <strong>Mật khẩu ứng dụng</strong> (App passwords)</li>
+                            <li>Đặt tên (ví dụ: SmartHome), nhấn Tạo và sao chép 16 chữ số dán vào đây</li>
+                          </ol>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 

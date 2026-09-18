@@ -48,11 +48,12 @@ class OrchestratorAgent:
         self.fault_agent = SafetyDiagnosticAgent()
         self.retriever_agent = ComfortEnergyAgent(vector_store=self.vector_store)
         self.planning_agent = PlanningAndActionAgent()
+        shared_notification_service = notification_service or EmailNotificationService()
         self.action_agent = HomeActionVerificationAgent(
             vector_store=self.vector_store,
-            notification_service=notification_service
+            notification_service=shared_notification_service
         )
-        self.notification_service = notification_service or EmailNotificationService()
+        self.notification_service = shared_notification_service
 
     def process_incident(
         self,

@@ -148,16 +148,143 @@ class EmailNotificationService:
         self,
         recipient_email: Optional[str] = None,
         recipient_emails: Optional[List[str]] = None,
-        enabled: Optional[bool] = None
+        enabled: Optional[bool] = None,
+        smtp_user: Optional[str] = None,
+        smtp_password: Optional[str] = None,
+        smtp_from_email: Optional[str] = None,
+        smtp_host: Optional[str] = None,
+        smtp_port: Optional[int] = None
     ) -> NotificationSettings:
+        env_updates: Dict[str, str] = {}
+
         if recipient_emails is not None:
             self.set_recipient_emails(recipient_emails)
+            emails_str = ",".join(self.recipient_emails)
+            self.settings.ALERT_RECIPIENT_EMAILS = emails_str
+            self.settings.ALERT_RECIPIENT_EMAIL = self.recipient_emails[0] if self.recipient_emails else ""
+            env_updates["ALERT_RECIPIENT_EMAILS"] = emails_str
+            env_updates["ALERT_RECIPIENT_EMAIL"] = self.settings.ALERT_RECIPIENT_EMAIL
         elif recipient_email is not None and recipient_email.strip():
             self.set_recipient_emails(recipient_email)
+            emails_str = ",".join(self.recipient_emails)
+            self.settings.ALERT_RECIPIENT_EMAILS = emails_str
+            self.settings.ALERT_RECIPIENT_EMAIL = self.recipient_emails[0] if self.recipient_emails else ""
+            env_updates["ALERT_RECIPIENT_EMAILS"] = emails_str
+            env_updates["ALERT_RECIPIENT_EMAIL"] = self.settings.ALERT_RECIPIENT_EMAIL
             
         if enabled is not None:
             self._override_enabled = enabled
+            env_updates["EMAIL_NOTIFICATION_ENABLED"] = "true" if enabled else "false"
+
+        if smtp_user is not None and smtp_user.strip():
+            clean_user = smtp_user.strip()
+            self.settings.SMTP_USER = clean_user
+            env_updates["SMTP_USER"] = clean_user
+            if not smtp_from_email:
+                self.settings.SMTP_FROM_EMAIL = clean_user
+                env_updates["SMTP_FROM_EMAIL"] = clean_user
+
+        if smtp_password is not None and smtp_password.strip():
+            clean_pwd = smtp_password.strip()
+            self.settings.SMTP_PASSWORD = clean_pwd
+            env_updates["SMTP_PASSWORD"] = clean_pwd
+
+        if smtp_from_email is not None and smtp_from_email.strip():
+            self.settings.SMTP_FROM_EMAIL = smtp_from_email.strip()
+            env_updates["SMTP_FROM_EMAIL"] = smtp_from_email.strip()
+
+        if smtp_host is not None and smtp_host.strip():
+            self.settings.SMTP_HOST = smtp_host.strip()
+            env_updates["SMTP_HOST"] = smtp_host.strip()
+
+        if smtp_port is not None and smtp_port > 0:
+            self.settings.SMTP_PORT = int(smtp_port)
+            env_updates["SMTP_PORT"] = str(smtp_port)
+
+        if env_updates:
+            self._persist_to_env(env_updates)
+
         return self.get_settings_summary()
+
+    def _persist_to_env(self, updates: Dict[str, str]):
+        """Ghi đè cấu hình mới vào file .env trên ổ đĩa để duy trì kể cả khi khởi động lại."""
+        env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+        if not os.path.exists(env_path):
+            return
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+            
+            updated_keys = set()
+            new_lines = []
+            for line in lines:
+                stripped = line.strip()
+                if stripped and not stripped.startswith("#") and "=" in stripped:
+                    k, _ = stripped.split("=", 1)
+                    k = k.strip()
+                    if k in updates:
+                        new_lines.append(f"{k}={updates[k]}\n")
+                        updated_keys.add(k)
+                        continue
+                new_lines.append(line)
+            
+            for k, v in updates.items():
+                if k not in updated_keys:
+                    new_lines.append(f"{k}={v}\n")
+                    
+            with open(env_path, "w", encoding="utf-8") as f:
+                f.writelines(new_lines)
+            logger.info(f"Đã lưu thành công cấu hình email vào .env: {list(updates.keys())}")
+        except Exception as e:
+            logger.warning(f"Không thể ghi đè .env: {e}")
+
+    @staticmethod
+    def verify_smtp_credentials(
+        user: str,
+        password: str,
+        host: str = "smtp.gmail.com",
+        port: int = 587
+    ) -> Dict[str, Any]:
+        """Kiểm tra trực tiếp thông tin đăng nhập SMTP trước khi lưu."""
+        clean_user = (user or "").strip()
+        clean_pwd = (password or "").strip()
+        # Thử cả 2 dạng: có khoảng cách và bỏ khoảng cách
+        passwords_to_try = [clean_pwd]
+        if " " in clean_pwd:
+            passwords_to_try.append(clean_pwd.replace(" ", ""))
+
+        last_error = None
+        for pwd in passwords_to_try:
+            try:
+                if port == 465:
+                    server = smtplib.SMTP_SSL(host, port, timeout=12)
+                else:
+                    server = smtplib.SMTP(host, port, timeout=12)
+                    server.starttls()
+                server.login(clean_user, pwd)
+                server.quit()
+                return {
+                    "success": True,
+                    "message": f"Kết nối và xác thực thành công tài khoản Gmail {clean_user}!",
+                    "valid_password": pwd
+                }
+            except smtplib.SMTPAuthenticationError as auth_err:
+                last_error = auth_err
+            except Exception as exc:
+                last_error = exc
+
+        err_msg = str(last_error)
+        is_bad_credentials = "535" in err_msg or "BadCredentials" in err_msg or "Username and Password not accepted" in err_msg
+        if is_bad_credentials:
+            return {
+                "success": False,
+                "error": "Google từ chối mật khẩu (BadCredentials / 535). Mật khẩu ứng dụng 16 chữ số không đúng hoặc đã hết hạn.",
+                "hint": "Truy cập Google Account -> Bảo mật -> Xác minh 2 bước -> Mật khẩu ứng dụng để tạo mật khẩu 16 chữ số mới."
+            }
+        return {
+            "success": False,
+            "error": f"Lỗi kết nối máy chủ SMTP ({host}:{port}): {err_msg}"
+        }
 
     def get_history(self, limit: int = 50) -> List[NotificationLog]:
         return list(reversed(self._history[-limit:]))
@@ -379,7 +506,8 @@ Hệ thống Trợ Lý Gia Đình Veteran Home.
         report: DiagnosticReport,
         plan: MitigationPlan,
         recipient_email: Optional[str] = None,
-        recipient_emails: Optional[List[str]] = None
+        recipient_emails: Optional[List[str]] = None,
+        bypass_cooldown: bool = False
     ) -> NotificationLog:
         """
         Gửi email thông báo sự cố và kế hoạch xử lý đến danh sách người dùng.
@@ -428,12 +556,12 @@ Hệ thống Trợ Lý Gia Đình Veteran Home.
         # Kiểm tra môi trường test (Pytest / CI)
         is_test_env = "PYTEST_CURRENT_TEST" in os.environ or os.environ.get("TESTING") == "true"
 
-        # Kiểm tra Cooldown chống Spam (chỉ áp dụng với gửi SMTP Live, không áp dụng cho unit test)
+        # Kiểm tra Cooldown chống Spam (chỉ áp dụng với gửi SMTP Live cho sự cố thật, không áp dụng cho gửi thử test hoặc bypass)
         cooldown_key = f"{report.overall_severity}_{plan.title}"
         now_ts = time.time()
         last_sent = self._incident_cooldown.get(cooldown_key, 0.0)
 
-        if not is_test_env and (now_ts - last_sent < INCIDENT_ALERT_COOLDOWN_SECONDS):
+        if not is_test_env and not bypass_cooldown and (now_ts - last_sent < INCIDENT_ALERT_COOLDOWN_SECONDS):
             logger.info(f"Cảnh báo '{subject}' đang trong thời gian Cooldown chống spam (15 phút). Bỏ qua gửi SMTP lặp lại.")
             log = NotificationLog(
                 notification_id=notification_id,
@@ -451,10 +579,6 @@ Hệ thống Trợ Lý Gia Đình Veteran Home.
             self._history.append(log)
             return log
 
-        # Ghi nhận thời điểm gửi cho kịch bản này
-        if not is_test_env:
-            self._incident_cooldown[cooldown_key] = now_ts
-
         # Kiểm tra chế độ gửi: Live SMTP hay Simulated (Nếu chạy trong Pytest -> Tự động dùng SIMULATED)
         if self.is_smtp_configured and real_recipients and not is_test_env:
             try:
@@ -471,18 +595,39 @@ Hệ thống Trợ Lý Gia Đình Veteran Home.
                 # Kết nối SMTP Server
                 host = self.settings.SMTP_HOST
                 port = self.settings.SMTP_PORT
-                user = self.settings.SMTP_USER
-                pwd = self.settings.SMTP_PASSWORD
+                user = (self.settings.SMTP_USER or "").strip()
+                raw_pwd = (self.settings.SMTP_PASSWORD or "").strip()
+                # Thử mật khẩu gốc và mật khẩu đã xóa khoảng trắng (chuẩn App Password của Google)
+                pwds_to_try = [raw_pwd]
+                if " " in raw_pwd:
+                    pwds_to_try.append(raw_pwd.replace(" ", ""))
 
-                if port == 465:
-                    server = smtplib.SMTP_SSL(host, port, timeout=10)
-                else:
-                    server = smtplib.SMTP(host, port, timeout=10)
-                    server.starttls()
+                logged_in = False
+                last_auth_exc = None
+                for pwd in pwds_to_try:
+                    try:
+                        if port == 465:
+                            server = smtplib.SMTP_SSL(host, port, timeout=12)
+                        else:
+                            server = smtplib.SMTP(host, port, timeout=12)
+                            server.starttls()
+                        server.login(user, pwd)
+                        logged_in = True
+                        break
+                    except smtplib.SMTPAuthenticationError as auth_err:
+                        last_auth_exc = auth_err
+                    except Exception as e:
+                        last_auth_exc = e
 
-                server.login(user, pwd)
+                if not logged_in:
+                    raise last_auth_exc or Exception("Không thể đăng nhập máy chủ SMTP.")
+
                 server.sendmail(self.settings.SMTP_FROM_EMAIL, real_recipients, msg.as_string())
                 server.quit()
+
+                # Chỉ ghi nhận Cooldown khi gửi THÀNH CÔNG và không phải chế độ bypass
+                if not is_test_env and not bypass_cooldown:
+                    self._incident_cooldown[cooldown_key] = now_ts
 
                 if mock_recipients:
                     logger.info(f"Đã gửi email qua SMTP đến {len(real_recipients)} người nhận thực ({', '.join(real_recipients)}) và mô phỏng {len(mock_recipients)} địa chỉ mẫu ({', '.join(mock_recipients)}).")
@@ -503,6 +648,12 @@ Hệ thống Trợ Lý Gia Đình Veteran Home.
                 )
             except Exception as e:
                 logger.error(f"Lỗi khi gửi email qua SMTP: {e}")
+                err_msg = str(e)
+                if "535" in err_msg or "BadCredentials" in err_msg or "Username and Password not accepted" in err_msg:
+                    err_hint = "Google từ chối mật khẩu (535 BadCredentials). Vui lòng kiểm tra lại Mật khẩu ứng dụng 16 chữ số của Gmail."
+                else:
+                    err_hint = err_msg
+
                 log = NotificationLog(
                     notification_id=notification_id,
                     incident_id=report.incident_id,
@@ -514,7 +665,7 @@ Hệ thống Trợ Lý Gia Đình Veteran Home.
                     severity=report.overall_severity,
                     dashboard_url=dashboard_url,
                     html_preview=html_content,
-                    error_message=str(e)
+                    error_message=err_hint
                 )
         else:
             # Chế độ Mô phỏng (Simulated Delivery)
@@ -576,5 +727,6 @@ Hệ thống Trợ Lý Gia Đình Veteran Home.
             mock_report,
             mock_plan,
             recipient_email=recipient_email,
-            recipient_emails=recipient_emails
+            recipient_emails=recipient_emails,
+            bypass_cooldown=True
         )
